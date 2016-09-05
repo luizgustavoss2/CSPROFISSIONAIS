@@ -2529,11 +2529,11 @@ function procVerificaUsuarioLogado() {
 
 //$('#cadastroBairroPro').focusWithoutScrolling();
 
-$.fn.focusWithoutScrolling = function () {
-    //var x = window.scrollX, y = window.scrollY;
-    //this.focus();
-    window.scrollTo(10, 10);
-};
+//$.fn.focusWithoutScrolling = function () {
+//    //var x = window.scrollX, y = window.scrollY;
+//    //this.focus();
+//    window.scrollTo(10, 10);
+//};
 
  function Clicktext(val) {
     //var x = window.scrollX, y = window.scrollY;
@@ -2551,30 +2551,30 @@ $.fn.focusWithoutScrolling = function () {
      //window.scrollTo(10, window.scrollY + scrollTex - 500);
 };
 
-var cursorFocus = function (elem) {
-    var x, y;
-    // More sources for scroll x, y offset.
-    if (typeof (window.pageXOffset) !== 'undefined') {
-        x = window.pageXOffset;
-        y = window.pageYOffset;
-    } else if (typeof (window.scrollX) !== 'undefined') {
-        x = window.scrollX;
-        y = window.scrollY;
-    } else if (document.documentElement && typeof (document.documentElement.scrollLeft) !== 'undefined') {
-        x = document.documentElement.scrollLeft;
-        y = document.documentElement.scrollTop;
-    } else {
-        x = document.body.scrollLeft;
-        y = document.body.scrollTop;
-    }
+//var cursorFocus = function (elem) {
+//    var x, y;
+//    // More sources for scroll x, y offset.
+//    if (typeof (window.pageXOffset) !== 'undefined') {
+//        x = window.pageXOffset;
+//        y = window.pageYOffset;
+//    } else if (typeof (window.scrollX) !== 'undefined') {
+//        x = window.scrollX;
+//        y = window.scrollY;
+//    } else if (document.documentElement && typeof (document.documentElement.scrollLeft) !== 'undefined') {
+//        x = document.documentElement.scrollLeft;
+//        y = document.documentElement.scrollTop;
+//    } else {
+//        x = document.body.scrollLeft;
+//        y = document.body.scrollTop;
+//    }
 
-    elem.focus();
+//    elem.focus();
 
-    if (typeof x !== 'undefined') {
-        // In some cases IE9 does not seem to catch instant scrollTo request.
-        setTimeout(function () { window.scrollTo(x, y); }, 100);
-    }
-}
+//    if (typeof x !== 'undefined') {
+//        // In some cases IE9 does not seem to catch instant scrollTo request.
+//        setTimeout(function () { window.scrollTo(x, y); }, 100);
+//    }
+//}
 
 
 
