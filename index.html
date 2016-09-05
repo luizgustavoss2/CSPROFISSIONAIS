@@ -35,23 +35,14 @@
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript">
        
-        window.addEventListener('load', function () {
-            document.getElementById('modalCadastroProfissional').addEventListener('touchmove', function (e) {
-                e.preventDefault();
-            }, false);
-        }, false);
+        //window.addEventListener('load', function () {
+        //    document.getElementById('modalCadastroProfissional').addEventListener('touchmove', function (e) {
+        //        e.preventDefault();
+        //    }, false);
+        //}, false);
 
 
-        $(window).scroll(function () {
-            var st = $(this).scrollTop();
-            $('input[type=text]').each(function () {
-                var offset = $(this).offset();
-
-                if (st >= offset.top - 20 && st < offset.top + $(this).height()) {
-                    $(this).focus();
-                }
-            });
-        });
+    
 
     </script>
 </head>
