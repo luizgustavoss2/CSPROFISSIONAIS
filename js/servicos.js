@@ -53,7 +53,13 @@
 // D0041 - Carrega Endereço pelo CEP Cli
 // D0042 - Carrega Endereço pelo CEP Pro
 // D0043 - Pre Cadastro Profissional (verifica se tem imagem)
-//
+// D0044 - BUSCAR ULTIMOS TRABALHOS DO PROFISSIONAL LOGAGO
+// D0045 - UPLOAD DE NOVO TRABALHO DO PROFISSIONAL
+// D0046 - APAGAR IMAGEM DA GALERIA DE TRABALHOS DO PROFISSIONAL
+// D0047 - ATUALIZAR FOTO DE PERFIL DO PROFISSIONAL
+// D0048 - BUSCAR SOLICITAÇÕES DE CONTATO DO PROFISSIONAL
+// D0049 - LIMPAR SESSÃO USUARIO LOGADO
+// D0050 - VERIFICA SESSÃO USUARIO LOGADO
 //
 //
 // #############################################################################
@@ -68,11 +74,28 @@ profissional = this;
 var listEspec;
 var currencies = [];
 
+$(':input').focus(function () {
+         var center = $(window).height() / 2;
+         var top = $(this).offset().top;
+         if (top > center) {
+             $('html, body').animate({ scrollTop: top - center }, 'fast');            
+         }
+     });
+	 
 // D0001 - FUNÇÃO PARA LOGAR O USUÁRIO
 function procLogin(){  
 
+    localStorage.clear();
     var login = $("#login").val();
     var senha = $("#senha").val();
+
+    if(login=="" || senha ==""){
+        alert("Login e Senha são obrigatórios");
+        return 1;
+    }
+
+    $("#btnLoginCli").css({ display: "none" });
+    $("#divAguardeLoginCli").css({ display: "block" });
 
     var request = $.ajax({
         method: "POST",
@@ -83,6 +106,9 @@ function procLogin(){
 
         if(!msg["Data"]){
             alert("Login ou Senha incorretos");
+            $("#btnLoginCli").css({ display: "block" });
+            $("#divAguardeLoginCli").css({ display: "none" });
+
         }else{
 
             localStorage.setItem("ClienteId", msg["Data"]["ClienteId"]);
@@ -111,14 +137,19 @@ function procLogin(){
     });
     request.fail(function() {
         alert("Não foi possível realizar o seu login, tente novamente");
-        location.href="index.html";
+        $("#btnLoginCli").css({ display: "block" });
+        $("#divAguardeLoginCli").css({ display: "none" });
+        $("#senha").val('');
+        //location.href="index.html";
     });
 
 }
 
 
 // D0024 - CADASTRO DE USUÁRIOS TIPO PROFISSIONAL
-function procCadastroPro(){
+function procCadastroPro() {
+    localStorage.clear();
+
     $('.conteudoLoginPro').css({ display: "none" });
     $('.divAguardeCadPro').css({ display: "block" });
 
@@ -296,8 +327,7 @@ function verificarSessao(){
         location.href("index.html");
     }
 
-}  
-
+}
 
 // D0003 - FUNÇÃO PARA O AUTO COMPLETE NA BUSCA
 function autoCompleteBusca(){
@@ -370,6 +400,8 @@ function popularHtml(){
 // D0006 - CADASTRO DE USUÁRIOS TIPO CLIENTE
 function procCadastro(){
 
+    localStorage.clear();
+
     var msgerroCad = "";
     if ($("#cadastroNome").val() == "")
         msgerroCad = msgerroCad + "* Nome é obrigatório!  \r\n";
@@ -405,8 +437,14 @@ function procCadastro(){
     if ($("#cadastroSenha").val() == "")
         msgerroCad = msgerroCad + "* Senha é obrigatório! \r\n";
 
-    if (msgerroCad != "")
+    if (msgerroCad != "") {
         alert(msgerroCad);
+
+        return 1;
+    }
+
+    $("#btnCadastroCli").css({ display: "none" });
+    $("#divAguardeCadCli").css({ display: "block" });
 
     var cadastroNome = $("#cadastroNome").val();
     var cadastroEmail = $("#cadastroEmail").val();
@@ -443,11 +481,17 @@ function procCadastro(){
         longitude = msg["results"][0]["geometry"]["location"]["lng"];
 
         localStorage.setItem("Latitude", msg["results"][0]["geometry"]["location"]["lat"]);
-        localStorage.setItem("Longitude",msg["results"][0]["geometry"]["location"]["lng"]);
+        localStorage.setItem("Longitude", msg["results"][0]["geometry"]["location"]["lng"]);
+
+       // $("#btnCadastroCli").attr("style", "display:block");
+       // $("#divAguardeCadCli").attr("style", "display:none")
 
     });
     request.fail(function() {
         console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
+        $("#btnCadastroCli").css({ display: "block" });
+        $("#divAguardeCadCli").css({ display: "none" });
+
     });
     // PEGAR LATITUDE E LONGITUDE
 
@@ -464,6 +508,10 @@ function procCadastro(){
      
     endereco = {cidadeId: idCidade, Nome: cadastroRua, numero: cadastroNumero, complemento: "n/a", bairro: cadastroBairro, cep: cadastroCep, latitude: latitude, longitude: longitude}   
       
+    $("#btnCadastroCli").css({ display: "none" });
+    $("#divAguardeCadCli").css({ display: "block" });
+
+
     var request = $.ajax({
         method: "POST",
         url: "http://api.csprofissionais.com.br/api/cliente/inserir",
@@ -499,11 +547,20 @@ function procCadastro(){
         localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
         console.log("Direcionando o usuário para o dashboard...");
             
-        location.href="dashboard.html";
+        $("#btnCadastroCli").css({ display: "block" });
+        $("#divAguardeCadCli").css({ display: "none" });
+
+
+        location.href = "dashboard.html";
+
 
     });
     request.fail(function() {
         console.log("Deu ruim o cadastro");
+        alert('Erro ao efetuar o cadastro. Tente novamente mais tarde');
+        $("#btnCadastroCli").css({ display: "block" });
+        $("#divAguardeCadCli").css({ display: "none" });
+
     });
 }
 
@@ -848,7 +905,7 @@ function procPesquisa(){
                                                                    
               
 
-                $("#workInner").append('<div class="row"><div class="col-sm-12 col-xs-12 text-left user-preview"><h4>'+nomeProfissional+'</h4>'+estrelas+'&nbsp;<i class="fa fa-phone" aria-hidden="true"></i>'+celularProfissional+'&nbsp;</p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional('+idProfissional+')" class="btn btn-primary">DETALHES</a></p></div></div>');
+                $("#workInner").append('<div class="row"><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:8px;"><b>'+nomeProfissional+'</b></p>'+estrelas+'&nbsp;<i class="fa fa-phone" aria-hidden="true"></i>'+celularProfissional+'&nbsp;</p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional('+idProfissional+')" class="btn btn-primary">DETALHES</a></p></div></div>');
 
 
             }           
@@ -1402,8 +1459,18 @@ function autoCompletePro(){
 // D0027 - FUNÇÃO PARA LOGAR O USUÁRIO COMO PROFISSIONAL
 function procLoginPro(){  
 
+    localStorage.clear();
+
     var login = $("#loginPro").val();
     var senha = $("#senhaPro").val();
+
+    if(login=="" || senha ==""){
+        alert("Login e Senha são obrigatórios");
+        return 1;
+    }
+
+    $("#btnLoginPro").css({ display: "none" });
+    $("#divAguardeLoginPro").css({ display: "block" });
 
     var request = $.ajax({
         method: "POST",
@@ -1414,6 +1481,8 @@ function procLoginPro(){
 
         if(!msg["Data"]){
             alert("Login ou Senha incorretos");
+            $("#btnLoginPro").css({ display: "block" });
+            $("#divAguardeLoginPro").css({ display: "none" });
         }else{
 
             localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
@@ -1441,7 +1510,10 @@ function procLoginPro(){
     });
     request.fail(function() {
         alert("Não foi possível realizar o seu login, tente novamente");
-        location.href="index.html";
+        $("#btnLoginPro").css({ display: "block" });
+        $("#divAguardeLoginPro").css({ display: "none" });
+        $("#senhaPro").val('');
+        //location.href="index.html";
     });
 
 }
@@ -1614,6 +1686,26 @@ function solicDestaque(){
 
     var idPro = localStorage.getItem("idProfissionalLogado");
   
+    var request = $.ajax({
+        method: "GET",
+        url: "http://api.csprofissionais.com.br/api/profissional/ObterValorDestaque"
+        //data: { email: login, senha: senha }
+    })
+    request.done(function( msg ) {
+          
+        $('#valorDestaque').html(msg["Data"]["Valor"].replace('.',',')); 
+        console.log("Valor da solicitação de destaque capturada com sucesso");
+          
+    });
+    request.fail(function() {
+        console.log("Ocorreu um erro ao tentar realizar a solicitação");
+                  
+    });
+
+}
+function confirmarDestaque(){
+     
+     var idPro = localStorage.getItem("idProfissionalLogado");
 
     var request = $.ajax({
         method: "GET",
@@ -1631,8 +1723,6 @@ function solicDestaque(){
         console.log("Ocorreu um erro ao tentar realizar a solicitação");
                   
     });
-
-
 }
 
 
@@ -2094,6 +2184,8 @@ $("#formulario").submit(function () {
 // D0043 - Pre Cadastro Profissional (verifica se tem imagem)
 function procCadastroProPre() {
 
+    localStorage.clear();
+
     var msgerro = "";
     if ($("#cadastroNomePro").val() == "")
         msgerro = msgerro + "* Nome é obrigatório!  \r\n";
@@ -2166,3 +2258,324 @@ function procCadastroProPre() {
     }
 
 };
+
+
+// D0044 - BUSCAR ULTIMOS TRABALHOS DO PROFISSIONAL LOGAGO
+function buscarUltimosTrabalhosPro(){
+
+    var profissional = localStorage.getItem("idProfissionalLogado");
+    console.log("Vamos buscar os últimos trabalhos do profissional ID: "+profissional);
+
+
+    // PEGAR IMAGENS DOS ÚLTIMOS TRABALHOS DO PROFISSIONAL
+    var request = $.ajax({
+        method: "GET",
+        url: "http://api.csprofissionais.com.br/api/profissional/ObterImagens/"+profissional
+        //data: { email: login, senha: senha }
+    })
+    request.done(function( msg ) {
+      
+      if(msg["Data"]["Imagens"].length>0){    
+        var totImagens = msg["Data"]["Imagens"].length;
+
+        for(i = 0; i < totImagens; i++){
+
+            $('#ultimosTrabalhosWork').prepend("<div id='imagemTrabalhoDiv"+msg["Data"]["Imagens"][i]["ImagensProfissionalId"]+"'><img src='http://www.csprofissionais.com.br/upload/"+msg["Data"]["Imagens"][i]["Nome"]+"' style='width:100%;height:auto;margin-bottom:8px;padding:3px;border:1px solid #efefef;' /><p><button onclick='apagarImagemPro("+msg["Data"]["Imagens"][i]["ImagensProfissionalId"]+");' class='btn btn-danger btn-xs'>apagar</button></p><br></div>")
+            console.log("Imagem do trabalho do profissional impressa: http://www.csprofissionais.com.br/upload/"+msg["Data"]["Imagens"][i]["Nome"]);
+
+        }  
+      }else{
+            $('#ultimosTrabalhosWork').prepend("<p>Você ainda não enviou nenhum trabalho</p>");
+      }  
+          
+          
+    });
+    request.fail(function() {
+        console.log("Ocorreu um erro ao tentar pegar os dados desse profissional");
+        $('#ultimosTrabalhosWork').prepend("<p style='text-align:center;'>Nenhuma imagem encontrada ou disponível no servidor.</p>");          
+    });
+
+
+
+}
+
+
+// D0045 - UPLOAD DE NOVO TRABALHO DO PROFISSIONAL
+
+ $('#fotoTrabalho').change(function (event) {
+        form = new FormData();
+        form.append('fileUpload', event.target.files[0]); // para apenas 1 arquivo
+        //var name = event.target.files[0].content.name; // para capturar o nome do arquivo com sua extenção
+    });
+
+    $('#SendfotoTrabalho').click(function () {
+        $('#SendfotoTrabalho').html("enviando....");
+        var retorno='';
+        var imagemTrabalho='';
+        var request = $.ajax({
+            url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
+            data: form,
+            processData: false,
+            contentType: false,
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                //retorno = data;
+                //alert(data); // utilizar o retorno
+            }
+        });
+        //alert(retorno);
+        request.done(function( msg ) {
+            
+            imagemTrabalho = msg;
+
+            console.log(imagemTrabalho);
+            $('#SendfotoTrabalho').html("enviar novo trabalho");
+            alert("Imagem enviada com sucesso");
+        })      
+        request.fail(function() {
+            console.log("Deu ruim o cadastro");
+        });
+
+
+        if(imagemTrabalho!=''){
+            console.log("Salvando na API "+imagemTrabalho);
+            var profissionalTrabalho = localStorage.getItem("idProfissionalLogado");
+
+
+            var request = $.ajax({
+                method: "POST",
+                url: "http://api.csprofissionais.com.br/api/profissional/InserirImagem",
+                data: { ProfissionalId: profissionalTrabalho, Nome: imagemTrabalho }
+            })
+            request.done(function( msg ) {
+
+                if(!msg["Data"]){
+                    alert("Ocorreu um erro em tentar salvar a imagem no servidor, tente novamente mais tarde");
+                }else{
+                    console.log("Imagem salva na galeria do profissional com sucesso");
+                }  
+
+            });
+            request.fail(function() {
+                alert("Ocorreu um erro em tentar salvar a imagem no servidor, tente novamente mais tarde");
+            }); 
+
+
+        }
+
+
+});
+
+
+// D0046 - APAGAR IMAGEM DA GALERIA DE TRABALHOS DO PROFISSIONAL
+function apagarImagemPro(idImagem){
+
+   var request = $.ajax({
+        method: "POST",
+        url: "http://api.csprofissionais.com.br/api/profissional/DeletarImagem/"+idImagem
+        //data: { email: login, senha: senha }
+    })
+    request.done(function( msg ) {
+          
+       console.log("Imagem removida com sucesso");
+       alert("Imagem removida com sucesso");
+       $('#imagemTrabalhoDiv'+idImagem).fadeOut();          
+          
+    });
+    request.fail(function() {
+        console.log("Ocorreu um erro ao tentar apagar a imagem");
+                
+    });
+
+}    
+
+
+// D0047 - ATUALIZAR FOTO DE PERFIL DO PROFISSIONAL
+ $('#fotoPerfilPro2').change(function (event) {
+        form = new FormData();
+        form.append('fileUpload', event.target.files[0]); // para apenas 1 arquivo
+        //var name = event.target.files[0].content.name; // para capturar o nome do arquivo com sua extenção
+    });
+
+    $('#updateProfilePicture').click(function () {
+        
+        var imagemPerfil='';
+        var request = $.ajax({
+            url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
+            data: form,
+            processData: false,
+            contentType: false,
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                //retorno = data;
+                //alert(data); // utilizar o retorno
+            }
+        });
+        //alert(retorno);
+        request.done(function( msg ) {
+            
+            imagemPerfil = msg;
+
+            console.log(imagemPerfil);
+            alert("Imagem atualizada com sucesso");
+        })      
+        request.fail(function() {
+            console.log("Deu ruim o cadastro");
+        });
+
+
+        if(imagemPerfil!=''){
+            console.log("Atualizando Perfil "+imagemPerfil);
+            var profissionalPicture = localStorage.getItem("idProfissionalLogado");
+
+            var request = $.ajax({
+                method: "POST",
+                url: "http://api.csprofissionais.com.br/api/profissional/editar",
+                data: { profissionalid: profissionalPicture,
+                    nomefoto: imagemPerfil }
+            })
+            request.done(function( msg ) {
+
+                console.log(msg);
+                console.log("Dados (profile picture) atualizados com sucesso!");            
+
+            });
+            request.fail(function() {
+                console.log("Não foi possível realizar a operação, tente novamente.");
+            });            
+
+
+        }
+
+
+});
+
+
+
+// D0048 - BUSCAR SOLICITAÇÕES DE CONTATO
+function buscarTrabalhos(){
+
+      //var profissionalLogado = localStorage.getItem("idProfissionalLogado");
+      var profissionalLogado = 27;
+      
+      console.log("Buscando as solicitações de contato do Profissional: "+profissionalLogado);
+
+
+
+      var request = $.ajax({
+            method: "GET",
+            url: "http://api.csprofissionais.com.br/api/profissional/SolicitacoesContato/"+profissionalLogado
+            //data: { email: login, senha: senha }
+        })
+        request.done(function( msg ) {
+            
+            if(msg["Data"]){  
+            var totContato = msg["Data"].length;
+            totContato = totContato - 1;
+            
+
+            for(i = 0; i < totContato; i++){
+            
+               $("#solicitacoesContatoWork").prepend("<b>Nome do cliente: </b> "+msg["Data"][i]["ClienteNome"]+"<br><b>Telefone: </b>"+msg["Data"][i]["Telefone"]+"<br><b>E-mail: </b>"+msg["Data"][i]["Email"]+"<br><b>Data solicitação: </b>"+msg["Data"][i]["DataSolicitacao"]+"<hr />");
+            
+            }
+
+            }else{
+                $("#solicitacoesContatoWork").html("Nenhuma solicitação de contato ainda");
+            }
+        });
+        request.fail(function() {
+            console.log("Ocorreu um erro ao tentar carregar as solicitações de contato");
+            $("#solicitacoesContatoWork").html("<p>Ocorreu um erro ao tentar carregar as solicitações de contato</p>");
+        });
+
+
+
+}
+
+
+// D0049 - LIMPAR SESSÃO USUARIO LOGADO
+function procEfetuaLogOff() {
+    //localStorage.clear();
+    window.close();
+    location.href("index.html");
+
+}
+
+// D0050 - VERIFICA SESSÃO USUARIO LOGADO
+function procVerificaUsuarioLogado() {
+
+    var sessaoUser = localStorage.getItem("ClienteId");
+    if (!sessaoUser) {
+
+        var sessaoProf = localStorage.getItem("idProfissionalLogado");
+        if (!sessaoProf) {
+            //alert("Por favor, faça seu login novamente");
+        }
+        else {
+            window.location.href("dashboard-pro.html");
+        }
+        
+    }
+    else
+    {
+        location.href = "dashboard.html";
+    }
+    
+}
+
+
+//$('#cadastroBairroPro').focusWithoutScrolling();
+
+$.fn.focusWithoutScrolling = function () {
+    //var x = window.scrollX, y = window.scrollY;
+    //this.focus();
+    window.scrollTo(10, 10);
+};
+
+ function Clicktext(val) {
+    //var x = window.scrollX, y = window.scrollY;
+    //this.focus();
+    //window.scrollTo(x, y);
+    // window.scrollTo(10, 10);
+
+     //document.getElementById('modalCadastroProfissional').scrollTop = 10;
+     
+     //var elem = document.getElementById('modalCadastroProfissional');
+     //var elemTx = document.getElementById('cadastroRuaPro');
+     //elem.focus();
+     //elem.scrollLeft = elem.scrollWidth;
+     //var scrollTex = elemTx.scrollHeight;
+     //window.scrollTo(10, window.scrollY + scrollTex - 500);
+};
+
+var cursorFocus = function (elem) {
+    var x, y;
+    // More sources for scroll x, y offset.
+    if (typeof (window.pageXOffset) !== 'undefined') {
+        x = window.pageXOffset;
+        y = window.pageYOffset;
+    } else if (typeof (window.scrollX) !== 'undefined') {
+        x = window.scrollX;
+        y = window.scrollY;
+    } else if (document.documentElement && typeof (document.documentElement.scrollLeft) !== 'undefined') {
+        x = document.documentElement.scrollLeft;
+        y = document.documentElement.scrollTop;
+    } else {
+        x = document.body.scrollLeft;
+        y = document.body.scrollTop;
+    }
+
+    elem.focus();
+
+    if (typeof x !== 'undefined') {
+        // In some cases IE9 does not seem to catch instant scrollTo request.
+        setTimeout(function () { window.scrollTo(x, y); }, 100);
+    }
+}
+
+
+
+

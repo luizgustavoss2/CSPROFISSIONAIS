@@ -35,11 +35,28 @@
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript">
        
-        
+        window.addEventListener('load', function () {
+            document.getElementById('modalCadastroProfissional').addEventListener('touchmove', function (e) {
+                e.preventDefault();
+            }, false);
+        }, false);
+
+
+        $(window).scroll(function () {
+            var st = $(this).scrollTop();
+            $('input[type=text]').each(function () {
+                var offset = $(this).offset();
+
+                if (st >= offset.top - 20 && st < offset.top + $(this).height()) {
+                    $(this).focus();
+                }
+            });
+        });
 
     </script>
 </head>
-<body class="homepage hidden-lg hidden-md" onload="localStorage.clear();">
+<!--<body class="homepage hidden-lg hidden-md" onload="localStorage.clear();">-->
+<body class="homepage hidden-lg hidden-md" onload="procVerificaUsuarioLogado()">
     <div class="container actions-homepage wow fadeInDown" data-wow-delay="0.5s" data-wow-duration="1.7s">
 
 
@@ -100,7 +117,12 @@
                         <input type="password" id="senha" required class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
                     <div class="form-group" id="conteudoLogin2">
-                        <button onclick="procLogin();" class="btn btn-defaul">login como cliente</button> <p style="text-align:center;">ou</p> <button data-toggle="modal" data-target="#modalLoginPro" class="btn btn-defaul">quero me logar como profissional</button>
+                        <button onclick="procLogin();" class="btn btn-defaul btnLoginCli" id="btnLoginCli">login como cliente</button>
+                        <div class="form-group" id="divAguardeLoginCli" style="display:none;text-align:center; width:100%">
+                            <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
+                        </div>
+                        <p style="text-align:center;">ou</p> <button data-toggle="modal" data-target="#modalLoginPro" class="btn btn-defaul">quero me logar como profissional</button>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -122,14 +144,17 @@
 
                     <div class="form-group">
                         <label>CPF/CNPJ</label>
-                        <input type="text" class="form-control" id="loginPro" placeholder="Seu e-mail cadastrado" required name="email" />
+                        <input type="text" class="form-control" id="loginPro" placeholder="Seu CPF/CNPJ cadastrado" required name="email" />
                     </div>
                     <div class="form-group">
                         <label>Senha</label>
                         <input type="password" id="senhaPro" required class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
                     <div class="form-group" id="conteudoLogin2">
-                        <button onclick="procLoginPro();" class="btn btn-defaul">logar como profissional</button>
+                        <button onclick="procLoginPro();" class="btn btn-defaul btnLoginPro" id="btnLoginPro">logar como profissional</button>
+                        <div class="form-group" id="divAguardeLoginPro" style="display:none;text-align:center; width:100%">
+                            <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -178,7 +203,7 @@
                     <div class="form-group">
                         <label>Número</label>
                         <input type="text" id="cadastroNumero" class="form-control" name="nomeNumero" placeholder="Número" />
-                    </div> 
+                    </div>
                     <div class="form-group">
                         <label>*Bairro</label>
                         <input type="text" class="form-control itfBairroCli" id="cadastroBairro" placeholder="Nome do Bairro" required name="cep" />
@@ -196,7 +221,10 @@
                         <input type="password" required id="cadastroSenha" class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
                     <div class="form-group" id="conteudoLogin">
-                        <button onclick="procCadastro();" class="btn btn-default">cadastrar</button>
+                        <button onclick="procCadastro();" class="btn btn-default btnCadastroCli" id="btnCadastroCli">cadastrar</button>
+                        <div class="form-group" id="divAguardeCadCli" style="display:none;text-align:center; width:100%">
+                            <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -219,7 +247,7 @@
 
                     <div class="form-group">
                         <label>*Nome</label>
-                        <input type="text" class="form-control" id="cadastroNomePro" placeholder="Digite seu nome completo" required name="nome" />
+                        <input type="text" class="form-control" onclick="Clicktext()" id="cadastroNomePro" placeholder="Digite seu nome completo" required name="nome" />
                     </div>
 
                     <div class="form-group">
@@ -255,16 +283,16 @@
                     </div>
                     <div class="form-group">
                         <label>*Endereço</label>
-                        <input type="text" id="cadastroRuaPro" class="form-control itfEndereco" name="nomeRuaPro" placeholder="Nome da rua" />
+                        <input type="text" id="cadastroRuaPro" onclick="Clicktext()" class="form-control itfEndereco" name="nomeRuaPro" placeholder="Nome da rua" />
                     </div>
                     <div class="form-group">
                         <label>*Número</label>
                         <input type="text" id="cadastroNumeroPro" class="form-control" name="nomeNumeroPro" placeholder="Número" />
                     </div>
-                       
+
                     <div class="form-group">
                         <label>*Bairro</label>
-                        <input type="text" class="form-control itfBairro" id="cadastroBairroPro" placeholder="Nome do Bairro" required name="cep" />
+                        <input type="text"  class="form-control itfBairro"  id="cadastroBairroPro" placeholder="Nome do Bairro" required name="cep" />
                     </div>
 
                     <div class="form-group">
@@ -275,7 +303,7 @@
                         <label>*Cidade</label>
                         <select class="form-control itfCidade" name="cidadePro" id="cidadePro">-- selecione o estado --</select>
                     </div>
-                                     
+
 
                     <div class="form-group">
                         <label>Curriculum</label>
@@ -291,7 +319,7 @@
                         <label>Senha</label>
                         <input type="password" required id="cadastroSenhaPro" class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
-                    
+
                     <div class="form-group" id="conteudoLoginPro">
                         <button onclick="procCadastroProPre();" class="btn btn-default">cadastrar</button>
                     </div>
@@ -324,7 +352,19 @@
                 document.getElementById('cidadePro'),
                 true
             );
+           
         }
+
+        $(document).ready(function () {
+
+            window.addEventListener('load', function () {
+                document.body.addEventListener('touchmove', function (e) {
+                    e.preventDefault();
+                }, false);
+            }, false);
+
+            procVerificaUsuarioLogado();
+       });
 
 
     </script>
@@ -349,7 +389,11 @@
 
     <script type="text/javascript">
         autoCompleteBusca();
+
+       
+
     </script>
 
 </body>
+
 </html>
