@@ -35,22 +35,12 @@
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript">
        
-        //window.addEventListener('load', function () {
-        //    document.getElementById('modalCadastroProfissional').addEventListener('touchmove', function (e) {
-        //        e.preventDefault();
-        //    }, false);
-        //}, false);
-
-
-    
+        
 
     </script>
 </head>
-<!--<body class="homepage hidden-lg hidden-md" onload="localStorage.clear();">-->
-<body class="homepage hidden-lg hidden-md" onload="procVerificaUsuarioLogado()">
+<body class="homepage hidden-lg hidden-md" onload="localStorage.clear();">
     <div class="container actions-homepage wow fadeInDown" data-wow-delay="0.5s" data-wow-duration="1.7s">
-
-
         <div class="row">
             <div class="col-sm-12 col-xs-12">
                 <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalLogin">Já sou usuário</button>
@@ -108,12 +98,7 @@
                         <input type="password" id="senha" required class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
                     <div class="form-group" id="conteudoLogin2">
-                        <button onclick="procLogin();" class="btn btn-defaul btnLoginCli" id="btnLoginCli">login como cliente</button>
-                        <div class="form-group" id="divAguardeLoginCli" style="display:none;text-align:center; width:100%">
-                            <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
-                        </div>
-                        <p style="text-align:center;">ou</p> <button data-toggle="modal" data-target="#modalLoginPro" class="btn btn-defaul">quero me logar como profissional</button>
-
+                        <button onclick="procLogin();" class="btn btn-defaul">login como cliente</button> <p style="text-align:center;">ou</p> <button data-toggle="modal" data-target="#modalLoginPro" class="btn btn-defaul">quero me logar como profissional</button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -135,17 +120,14 @@
 
                     <div class="form-group">
                         <label>CPF/CNPJ</label>
-                        <input type="text" class="form-control" id="loginPro" placeholder="Seu CPF/CNPJ cadastrado" required name="email" />
+                        <input type="text" class="form-control" id="loginPro" placeholder="Seu e-mail cadastrado" required name="email" />
                     </div>
                     <div class="form-group">
                         <label>Senha</label>
                         <input type="password" id="senhaPro" required class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
                     <div class="form-group" id="conteudoLogin2">
-                        <button onclick="procLoginPro();" class="btn btn-defaul btnLoginPro" id="btnLoginPro">logar como profissional</button>
-                        <div class="form-group" id="divAguardeLoginPro" style="display:none;text-align:center; width:100%">
-                            <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
-                        </div>
+                        <button onclick="procLoginPro();" class="btn btn-defaul">logar como profissional</button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -194,7 +176,7 @@
                     <div class="form-group">
                         <label>Número</label>
                         <input type="text" id="cadastroNumero" class="form-control" name="nomeNumero" placeholder="Número" />
-                    </div>
+                    </div> 
                     <div class="form-group">
                         <label>*Bairro</label>
                         <input type="text" class="form-control itfBairroCli" id="cadastroBairro" placeholder="Nome do Bairro" required name="cep" />
@@ -212,10 +194,7 @@
                         <input type="password" required id="cadastroSenha" class="form-control" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
                     <div class="form-group" id="conteudoLogin">
-                        <button onclick="procCadastro();" class="btn btn-default btnCadastroCli" id="btnCadastroCli">cadastrar</button>
-                        <div class="form-group" id="divAguardeCadCli" style="display:none;text-align:center; width:100%">
-                            <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
-                        </div>
+                        <button onclick="procCadastro();" class="btn btn-default">cadastrar</button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -238,67 +217,67 @@
 
                     <div class="form-group">
                         <label>*Nome</label>
-                        <input type="text" class="form-control" onclick="Clicktext()" id="cadastroNomePro" placeholder="Digite seu nome completo" required name="nome" />
+                        <input type="text" class="form-control cadastroNomePro" id="cadastroNomePro" onclick="ClickTextPro(80)" placeholder="Digite seu nome completo" required name="nome" />
                     </div>
 
                     <div class="form-group">
                         <label>*Sua especialização</label>
-                        <input type="text" id="tipoProfissionalLista" class="form-control" required name="tipoProfissional" id="tipoProfissionalPesquisa" placeholder="Tipo de profissional" />
+                        <input type="text" id="tipoProfissionalLista" class="form-control tipoProfissionalPesquisa" onclick="ClickTextPro(155)" required name="tipoProfissional" id="tipoProfissionalPesquisa" placeholder="Tipo de profissional" />
                         <!--<input id="autocomplete-profissionais" type="text" name="Especializacao" class="form-control" placeholder="Analista sistemas, Dentista, Médico (...)" />
                         <input type="hidden" name="EspecializacaoId" id="autocomplete-profissionais-id">-->
 
                     </div>
                     <div class="form-group">
                         <label>Telefone Fixo</label>
-                        <input type="text" class="form-control" id="telefoneFixoPro" data-mask="(99) 9999-9999" placeholder="DDD + número" required name="DDD + número" />
+                        <input type="text" class="form-control telefoneFixoPro" id="telefoneFixoPro" onclick="ClickTextPro(230)" data-mask="(99) 9999-9999" placeholder="DDD + número" required name="DDD + número" />
                     </div>
                     <div class="form-group">
                         <label>*Telefone Celular</label>
-                        <input type="text" class="form-control" id="telefoneCelularPro" data-mask="(99) 9999-9999?9" placeholder="DDD + número" required name="DDD + número" />
+                        <input type="text" class="form-control telefoneCelularPro" id="telefoneCelularPro" onclick="ClickTextPro(295)" data-mask="(99) 9999-9999?9" placeholder="DDD + número" required name="DDD + número" />
                     </div>
 
 
                     <div class="form-group">
                         <label>E-mail</label>
-                        <input type="email" class="form-control" id="cadastroEmailPro" placeholder="Seu e-mail" required name="email" />
+                        <input type="email" class="form-control cadastroEmailPro" id="cadastroEmailPro" onclick="ClickTextPro(370)" placeholder="Seu e-mail" required name="email" />
                     </div>
 
 
                     <div class="form-group">
                         <label>*CPF/CNPJ</label>
-                        <input type="text" class="form-control" id="cadastroCnpjPro" placeholder="Digite o número do seu CPF ou CPJ (também será o login)" required name="nome" />
+                        <input type="text" class="form-control cadastroCnpjPro" id="cadastroCnpjPro" onclick="ClickTextPro(445)" placeholder="Digite o número do seu CPF ou CPJ (também será o login)" required name="nome" />
                     </div>
                     <div class="form-group">
                         <label>*CEP</label>
-                        <input type="text" class="form-control itfCEP" id="cadastroCepPro" data-mask="99999-999" placeholder="Seu código postal" required name="cep" />
+                        <input type="text" class="form-control itfCEP cadastroCepPro" id="cadastroCepPro" onclick="ClickTextPro(520)" data-mask="99999-999" placeholder="Seu código postal" required name="cep" />
                     </div>
                     <div class="form-group">
                         <label>*Endereço</label>
-                        <input type="text" id="cadastroRuaPro" onclick="Clicktext()" class="form-control itfEndereco" name="nomeRuaPro" placeholder="Nome da rua" />
+                        <input type="text" id="cadastroRuaPro" class="form-control itfEndereco cadastroRuaPro" onclick="ClickTextPro(595)" name="nomeRuaPro" placeholder="Nome da rua" />
                     </div>
                     <div class="form-group">
                         <label>*Número</label>
-                        <input type="text" id="cadastroNumeroPro" class="form-control" name="nomeNumeroPro" placeholder="Número" />
+                        <input type="text" id="cadastroNumeroPro" class="form-control cadastroNumeroPro" name="nomeNumeroPro" onclick="ClickTextPro(670)" placeholder="Número" />
                     </div>
-
+                       
                     <div class="form-group">
                         <label>*Bairro</label>
-                        <input type="text"  class="form-control itfBairro"  id="cadastroBairroPro" placeholder="Nome do Bairro" required name="cep" />
+                        <input type="text" class="form-control itfBairro cadastroBairroPro" id="cadastroBairroPro" onclick="ClickTextPro(745)" placeholder="Nome do Bairro" required name="cep" />
                     </div>
 
                     <div class="form-group">
                         <label>*Estado</label>
-                        <select class="form-control itfEstado" name="estadoPro" id="estadoPro"></select>
+                        <select class="form-control itfEstado estadoPro" name="estadoPro" id="estadoPro" onclick="ClickTextPro(820)"></select>
                     </div>
                     <div class="form-group">
                         <label>*Cidade</label>
-                        <select class="form-control itfCidade" name="cidadePro" id="cidadePro">-- selecione o estado --</select>
+                        <select class="form-control itfCidade cidadePro" name="cidadePro" id="cidadePro" onclick="ClickTextPro(895)">-- selecione o estado --</select>
                     </div>
-
+                                     
 
                     <div class="form-group">
                         <label>Curriculum</label>
-                        <textarea class="form-control" name="Curriculum" id="cadastroCurriculoPro" placeholder="Curriculum" rows="8"></textarea>
+                        <textarea class="form-control cadastroCurriculoPro" name="Curriculum" id="cadastroCurriculoPro" onclick="ClickTextPro(970)" placeholder="Curriculum" rows="8"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -308,9 +287,9 @@
 
                     <div class="form-group">
                         <label>Senha</label>
-                        <input type="password" required id="cadastroSenhaPro" class="form-control" placeholder="Sua senha cadastrada" name="senha" />
+                        <input type="password" required id="cadastroSenhaPro" class="form-control cadastroSenhaPro" onclick="ClickTextPro(1200)" placeholder="Sua senha cadastrada" name="senha" />
                     </div>
-
+                    
                     <div class="form-group" id="conteudoLoginPro">
                         <button onclick="procCadastroProPre();" class="btn btn-default">cadastrar</button>
                     </div>
@@ -321,6 +300,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">cancelar</button>
+                </div>
+                <div style="min-height:500px;">
+                    <br />&nbsp;<br />
                 </div>
             </div>
         </div>
@@ -343,19 +325,7 @@
                 document.getElementById('cidadePro'),
                 true
             );
-           
         }
-
-        $(document).ready(function () {
-
-            //window.addEventListener('load', function () {
-            //    document.body.addEventListener('touchmove', function (e) {
-            //        e.preventDefault();
-            //    }, false);
-            //}, false);
-
-            procVerificaUsuarioLogado();
-       });
 
 
     </script>
@@ -379,12 +349,9 @@
     <script type="text/javascript" src="js/servicos.js"></script>
 
     <script type="text/javascript">
+        verificaVersaoAtual();
         autoCompleteBusca();
-
-       
-
     </script>
 
 </body>
-
 </html>
