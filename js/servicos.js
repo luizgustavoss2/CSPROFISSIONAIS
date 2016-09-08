@@ -1638,7 +1638,7 @@ function trocaMensagensPro() {
                 }
                 if (msg["Data"]["List"][i]["Origem"] == "P") {
 
-                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
+                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_receive" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
 
                 }
 
@@ -2621,7 +2621,7 @@ function buscarTrabalhos() {
    // var profissionalLogado = 27;
 
     console.log("Buscando as solicitações de contato do Profissional: " + profissionalLogado);
-
+    $("#solicitacoesContatoWork").html('');
 
 
     var request = $.ajax({
@@ -2721,11 +2721,47 @@ function ClickTextMensPro(val)
 
 function EfetuaLogOff()
 {
+    localStorage.clear();
     location.href = "index.html";
 }
 
 function exitFromApp() {
-    console.log("in button");
-    navigator.app.exitApp();
+    //console.log("in button");
+    //navigator.app.exitApp();
+    try{
+        window.close();
+    }catch(err)
+    {
+        alert('Erro window close');
+    }
+    try{
+        navigator.app.exitApp();
+    }
+    catch (err) {
+        alert('Erro exitApp');
+    }
+   // window.closed();
+    //this.webView.postMessage("exit", null);
+   // finish();
+}
+
+function procVerificaUsuarioLogado() {
+
+    var sessaoUser = localStorage.getItem("ClienteId");
+    if (!sessaoUser) {
+
+        var sessaoProf = localStorage.getItem("idProfissionalLogado");
+        if (!sessaoProf) {
+            //alert("Por favor, faça seu login novamente");
+        }
+        else {
+            window.location.href="dashboard-pro.html";
+        }
+
+    }
+    else {
+        location.href = "dashboard.html";
+    }
+
 }
 
