@@ -228,39 +228,47 @@ function procCadastroPro() {
     })
     request.done(function (msg) {
 
-        console.log(msg);
-        console.log("Cadastro de profissional Realizado com sucesso!");
-        // REGISTRAR OS DADOS DA SESSÃO E LOGAR O USUÁRIO
+        
+        if (msg.Errors[0] == undefined) {
+            //if (msg["Data"]["Erro"])
+            console.log(msg);
+            console.log("Cadastro de profissional Realizado com sucesso!");
+            // REGISTRAR OS DADOS DA SESSÃO E LOGAR O USUÁRIO
 
-        localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
-        localStorage.setItem("Nome", msg["Data"]["Nome"]);
-        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
-        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
-        localStorage.setItem("Email", msg["Data"]["Email"]);
-        localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
-        localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
+            localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
+            localStorage.setItem("Nome", msg["Data"]["Nome"]);
+            localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
+            localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
+            localStorage.setItem("Email", msg["Data"]["Email"]);
+            localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
+            localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
 
-        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
-        localStorage.setItem("NomeRua", msg["Data"]["Endereco"]["Nome"]);
+            localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+            localStorage.setItem("NomeRua", msg["Data"]["Endereco"]["Nome"]);
 
-        localStorage.setItem("Numero", msg["Data"]["Endereco"]["Numero"]);
-        localStorage.setItem("Complemento", msg["Data"]["Endereco"]["Complemento"]);
-        localStorage.setItem("Bairro", msg["Data"]["Endereco"]["Bairro"]);
-        localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
-        localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
-        localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
-        localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
-        localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
+            localStorage.setItem("Numero", msg["Data"]["Endereco"]["Numero"]);
+            localStorage.setItem("Complemento", msg["Data"]["Endereco"]["Complemento"]);
+            localStorage.setItem("Bairro", msg["Data"]["Endereco"]["Bairro"]);
+            localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
+            localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
+            localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
+            localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
+            localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
 
-        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
-        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+            localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+            localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
 
-        console.log("Direcionando o profissional...");
+            console.log("Direcionando o profissional...");
 
-        $("#conteudoLoginPro").attr("style", "display:block");
-        $("#divAguardeCadPro").attr("style", "display:none;");
+            $("#conteudoLoginPro").attr("style", "display:block");
+            $("#divAguardeCadPro").attr("style", "display:none;");
 
-        location.href = "dashboard-pro.html";
+            location.href = "dashboard-pro.html";
+        } else {
+            $("#conteudoLoginPro").attr("style", "display:block");
+            $("#divAguardeCadPro").attr("style", "display:none;");
+            alert(msg.Errors[0]);
+        }
 
     });
     request.fail(function () {
