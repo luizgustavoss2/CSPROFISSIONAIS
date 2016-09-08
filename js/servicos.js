@@ -206,6 +206,7 @@ function procCadastroPro() {
 
     endereco = { CidadeId: idCidade, nome: cadastroRuaPro, numero: cadastroNumeroPro, complemento: "n/a", bairro: cadastroBairroPro, cep: cadastroCepPro, latitude: latitude, longitude: longitude }
 
+
     var espec = [];
     espec.push({ "EspecializacaoId": especializacaoPro });
 
@@ -236,8 +237,8 @@ function procCadastroPro() {
         localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
         localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
         localStorage.setItem("Email", msg["Data"]["Email"]);
-        localStorage.setItem("Cpf", msg["Data"]["Cpf"]);
-        localStorage.setItem("NomeFotoPro", msg["Data"]["Nomefoto"]);
+        localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
+        localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
 
         localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
         localStorage.setItem("NomeRua", msg["Data"]["Endereco"]["Nome"]);
@@ -248,6 +249,11 @@ function procCadastroPro() {
         localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
         localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
         localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
+        localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
+        localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
+
+        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
 
         console.log("Direcionando o profissional...");
 
@@ -1171,7 +1177,7 @@ function trocaMensagens() {
             for (i = 0; i < totMsg; i++) {
 
                 if (msg["Data"]["List"][i]["Origem"] == "C") {
-                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
+                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
                 }
                 if (msg["Data"]["List"][i]["Origem"] == "P") {
                     $('#areaMsg').prepend('<div class="row msg_container base_receive"><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div><div class="col-md-10 col-xs-10"><div class="messages msg_receive"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div></div>');
@@ -1244,7 +1250,7 @@ function enviarNovaMensagen() {
 function enviarNovaMensagenPro() {
 
     var idPro = localStorage.getItem("idProfissionalLogado");
-    var idCli = localStorage.getItem("ClienteId");
+    var idCli = localStorage.getItem("ClienteMensagem");
     var mensagem = $('#msgField').val();
     var origem = "P";
 
@@ -1451,6 +1457,7 @@ function procLoginPro() {
 
         if (!msg["Data"]) {
             alert("Login ou Senha incorretos");
+            return false;
         } else {
 
             localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
@@ -1470,15 +1477,19 @@ function procLoginPro() {
             localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
             localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
             localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
-            localStorage.setItem("NomefotoPro", msg["Data"]["NomeFoto"]);
+            localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
+            localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
+            localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
             location.href = "dashboard-pro.html";
 
         }
 
     });
-    request.fail(function () {
+    request.fail(function (msg) {
+        var retorno = msg;
         alert("Não foi possível realizar o seu login, tente novamente");
-        location.href = "index.html";
+        return false;
+        //location.href = "index.html";
     });
 
 }
@@ -1504,7 +1515,7 @@ function popularHtmlPro() {
     // SETAR O CEP NO CAMPO DE BUSCA AUTOMATICAMENTE  
     $("#cepPesquisa").val(localStorage.getItem("Cep"));
 
-    $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomefotoPro"));
+    $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
 
 
 }
@@ -1551,7 +1562,7 @@ function interagirProfissionalPro(idPro) {
 
     console.log("Vamos direcionar o usuário para o histórico de conversas entre ele e o cliente ID: " + idPro);
 
-    localStorage.setItem("Cliente", idPro);
+    localStorage.setItem("ClienteMensagem", idPro);
 
     console.log("Direcionando...");
 
@@ -1591,20 +1602,20 @@ function getNomeCliente() {
 // D0033 - TROCA DE MENSAGENS ENTRE CLIENTE E PROFISSIONAL
 function trocaMensagensPro() {
 
-    var idPro = localStorage.getItem("Cliente");
-    var idCli = localStorage.getItem("idProfissionalLogado");
+    var idPro = localStorage.getItem("idProfissionalLogado");
+    var idCli = localStorage.getItem("ClienteMensagem");
 
     console.log("Vamos começar a exibir as mensagens trocadas entre profissional e cliente");
-    console.log("Profissional ID: " + idCli);
-    console.log("Cliente ID: " + idPro);
+    console.log("Profissional ID: " + idPro);
+    console.log("Cliente ID: " + idCli);
 
 
     var request = $.ajax({
         method: "POST",
         url: "http://api.csprofissionais.com.br/api/mensagem/BuscaMensagens",
         data: {
-            ProfissionalId: idCli,
-            ClienteId: idPro
+            ProfissionalId: idPro,
+            ClienteId: idCli
         }
     })
     request.done(function (msg) {
@@ -1627,7 +1638,7 @@ function trocaMensagensPro() {
                 }
                 if (msg["Data"]["List"][i]["Origem"] == "P") {
 
-                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
+                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
 
                 }
 
@@ -1697,6 +1708,8 @@ function confirmarDestaque() {
 // D0035 - CARREGAR COMENTÁRIOS FEITOS PARA O PROFISSIONAL (PROFISSIONAL)
 function carregarComentariosPro() {
 
+
+    $('#areaComentarios').html('');
     var idPro = localStorage.getItem("idProfissionalLogado");
     var nota = 0;
 
@@ -1715,9 +1728,7 @@ function carregarComentariosPro() {
 
             for (i = 0; i < totAval; i++) {
 
-                nota = msg["Data"]["List"][i]["Nota"] * 2;
-
-
+                nota = msg["Data"]["List"][i]["Nota"];
 
                 $('#areaComentarios').append('<!-- COMENTARIO --><div class="row"><div class="col-sm-12 col-xs-12"><p class="text-right" style="margin-top:-18px;"><i>' + getNome(msg["Data"]["List"][i]["ClienteId"]) + ' disse:</i><br>' + msg["Data"]["List"][i]["Mensagem"] + '<br><b>Nota:</b> ' + nota + '</p></div></div><!-- COMENTARIO --><p>&nbsp;</p>')
                 console.log("Avaliação Impressa com sucesso");
@@ -1742,7 +1753,6 @@ function carregarComentariosPro() {
 // D0036 - POPULAR FORMULARIOS DA PAGINA DE PERFIL
 function popularCamposPerfilPro() {
 
-
     var bairro = localStorage.getItem("Bairro");
     var cep = localStorage.getItem("Cep");
     var cpf = localStorage.getItem("Cpf");
@@ -1753,10 +1763,14 @@ function popularCamposPerfilPro() {
     var senha = localStorage.getItem("Senha");
     var telefoneCelular = localStorage.getItem("TelefoneCelular");
     var telefoneFixo = localStorage.getItem("TelefoneFixo");
+    var curriculum = localStorage.getItem("Curriculum");
+   
+    var especializacao = localStorage.getItem("Especializacao");
+    
     var estadoSigla = localStorage.getItem("EstadoSigla");
 
     var cidadeNome = localStorage.getItem("CidadeNome");
-
+    
     $("#senhaDeAcesso").val(senha);
     $("#nomeClienteEditar").val(nome);
     $("#cpfCliente").val(cpf);
@@ -1767,6 +1781,10 @@ function popularCamposPerfilPro() {
     $("#numeroCliente").val(numero);
     $("#bairroCliente").val(bairro);
     $("#cepCliente").val(cep);
+
+    $("#tipoProfissionalLista").val(especializacao);
+
+    $("#cadastroCurriculoPro").val(curriculum);
 
     new dgCidadesEstados(document.getElementById('estado'), document.getElementById('cidade'), true);
 
@@ -1807,54 +1825,76 @@ function popularCamposPerfilPro() {
 
 // D0037 - ATUALIZAR SENHA DO PROFISSIONAL
 function atualizarSenhaPro() {
+    
+    if ($("#senhaDeAcesso").val() == '') {
+        alert("Senha deve ser preenchida!");
+
+        return false;
+    }
+
+    if ($("#senhaDeAcesso").val().length < 6)
+    {
+        alert("Senha deve ter no mínimo 6 caracters!");
+
+        return false;
+    }
 
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = $("#senhaDeAcesso").val();
 
     localStorage.setItem("Senha", senhaUsuario);
 
+    
     // CAMPOS OBRIGATÓRIOS DA API DO SERVIÇO
-    var bairro = localStorage.getItem("Bairro");
-    var cpf = localStorage.getItem("Cpf");
-    var email = localStorage.getItem("Email");
-    var nome = localStorage.getItem("Nome");
-    var nomeRua = localStorage.getItem("NomeRua");
-    var numero = localStorage.getItem("Numero");
-    var telefoneCelular = localStorage.getItem("TelefoneCelular");
-    var telefoneFixo = localStorage.getItem("TelefoneFixo");
+    //var bairro = localStorage.getItem("Bairro");
+    //var cpf = localStorage.getItem("Cpf");
+    //var email = localStorage.getItem("Email");
+    //var nome = localStorage.getItem("Nome");
+    //var nomeRua = localStorage.getItem("NomeRua");
+    //var numero = localStorage.getItem("Numero");
+    //var telefoneCelular = localStorage.getItem("TelefoneCelular");
+    //var telefoneFixo = localStorage.getItem("TelefoneFixo");
 
-    var cep = localStorage.getItem("Cep");
-    var latitude = localStorage.getItem("Latitude");
-    var longitude = localStorage.getItem("Longitude");
-    var idCidade = localStorage.getItem("CidadeId");
+    //var cep = localStorage.getItem("Cep");
+    //var latitude = localStorage.getItem("Latitude");
+    //var longitude = localStorage.getItem("Longitude");
+    //var idCidade = localStorage.getItem("CidadeId");
 
-    console.log("ID DO PROFISSIONAL: " + idUsuario);
-    console.log("SENHA DO PROFISSIONAL: " + senhaUsuario);
-    console.log("Vamos atualizar os dados agora...");
+     console.log("ID DO PROFISSIONAL: " + idUsuario);
+     console.log("SENHA DO PROFISSIONAL: " + senhaUsuario);
+    //console.log("Vamos atualizar os dados agora...");
 
-    endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
+    //endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
 
     var request = $.ajax({
         method: "POST",
-        url: "http://api.csprofissionais.com.br/api/profissional/editar",
+        url: "http://api.csprofissionais.com.br/api/profissional/AlterarSenha",
         data: {
-            profissionalid: idUsuario,
-            nome: nome,
-            telefonefixo: telefoneFixo,
-            telefonecelular: telefoneCelular,
-            email: email,
-            cpf: cpf,
-            senha: senhaUsuario,
-            endereco: endereco
+            UsuarioId: idUsuario,
+            Senha: senhaUsuario
+            //nome: nome,
+            //telefonefixo: telefoneFixo,
+            //telefonecelular: telefoneCelular,
+            //email: email,
+            //cpf: cpf,
+            //senha: senhaUsuario,
+            //endereco: endereco
         }
     })
     request.done(function (msg) {
-
+        alert("Senha alterada com sucesso!");
         console.log(msg);
         console.log("Dados (senha) atualizados com sucesso!");
 
     });
-    request.fail(function () {
+    request.fail(function (msg) {
+        if ($("#senhaDeAcesso").val() == '') {
+            alert("Senha deve ser preenchida!");
+        }
+        else {
+            alert("Erro ao alterar a Senha!");
+        }
+        console.log(msg);
         console.log("Não foi possível realizar a operação, tente novamente.");
     });
 
@@ -1865,7 +1905,46 @@ function atualizarSenhaPro() {
 // D0038 - ATUALIZAR DADOS DO PROFISSIONAL
 function editarMeuPerfilPro() {
 
-    var idUsuario = localStorage.getItem("ClienteId");
+    var msgerro = "";
+    if ($("#nomeClienteEditar").val() == "")
+        msgerro = msgerro + "* Nome é obrigatório!  \r\n";
+
+    if ($("#tipoProfissionalLista").val() == "")
+        msgerro = msgerro + "* Especialização é obrigatório!  \r\n";
+
+    if ($("#cpfCliente").val() == "")
+        msgerro = msgerro + "* CPF/CNPJ é obrigatório! \r\n";
+
+    if ($("#telefoneCelular").val() == "")
+        msgerro = msgerro + "* Telefone Celular é obrigatório!  \r\n";
+
+    if ($("#cepCliente").val() == "")
+        msgerro = msgerro + "* CEP é obrigatório! \r\n";
+
+    if ($("#enderecoCliente").val() == "")
+        msgerro = msgerro + "* Endereço é obrigatório! \r\n";
+
+    if ($("#numeroCliente").val() == "")
+        msgerro = msgerro + "* Número é obrigatório! \r\n";
+
+    if ($("#bairroCliente").val() == "")
+        msgerro = msgerro + "* Bairro é obrigatório! \r\n";
+
+    if ($("#estado").val() == "")
+        msgerro = msgerro + "* Estado é obrigatório! \r\n";
+
+    if ($("#cidade").val() == "" || $("#cidade").val() == null)
+        msgerro = msgerro + "* Cidade é obrigatório! \r\n";
+
+
+    if (msgerro != "") {
+        alert(msgerro);
+        return false;
+    }
+
+
+
+    var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = localStorage.getItem("Senha");
 
     // RECUPERAR OS DADOS DO USUARIO
@@ -1876,16 +1955,55 @@ function editarMeuPerfilPro() {
     var nome = $("#nomeClienteEditar").val();
     var nomeRua = $("#enderecoCliente").val();
     var numero = $("#numeroCliente").val();
+
     var telefoneCelular = $("#telefoneCelular").val();
-    var telefoneFixo = $("#telefoneFixo").val();
-
+    var telefoneFixo = $("#telefoneFixo").val();    
     var cep = $("#cepCliente").val();
+    var curriculum = $("#cadastroCurriculoPro").val();
 
+    var estadoPro = $("#estado").val();
+    var cidadePro = $("#cidade").val();
 
     var latitude = localStorage.getItem("Latitude");
     var longitude = localStorage.getItem("Longitude");
     var idCidade = localStorage.getItem("CidadeId");
 
+    var especializacaoPro = $("#tipoProfissionalLista").val();
+
+    var espec = [];
+    espec.push({ "EspecializacaoId": especializacaoPro });
+
+    // PEGAR LATITUDE E LONGITUDE
+    var request = $.ajax({
+        method: "GET",
+        async: false,
+        url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + numero + "+" + nomeRua + ",+" + cidadePro + ",+" + estadoPro + "&key=AIzaSyCUGRiH2iey-c2WqqeegGF2qpxBDNLsmfQ"
+        //data: { email: login, senha: senha }
+    })
+    request.done(function (msg) {
+
+        console.log("Latitude do Google: " + msg["results"][0]["geometry"]["location"]["lat"] + " Longitude do Google: " + msg["results"][0]["geometry"]["location"]["lng"]);
+
+        latitude = msg["results"][0]["geometry"]["location"]["lat"];
+        longitude = msg["results"][0]["geometry"]["location"]["lng"];
+
+        localStorage.setItem("Latitude", msg["results"][0]["geometry"]["location"]["lat"]);
+        localStorage.setItem("Longitude", msg["results"][0]["geometry"]["location"]["lng"]);
+
+    });
+    request.fail(function () {
+        console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
+
+    });
+    // PEGAR LATITUDE E LONGITUDE
+
+    console.log("Latitude atual: " + latitude + " Longitude atual: " + longitude);
+
+    // SETAR NA SESSÃO O ID DA CIDADE
+    getIdEstadoCidade(estadoPro, cidadePro);
+
+    var idCidade = localStorage.getItem("cidadeId");
+    
     console.log("ID DO USUARIO: " + idUsuario); console.log("Vamos atualizar os dados agora...");
 
     endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
@@ -1900,17 +2018,44 @@ function editarMeuPerfilPro() {
             telefonecelular: telefoneCelular,
             email: email,
             cpf: cpf,
-            senha: senhaUsuario,
-            endereco: endereco
-        }
+            Descricao: curriculum,
+            //senha: senhaUsuario,
+            endereco: endereco,
+            Especializacao: espec
+       }
     })
     request.done(function (msg) {
+
+        localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
+        localStorage.setItem("Nome", msg["Data"]["Nome"]);
+        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
+        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
+        localStorage.setItem("Email", msg["Data"]["Email"]);
+        localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
+        //localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
+
+        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+        localStorage.setItem("NomeRua", msg["Data"]["Endereco"]["Nome"]);
+
+        localStorage.setItem("Numero", msg["Data"]["Endereco"]["Numero"]);
+        localStorage.setItem("Complemento", msg["Data"]["Endereco"]["Complemento"]);
+        localStorage.setItem("Bairro", msg["Data"]["Endereco"]["Bairro"]);
+        localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
+        localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
+        localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
+        localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
+        localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
+
+        localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
+        localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
+
         alert("Dados atualizados com sucesso!");
         console.log(msg);
         console.log("Dados (outras informações) atualizados com sucesso!");
 
     });
-    request.fail(function () {
+    request.fail(function (msg) {
+        console.log(msg);
         console.log("Não foi possível realizar a operação, tente novamente.");
     });
 
@@ -1977,7 +2122,6 @@ profissional.erroCarregarEspecializacoes = function (erro) {
     //gn.messageDialog("", false, Plataforma.Resources.JavaScript.MensagemJsErro, Plataforma.Resources.JavaScript.MensagemJsErroObterCampanhas);
 }
 
-
 $.ajax({
     type: "GET",
     url: "http://api.csprofissionais.com.br/api/Especializacao/Listar",
@@ -2021,6 +2165,7 @@ $(".itfCEPCli").change(function () {
         var ret = erro;
         console.log("Ocorreu um erro ao tentar carregar a CEP");
     });
+
 
     function buscaCidadesCli(city) {
         $.ajax({
@@ -2197,30 +2342,48 @@ function procCadastroProPre() {
         return false;
     }
 
-
+    //var img = document.getElementById('fotoPerfilPro').files[0];
     if (form != undefined) {
         $("#conteudoLoginPro").attr("style", "display:none");
         $("#divAguardeCadPro").attr("style", "display:block;text-align:center; width:100%")
+        var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
         $.ajax({
-            url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
+            //url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
+            url: 'http://api.csprofissionais.com.br/api/imagem/PostImg/' + dtImg,
             data: form,
             processData: false,
             contentType: false,
+            cache:false,
+            async: false,
             type: 'POST',
             success: function (data) {
                 nomeFoto = data[0];
+                nomeFoto = dtImg + document.getElementById('fotoPerfilPro').files[0].name;
                 procCadastroPro();
                 //retorno = data;
                 //alert(data); // utilizar o retorno
             },
-            beforeSend: function () {
-                $("#conteudoLoginPro").attr("style", "display:none");
-                $("#divAguardeCadPro").attr("style", "display:block")
-            },
-            complete: function () {
+            error: function (data) {
+               // nomeFoto = data[0];
+                nomeFoto = dtImg + document.getElementById('fotoPerfilPro').files[0].name;
+                procCadastroPro();
                 $("#conteudoLoginPro").attr("style", "display:block");
-                $("#divAguardeCadPro").attr("style", "display:none")
-            },
+                $("#divAguardeCadPro").attr("style", "display:none;text-align:center; width:100%")
+            }
+       
+            //,
+            //beforeSend: function (data) {
+            //    nomeFoto = data[0];
+            //    procCadastroPro();
+            //    $("#conteudoLoginPro").attr("style", "display:none");
+            //    $("#divAguardeCadPro").attr("style", "display:block")
+            //},
+            //complete: function (data) {
+            //    nomeFoto = data[0];
+            //    procCadastroPro();
+            //    $("#conteudoLoginPro").attr("style", "display:block");
+            //    $("#divAguardeCadPro").attr("style", "display:none")
+            //},
         });
     } else {
         $("#conteudoLoginPro").attr("style", "display:none");
@@ -2231,12 +2394,11 @@ function procCadastroProPre() {
 };
 
 
-
-
-
 // D0044 - BUSCAR ULTIMOS TRABALHOS DO PROFISSIONAL LOGAGO
 function buscarUltimosTrabalhosPro() {
 
+    $('#ultimosTrabalhosWork').val('');
+    //$('#ultimosTrabalhosWork').html("");
     var profissional = localStorage.getItem("idProfissionalLogado");
     console.log("Vamos buscar os últimos trabalhos do profissional ID: " + profissional);
 
@@ -2286,8 +2448,10 @@ $('#SendfotoTrabalho').click(function () {
     $('#SendfotoTrabalho').html("enviando....");
     var retorno = '';
     var imagemTrabalho = '';
+    var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
+    var nomeFotoTrabalho = dtImg + document.getElementById('fotoTrabalho').files[0].name;
     var request = $.ajax({
-        url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
+        url: 'http://api.csprofissionais.com.br/api/imagem/PostImg/' + dtImg, // Url do lado server que vai receber o arquivo
         data: form,
         processData: false,
         contentType: false,
@@ -2302,13 +2466,17 @@ $('#SendfotoTrabalho').click(function () {
     request.done(function (msg) {
 
         imagemTrabalho = msg;
-
+        imagemTrabalho = nomeFotoTrabalho;
         console.log(imagemTrabalho);
         $('#SendfotoTrabalho').html("enviar novo trabalho");
-        alert("Imagem enviada com sucesso");
+       
+        
     })
     request.fail(function () {
+        imagemTrabalho = nomeFotoTrabalho;
+        alert("Erro ao subir imagem!");
         console.log("Deu ruim o cadastro");
+       
     });
 
 
@@ -2327,12 +2495,17 @@ $('#SendfotoTrabalho').click(function () {
             if (!msg["Data"]) {
                 alert("Ocorreu um erro em tentar salvar a imagem no servidor, tente novamente mais tarde");
             } else {
+                alert("Imagem enviada com sucesso");
+
+                $('#ultimosTrabalhosWork').prepend("<div id='imagemTrabalhoDiv" + msg["Data"]["ImagensProfissionalId"] + "'><img src='http://www.csprofissionais.com.br/upload/" + msg["Data"]["Nome"] + "' style='width:100%;height:auto;margin-bottom:8px;padding:3px;border:1px solid #efefef;' /><p><button onclick='apagarImagemPro(" + msg["Data"]["ImagensProfissionalId"] + ");' class='btn btn-danger btn-xs'>apagar</button></p><br></div>")
                 console.log("Imagem salva na galeria do profissional com sucesso");
             }
-
+            //buscarUltimosTrabalhosPro();
         });
-        request.fail(function () {
+        request.fail(function () {          
+            
             alert("Ocorreu um erro em tentar salvar a imagem no servidor, tente novamente mais tarde");
+            //buscarUltimosTrabalhosPro();
         });
 
 
@@ -2340,9 +2513,6 @@ $('#SendfotoTrabalho').click(function () {
 
 
 });
-
-
-
 
 // D0046 - APAGAR IMAGEM DA GALERIA DE TRABALHOS DO PROFISSIONAL
 function apagarImagemPro(idImagem) {
@@ -2357,11 +2527,11 @@ function apagarImagemPro(idImagem) {
         console.log("Imagem removida com sucesso");
         alert("Imagem removida com sucesso");
         $('#imagemTrabalhoDiv' + idImagem).fadeOut();
-
+        //buscarUltimosTrabalhosPro();
     });
     request.fail(function () {
         console.log("Ocorreu um erro ao tentar apagar a imagem");
-
+        //buscarUltimosTrabalhosPro();
     });
 
 }
@@ -2376,67 +2546,79 @@ $('#fotoPerfilPro2').change(function (event) {
 
 $('#updateProfilePicture').click(function () {
 
-    var imagemPerfil = '';
-    var request = $.ajax({
-        url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
-        data: form,
-        processData: false,
-        contentType: false,
-        async: false,
-        type: 'POST',
-        success: function (data) {
-            //retorno = data;
-            //alert(data); // utilizar o retorno
-        }
-    });
-    //alert(retorno);
-    request.done(function (msg) {
+    if (form != undefined) {
+        var imagemPerfil = '';
 
-        imagemPerfil = msg;
+        var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
 
-        console.log(imagemPerfil);
-        alert("Imagem atualizada com sucesso");
-    })
-    request.fail(function () {
-        console.log("Deu ruim o cadastro");
-    });
-
-
-    if (imagemPerfil != '') {
-        console.log("Atualizando Perfil " + imagemPerfil);
-        var profissionalPicture = localStorage.getItem("idProfissionalLogado");
+        nomeFoto = dtImg + document.getElementById('fotoPerfilPro2').files[0].name;
 
         var request = $.ajax({
-            method: "POST",
-            url: "http://api.csprofissionais.com.br/api/profissional/editar",
-            data: {
-                profissionalid: profissionalPicture,
-                nomefoto: imagemPerfil
+            url: 'http://api.csprofissionais.com.br/api/imagem/PostImg/' + dtImg, // Url do lado server que vai receber o arquivo
+            data: form,
+            processData: false,
+            contentType: false,
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                //retorno = data;
+                //alert(data); // utilizar o retorno
             }
-        })
+        });
+        //alert(retorno);
         request.done(function (msg) {
 
-            console.log(msg);
-            console.log("Dados (profile picture) atualizados com sucesso!");
-
-        });
+            imagemPerfil = msg;
+            imagemPerfil = nomeFoto;
+            localStorage.setItem("NomeFotoPro", nomeFoto);
+            console.log(imagemPerfil);
+            alert("Imagem atualizada com sucesso");
+        })
         request.fail(function () {
-            console.log("Não foi possível realizar a operação, tente novamente.");
+            imagemPerfil = nomeFoto;
+            localStorage.setItem("NomeFotoPro", nomeFoto);
+            console.log("Deu ruim o cadastro");
         });
 
 
+        if (imagemPerfil != '') {
+            console.log("Atualizando Perfil " + imagemPerfil);
+            var profissionalPicture = localStorage.getItem("idProfissionalLogado");
+
+            var request = $.ajax({
+                method: "POST",
+                url: "http://api.csprofissionais.com.br/api/profissional/AlterarImagemPerfil",
+                data: {
+                    UsuarioId: profissionalPicture,
+                    Foto: imagemPerfil
+                }
+            })
+            request.done(function (msg) {
+
+                console.log(msg);
+                console.log("Dados (profile picture) atualizados com sucesso!");
+
+            });
+            request.fail(function () {
+                console.log("Não foi possível realizar a operação, tente novamente.");
+            });
+
+
+        }
+    }
+    else {
+        alert('Selecionar a imagem!');
     }
 
 
 });
 
 
-
 // D0048 - BUSCAR SOLICITAÇÕES DE CONTATO
 function buscarTrabalhos() {
 
-    //var profissionalLogado = localStorage.getItem("idProfissionalLogado");
-    var profissionalLogado = 27;
+    var profissionalLogado = localStorage.getItem("idProfissionalLogado");
+   // var profissionalLogado = 27;
 
     console.log("Buscando as solicitações de contato do Profissional: " + profissionalLogado);
 
@@ -2454,11 +2636,25 @@ function buscarTrabalhos() {
             totContato = totContato - 1;
 
 
-            for (i = 0; i < totContato; i++) {
-
-                $("#solicitacoesContatoWork").prepend("<b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b>" + msg["Data"][i]["Telefone"] + "<br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr />");
-
+            for (i = totContato; i >= 0; i--) {
+                if (msg["Data"][i]["DataLeitura"] == "") {
+                    $("#solicitacoesContatoWork").prepend("<p style='background:#DDFFFF'><b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b>" + msg["Data"][i]["Telefone"] + "<br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr /></p>");
+                } else {
+                    $("#solicitacoesContatoWork").prepend("<b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b>" + msg["Data"][i]["Telefone"] + "<br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr />");
+                }
             }
+
+            var requestLidas = $.ajax({
+                method: "GET",
+                url: "http://api.csprofissionais.com.br/api/profissional/SolicitacoesContatoLidas/" + profissionalLogado
+                //data: { email: login, senha: senha }
+            });
+            requestLidas.done(function (msg) {
+                //alert('Passou');
+            });
+            requestLidas.fail(function () {
+                //alert('Erro');
+            });
 
         } else {
             $("#solicitacoesContatoWork").html("Nenhuma solicitação de contato ainda");
@@ -2472,8 +2668,6 @@ function buscarTrabalhos() {
 
 
 }
-
-
 
 // D0049 - VERIFICAR A VERSÃO ATUAL DO APLICATIVO
 function verificaVersaoAtual() {
@@ -2508,3 +2702,30 @@ function ClickTextPro(val) {
     }, 1500);
     //alert($('.' + val).offset().top);
 }
+
+function ClickTextEditPro(val) {
+
+    $('html, body').animate({
+        scrollTop: val//$('.' + val).offset().top
+    }, 1500);
+    //alert($('.' + val).offset().top);
+}
+function ClickTextMensPro(val)
+{
+
+    $('html, body').animate({
+        scrollTop: $('.' + val).offset().top
+    }, 1500);
+    //alert($('.' + val).offset().top);
+}
+
+function EfetuaLogOff()
+{
+    location.href = "index.html";
+}
+
+function exitFromApp() {
+    console.log("in button");
+    navigator.app.exitApp();
+}
+
