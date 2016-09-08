@@ -1638,7 +1638,7 @@ function trocaMensagensPro() {
                 }
                 if (msg["Data"]["List"][i]["Origem"] == "P") {
 
-                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_receive" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
+                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_receive" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div></div>');
 
                 }
 
@@ -1764,13 +1764,13 @@ function popularCamposPerfilPro() {
     var telefoneCelular = localStorage.getItem("TelefoneCelular");
     var telefoneFixo = localStorage.getItem("TelefoneFixo");
     var curriculum = localStorage.getItem("Curriculum");
-   
+
     var especializacao = localStorage.getItem("Especializacao");
-    
+
     var estadoSigla = localStorage.getItem("EstadoSigla");
 
     var cidadeNome = localStorage.getItem("CidadeNome");
-    
+
     $("#senhaDeAcesso").val(senha);
     $("#nomeClienteEditar").val(nome);
     $("#cpfCliente").val(cpf);
@@ -1825,15 +1825,14 @@ function popularCamposPerfilPro() {
 
 // D0037 - ATUALIZAR SENHA DO PROFISSIONAL
 function atualizarSenhaPro() {
-    
+
     if ($("#senhaDeAcesso").val() == '') {
         alert("Senha deve ser preenchida!");
 
         return false;
     }
 
-    if ($("#senhaDeAcesso").val().length < 6)
-    {
+    if ($("#senhaDeAcesso").val().length < 6) {
         alert("Senha deve ter no mínimo 6 caracters!");
 
         return false;
@@ -1844,7 +1843,7 @@ function atualizarSenhaPro() {
 
     localStorage.setItem("Senha", senhaUsuario);
 
-    
+
     // CAMPOS OBRIGATÓRIOS DA API DO SERVIÇO
     //var bairro = localStorage.getItem("Bairro");
     //var cpf = localStorage.getItem("Cpf");
@@ -1860,8 +1859,8 @@ function atualizarSenhaPro() {
     //var longitude = localStorage.getItem("Longitude");
     //var idCidade = localStorage.getItem("CidadeId");
 
-     console.log("ID DO PROFISSIONAL: " + idUsuario);
-     console.log("SENHA DO PROFISSIONAL: " + senhaUsuario);
+    console.log("ID DO PROFISSIONAL: " + idUsuario);
+    console.log("SENHA DO PROFISSIONAL: " + senhaUsuario);
     //console.log("Vamos atualizar os dados agora...");
 
     //endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
@@ -1957,7 +1956,7 @@ function editarMeuPerfilPro() {
     var numero = $("#numeroCliente").val();
 
     var telefoneCelular = $("#telefoneCelular").val();
-    var telefoneFixo = $("#telefoneFixo").val();    
+    var telefoneFixo = $("#telefoneFixo").val();
     var cep = $("#cepCliente").val();
     var curriculum = $("#cadastroCurriculoPro").val();
 
@@ -2003,7 +2002,7 @@ function editarMeuPerfilPro() {
     getIdEstadoCidade(estadoPro, cidadePro);
 
     var idCidade = localStorage.getItem("cidadeId");
-    
+
     console.log("ID DO USUARIO: " + idUsuario); console.log("Vamos atualizar os dados agora...");
 
     endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
@@ -2022,7 +2021,7 @@ function editarMeuPerfilPro() {
             //senha: senhaUsuario,
             endereco: endereco,
             Especializacao: espec
-       }
+        }
     })
     request.done(function (msg) {
 
@@ -2353,7 +2352,7 @@ function procCadastroProPre() {
             data: form,
             processData: false,
             contentType: false,
-            cache:false,
+            cache: false,
             async: false,
             type: 'POST',
             success: function (data) {
@@ -2364,13 +2363,13 @@ function procCadastroProPre() {
                 //alert(data); // utilizar o retorno
             },
             error: function (data) {
-               // nomeFoto = data[0];
+                // nomeFoto = data[0];
                 nomeFoto = dtImg + document.getElementById('fotoPerfilPro').files[0].name;
                 procCadastroPro();
                 $("#conteudoLoginPro").attr("style", "display:block");
                 $("#divAguardeCadPro").attr("style", "display:none;text-align:center; width:100%")
             }
-       
+
             //,
             //beforeSend: function (data) {
             //    nomeFoto = data[0];
@@ -2469,14 +2468,14 @@ $('#SendfotoTrabalho').click(function () {
         imagemTrabalho = nomeFotoTrabalho;
         console.log(imagemTrabalho);
         $('#SendfotoTrabalho').html("enviar novo trabalho");
-       
-        
+
+
     })
     request.fail(function () {
         imagemTrabalho = nomeFotoTrabalho;
         alert("Erro ao subir imagem!");
         console.log("Deu ruim o cadastro");
-       
+
     });
 
 
@@ -2502,8 +2501,8 @@ $('#SendfotoTrabalho').click(function () {
             }
             //buscarUltimosTrabalhosPro();
         });
-        request.fail(function () {          
-            
+        request.fail(function () {
+
             alert("Ocorreu um erro em tentar salvar a imagem no servidor, tente novamente mais tarde");
             //buscarUltimosTrabalhosPro();
         });
@@ -2618,7 +2617,7 @@ $('#updateProfilePicture').click(function () {
 function buscarTrabalhos() {
 
     var profissionalLogado = localStorage.getItem("idProfissionalLogado");
-   // var profissionalLogado = 27;
+    // var profissionalLogado = 27;
 
     console.log("Buscando as solicitações de contato do Profissional: " + profissionalLogado);
     $("#solicitacoesContatoWork").html('');
@@ -2710,8 +2709,7 @@ function ClickTextEditPro(val) {
     }, 1500);
     //alert($('.' + val).offset().top);
 }
-function ClickTextMensPro(val)
-{
+function ClickTextMensPro(val) {
 
     $('html, body').animate({
         scrollTop: $('.' + val).offset().top
@@ -2719,8 +2717,7 @@ function ClickTextMensPro(val)
     //alert($('.' + val).offset().top);
 }
 
-function EfetuaLogOff()
-{
+function EfetuaLogOff() {
     localStorage.clear();
     location.href = "index.html";
 }
@@ -2728,21 +2725,45 @@ function EfetuaLogOff()
 function exitFromApp() {
     //console.log("in button");
     //navigator.app.exitApp();
-    try{
-        window.close();
-    }catch(err)
-    {
-        alert('Erro window close');
-    }
-    try{
-        navigator.app.exitApp();
+    //try{
+    //    window.close();
+    //}catch(err)
+    //{
+    //    alert('Erro window close');
+    //}
+    //try{
+    //    navigator.app.exitApp();
+    //}
+    //catch (err) {
+    //    alert('Erro exitApp');
+    //}
+    // window.closed();
+    //this.webView.postMessage("exit", null);
+    // finish();
+
+    try {
+        if (navigator.app) {
+            navigator.app.exitApp();
+        }
+        else if (navigator.device) {
+            navigator.device.exitApp();
+        }
     }
     catch (err) {
-        alert('Erro exitApp');
     }
-   // window.closed();
-    //this.webView.postMessage("exit", null);
-   // finish();
+
+    try {
+        app.exitApp();
+    }
+    catch (err) {
+    }
+}
+function onLoad() {
+    try {
+        document.addEventListener("deviceready", onDeviceReady, true);
+    }
+    catch (err) {
+    }
 }
 
 function procVerificaUsuarioLogado() {
@@ -2755,7 +2776,7 @@ function procVerificaUsuarioLogado() {
             //alert("Por favor, faça seu login novamente");
         }
         else {
-            window.location.href="dashboard-pro.html";
+            window.location.href = "dashboard-pro.html";
         }
 
     }
