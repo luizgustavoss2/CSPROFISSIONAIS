@@ -122,9 +122,10 @@ function procLogin() {
         }
 
     });
-    request.fail(function () {
+    request.fail(function (msg) {
         alert("Não foi possível realizar o seu login, tente novamente");
-        location.href = "index.html";
+        var erro = msg;
+        //location.href = "index.html";
     });
 
 }
@@ -196,15 +197,15 @@ function procCadastroPro() {
     console.log("Latitude atual: " + latitude + " Longitude atual: " + longitude);
 
     // SETAR NA SESSÃO O ID DA CIDADE
-    getIdEstadoCidade(estadoPro, cidadePro);
+   // getIdEstadoCidade(estadoPro, cidadePro);
 
-    var idCidade = localStorage.getItem("cidadeId");
-
+   // var idCidade = localStorage.getItem("cidadeId");
+    var idCidade = 0;
     // POPULAR ARRAY DO ENDEREÇO
 
     var endereco = [];
 
-    endereco = { CidadeId: idCidade, nome: cadastroRuaPro, numero: cadastroNumeroPro, complemento: "n/a", bairro: cadastroBairroPro, cep: cadastroCepPro, latitude: latitude, longitude: longitude }
+    endereco = { CidadeId: idCidade, Estado: estadoPro, Cidade: cidadePro, nome: cadastroRuaPro, numero: cadastroNumeroPro, complemento: "n/a", bairro: cadastroBairroPro, cep: cadastroCepPro, latitude: latitude, longitude: longitude }
 
 
     var espec = [];
@@ -255,8 +256,8 @@ function procCadastroPro() {
             localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
             localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
 
-            localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
-            localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+            localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
+            localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
 
             console.log("Direcionando o profissional...");
 
@@ -482,15 +483,15 @@ function procCadastro() {
     console.log("Latitude e Longitude descobertas: " + latitude + " Longitude atual: " + longitude);
 
     // SETAR NA SESSÃO O ID DA CIDADE
-    getIdEstadoCidade(estado, cidade);
+    //getIdEstadoCidade(estado, cidade);
 
-    var idCidade = localStorage.getItem("cidadeId");
+    var idCidade = 0;// localStorage.getItem("cidadeId");
 
     // POPULAR ARRAY DO ENDEREÇO
 
     var endereco = [];
 
-    endereco = { cidadeId: idCidade, Nome: cadastroRua, numero: cadastroNumero, complemento: "n/a", bairro: cadastroBairro, cep: cadastroCep, latitude: latitude, longitude: longitude }
+    endereco = { cidadeId: idCidade, Estado: estado, Cidade: cidade, Nome: cadastroRua, numero: cadastroNumero, complemento: "n/a", bairro: cadastroBairro, cep: cadastroCep, latitude: latitude, longitude: longitude }
 
     var request = $.ajax({
         method: "POST",
@@ -527,6 +528,10 @@ function procCadastro() {
         localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
         localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"]);
         localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
+
+        localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
+        localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
+
         console.log("Direcionando o usuário para o dashboard...");
 
         location.href = "dashboard.html";
@@ -728,6 +733,40 @@ function popularCamposPerfil() {
 // D0010 - ATUALIZAR DADOS DO PERFIL
 function editarMeuPerfil() {
 
+    if ($("#nomeClienteEditar").val() == "")
+        msgerroCad = msgerroCad + "* Nome é obrigatório!  \r\n";
+
+    if ($("#emailCliente").val() == "")
+        msgerroCad = msgerroCad + "* E-mail é obrigatório!  \r\n";
+
+    if ($("#telefoneCelular").val() == "")
+        msgerroCad = msgerroCad + "* Telefone Celular é obrigatório!  \r\n";
+
+    //if ($("#cadastroCnpjPro").val() == "")
+    //    msgerro = msgerro + "* CPF/CNPJ é obrigatório! \r\n";
+
+    if ($("#cepCliente").val() == "")
+        msgerroCad = msgerroCad + "* CEP é obrigatório! \r\n";
+
+    if ($("#enderecoCliente").val() == "")
+        msgerroCad = msgerroCad + "* Endereço é obrigatório! \r\n";
+
+    //if ($("#cadastroNumeroPro").val() == "")
+    //    msgerro = msgerro + "* Número é obrigatório! \r\n";
+
+    if ($("#bairroCliente").val() == "")
+        msgerroCad = msgerroCad + "* Bairro é obrigatório! \r\n";
+
+    if ($("#estado").val() == "")
+        msgerroCad = msgerroCad + "* Estado é obrigatório! \r\n";
+
+    if ($("#cidade").val() == "" || $("#cidade").val() == null)
+        msgerroCad = msgerroCad + "* Cidade é obrigatório! \r\n";
+
+
+    if (msgerroCad != "")
+        alert(msgerroCad);
+
     var idUsuario = localStorage.getItem("ClienteId");
     var senhaUsuario = localStorage.getItem("Senha");
 
@@ -741,17 +780,19 @@ function editarMeuPerfil() {
     var numero = $("#numeroCliente").val();
     var telefoneCelular = $("#telefoneCelular").val();
     var telefoneFixo = $("#telefoneFixo").val();
+    var estado = $("#estado").val();
+    var cidade = $("#cidade").val();
 
     var cep = $("#cepCliente").val();
 
 
     var latitude = localStorage.getItem("Latitude");
     var longitude = localStorage.getItem("Longitude");
-    var idCidade = localStorage.getItem("CidadeId");
+    var idCidade = 0;//localStorage.getItem("CidadeId");
 
     console.log("ID DO USUARIO: " + idUsuario); console.log("Vamos atualizar os dados agora...");
 
-    endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
+    endereco = { cidadeId: idCidade, Estado: estado, Cidade: cidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
 
     var request = $.ajax({
         method: "POST",
@@ -769,6 +810,25 @@ function editarMeuPerfil() {
     })
     request.done(function (msg) {
         alert("Dados atualizados com sucesso!");
+
+        localStorage.setItem("Nome", msg["Data"]["Nome"]);
+        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
+        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
+        localStorage.setItem("Email", msg["Data"]["Email"]);
+        localStorage.setItem("Cpf", msg["Data"]["Cpf"]);
+        localStorage.setItem("Senha", msg["Data"]["Senha"]);
+        localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
+        localStorage.setItem("NomeRua", msg["Data"]["Endereco"]["Nome"]);
+        localStorage.setItem("Numero", msg["Data"]["Endereco"]["Numero"]);
+        localStorage.setItem("Complemento", msg["Data"]["Endereco"]["Complemento"]);
+        localStorage.setItem("Bairro", msg["Data"]["Endereco"]["Bairro"]);
+        localStorage.setItem("Cep", msg["Data"]["Endereco"]["Cep"]);
+        localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"]);
+        localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
+
+        localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
+        localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
+
         console.log(msg);
         console.log("Dados (outras informações) atualizados com sucesso!");
 
@@ -813,6 +873,7 @@ function procPesquisa() {
     var dist = 25;
 
     var estrelas = 0;
+    var zeroEstrela =''
     var umaEstrela = '<span><i class="fa fa-star" aria-hidden="true"></i></span>';
     var duasEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
     var tresEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
@@ -824,9 +885,7 @@ function procPesquisa() {
     var idProfissional = "";
 
     var latLng2 = "";
-
-
-
+    
     console.log("Execução da busca de profissionais...");
     console.log("Tipo de profissional buscado: " + tipoPesquisa);
     console.log("Cep de pesquisa buscado: " + cepPesquisa);
@@ -856,6 +915,7 @@ function procPesquisa() {
             var totProfissionais = msg["Data"]["List"].length;
             for (i = 0; i < totProfissionais; i++) {
 
+                if (msg["Data"]["List"][i]["NroEstrela"] == 0) { estrelas = umaEstrela; zeroEstrela }
                 if (msg["Data"]["List"][i]["NroEstrela"] == 1) { estrelas = umaEstrela; }
                 if (msg["Data"]["List"][i]["NroEstrela"] == 2) { estrelas = duasEstrelas; }
                 if (msg["Data"]["List"][i]["NroEstrela"] == 3) { estrelas = tresEstrelas; }
@@ -882,11 +942,8 @@ function procPesquisa() {
                     verProfissional(idProfissional);
                 });
 
-
-
                 $("#workInner").append('<div class="row"><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:8px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i>' + celularProfissional + '&nbsp;</p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></div>');
-
-
+                
             }
         }
 
@@ -901,7 +958,7 @@ function procPesquisa() {
 
     // DESENHAR GOOGLE MAPS
     console.log("Vamos iniciar o desenho do GoogleMaps");
-    document.getElementById("GoogleMapa").style.height = "120px";
+    document.getElementById("GoogleMapa").style.height = "140px";
 
 
     var latLng = new google.maps.LatLng(-23.566525, -46.649680);
@@ -1185,7 +1242,8 @@ function trocaMensagens() {
             for (i = 0; i < totMsg; i++) {
 
                 if (msg["Data"]["List"][i]["Origem"] == "C") {
-                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
+                    //$('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div></div>');
+                    $('#areaMsg').prepend('<div class="row msg_container base_sent"><div class="col-md-12 col-xs-12"><div class="messages msg_sent" style="background:#DDFFFF"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div></div>');
                 }
                 if (msg["Data"]["List"][i]["Origem"] == "P") {
                     $('#areaMsg').prepend('<div class="row msg_container base_receive"><div class="col-md-2 col-xs-2 avatar"><img src="images/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive "></div><div class="col-md-10 col-xs-10"><div class="messages msg_receive"><p>' + msg["Data"]["List"][i]["Mensagem"] + '</p><time datetime="2009-11-13T20:00"></time></div></div></div>');
@@ -2007,13 +2065,13 @@ function editarMeuPerfilPro() {
     console.log("Latitude atual: " + latitude + " Longitude atual: " + longitude);
 
     // SETAR NA SESSÃO O ID DA CIDADE
-    getIdEstadoCidade(estadoPro, cidadePro);
+    //getIdEstadoCidade(estadoPro, cidadePro);
 
-    var idCidade = localStorage.getItem("cidadeId");
+    var idCidade = 0;// localStorage.getItem("cidadeId");
 
     console.log("ID DO USUARIO: " + idUsuario); console.log("Vamos atualizar os dados agora...");
-
-    endereco = { cidadeId: idCidade, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
+    
+    endereco = { cidadeId: idCidade, Estado: estadoPro, Cidade: cidadePro, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
 
     var request = $.ajax({
         method: "POST",
@@ -2710,6 +2768,22 @@ function ClickTextPro(val) {
     //alert($('.' + val).offset().top);
 }
 
+function ClickTextCli(val) {
+
+    $('#modalCadastroCliente').animate({
+        scrollTop: val//$('.' + val).offset().top
+    }, 1500);
+    //alert($('.' + val).offset().top);
+}
+
+function ClickTextEditCli(val) {
+
+    $('html, body').animate({
+        scrollTop: val//$('.' + val).offset().top
+    }, 1500);
+    //alert($('.' + val).offset().top);
+}
+
 function ClickTextEditPro(val) {
 
     $('html, body').animate({
@@ -2717,6 +2791,8 @@ function ClickTextEditPro(val) {
     }, 1500);
     //alert($('.' + val).offset().top);
 }
+
+
 function ClickTextMensPro(val) {
 
     $('html, body').animate({
@@ -2748,6 +2824,14 @@ function exitFromApp() {
     // window.closed();
     //this.webView.postMessage("exit", null);
     // finish();
+
+    try {
+        navigator.app.exitApp();
+
+    }catch(err)
+    {
+
+    }
 
     try {
         if (navigator.app) {
