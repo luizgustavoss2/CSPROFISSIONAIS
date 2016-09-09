@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>CPF</label>
-                                        <input id="cpfCliente" type="text" onclick="ClickTextEditCli(230)"  class="form-control input-lg" name="cpf" placeholder="Número do seu CPF" />
+                                        <input id="cpfCliente" type="tel" onclick="ClickTextEditCli(230)" class="form-control input-lg" name="cpf" placeholder="Número do seu CPF" />
                                     </div>
 
                                     <div class="form-group">
@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>*CEP</label>
-                                        <input id="cepCliente" type="text" onclick="ClickTextEditCli(455)" class="form-control input-lg" data-mask="99999-999" name="bairro" placeholder="Cep" />
+                                        <input id="cepCliente" type="tel" onclick="ClickTextEditCli(455)" class="form-control input-lg" data-mask="99999-999" name="Cep" placeholder="Cep" />
                                     </div>
                                     <div class="form-group">
                                         <label>*Endereço</label>
@@ -145,11 +145,11 @@
 
                                     <div class="form-group">
                                         <label>*Estado</label>
-                                        <select class="form-control" name="estado" onclick="ClickTextEditCli(755)" id="estado"></select>
+                                        <select class="form-control itfEstadoCli" name="estado" onclick="ClickTextEditCli(755)" id="estado"></select>
                                     </div>
                                     <div class="form-group">
                                         <label>*Cidade</label>
-                                        <select class="form-control" name="cidade" id="cidade" onclick="ClickTextEditCli(830)">-- selecione a cidade --</select>
+                                        <select class="form-control itfCidadeCli" name="cidade" id="cidade" onclick="ClickTextEditCli(830)">-- selecione a cidade --</select>
                                     </div>
                                    <div class="form-group">
                                         <button id="atualizarPerfil" onclick="editarMeuPerfil();" class="btn btn-default btn-lg">atualizar informações</button>

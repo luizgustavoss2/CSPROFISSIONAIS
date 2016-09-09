@@ -718,10 +718,40 @@ function popularCamposPerfil() {
         }
     });
 
-    $('#estado option').each(function () {
-        if ($(this).val() == estadoSigla) {
-            $(this).prop("selected", true);
-        }
+    //$('#estado option').each(function () {
+    //    if ($(this).val() == estadoSigla) {
+    //        $(this).prop("selected", true);
+    //    }
+    //});
+
+    var cep_code = cep;
+    if (cep_code.length <= 0) return;
+    var requestCep = $.ajax({
+        method: "GET",
+        async: true,
+        url: "http://apps.widenet.com.br/busca-cep/api/cep/" + cep_code + ".json"
+    })
+    requestCep.done(function (dados) {
+
+        $('.itfEstadoCli option').each(function () {
+            if ($(this).val() == dados.state) {
+                $(this).prop("selected", true);
+            }
+        });
+
+        var dg = new dgCidadesEstados(document.getElementById('estado'), document.getElementById('cidade'), false);
+        dg.run();
+
+        $('.itfCidadeCli option').each(function () {
+            if ($(this).text() == dados.city) {
+                $(this).prop("selected", true);
+            }
+        });
+
+    });
+    requestCep.fail(function (erro) {
+        var ret = erro;
+        console.log("Ocorreu um erro ao tentar carregar a CEP");
     });
 
 
@@ -733,6 +763,7 @@ function popularCamposPerfil() {
 // D0010 - ATUALIZAR DADOS DO PERFIL
 function editarMeuPerfil() {
 
+    var msgerroCad = "";
     if ($("#nomeClienteEditar").val() == "")
         msgerroCad = msgerroCad + "* Nome é obrigatório!  \r\n";
 
@@ -1852,6 +1883,7 @@ function popularCamposPerfilPro() {
 
     $("#cadastroCurriculoPro").val(curriculum);
 
+
     new dgCidadesEstados(document.getElementById('estado'), document.getElementById('cidade'), true);
 
     $('#estado option').each(function () {
@@ -1875,12 +1907,43 @@ function popularCamposPerfilPro() {
         }
     });
 
-    $('#estado option').each(function () {
-        if ($(this).val() == estadoSigla) {
-            $(this).prop("selected", true);
-        }
-    });
+    //$('#estado option').each(function () {
+    //    if ($(this).val() == estadoSigla) {
+    //        $(this).prop("selected", true);
+    //    }
+    //});
 
+
+    var cep_code = cep;
+    if (cep_code.length <= 0) return;
+    var requestCep = $.ajax({
+        method: "GET",
+        async: true,
+        url: "http://apps.widenet.com.br/busca-cep/api/cep/" + cep_code + ".json"
+    })
+    requestCep.done(function (dados) {
+
+        $('.itfEstadoCli option').each(function () {
+            if ($(this).val() == dados.state) {
+                $(this).prop("selected", true);
+            }
+        });
+
+        var dg = new dgCidadesEstados(document.getElementById('estado'), document.getElementById('cidade'), false);
+        dg.run();
+
+
+        $('.itfCidadeCli option').each(function () {
+            if ($(this).text() == dados.city) {
+                $(this).prop("selected", true);
+            }
+        });
+
+    });
+    requestCep.fail(function (erro) {
+        var ret = erro;
+        console.log("Ocorreu um erro ao tentar carregar a CEP");
+    });
 
 
     console.log("Campos de perfil foram carregados!");
@@ -2071,7 +2134,7 @@ function editarMeuPerfilPro() {
 
     console.log("ID DO USUARIO: " + idUsuario); console.log("Vamos atualizar os dados agora...");
     
-    endereco = { cidadeId: idCidade, Estado: estadoPro, Cidade: cidadePro, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
+    endereco = { cidadeId: idCidade, Cidade: cidadePro, Estado: estadoPro, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
 
     var request = $.ajax({
         method: "POST",
@@ -2091,7 +2154,7 @@ function editarMeuPerfilPro() {
     })
     request.done(function (msg) {
 
-        localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
+        //localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
         localStorage.setItem("Nome", msg["Data"]["Nome"]);
         localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
         localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
