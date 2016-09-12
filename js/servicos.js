@@ -2974,15 +2974,15 @@ function closeBrowser() {
 
     }
     try{
-    var ref = window.open(encodeURI(url), '_blank', 'location=no');
-    ref.addEventListener('loadstart', function (event) {
+        var ref = window.location;//.open('index.html', 'location=no');
+    window.addEventListener('loadstart', function (event) {
         if (event.url.match("mobile/close")) {
             ref.close();
         }
     });
 
     } catch (erro) {
-
+        alert(erro);
     }
 }
 
