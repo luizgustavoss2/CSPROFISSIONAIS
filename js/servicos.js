@@ -2964,13 +2964,24 @@ function procVerificaUsuarioLogado() {
 
 function closeBrowser() {
     try{
-        if(history.length==1){
-            window.open('mobile/close');
-        }else{
-            history.back();
-        }
+       // if(history.length==1){
+          //  window.open('mobile/close');
+       // }else{
+            //history.back();
+       // }
     }catch(erro)
     {
+
+    }
+    try{
+    var ref = window.open(encodeURI(url), '_blank', 'location=no');
+    ref.addEventListener('loadstart', function (event) {
+        if (event.url.match("mobile/close")) {
+            ref.close();
+        }
+    });
+
+    } catch (erro) {
 
     }
 }
