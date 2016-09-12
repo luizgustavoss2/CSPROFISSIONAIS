@@ -975,7 +975,7 @@ function procPesquisa() {
                     verProfissional(idProfissional);
                 });
 
-                $("#workInner").append('<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:+' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;</p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>');
+                $("#workInner").append('<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;</p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>');
 
                 
             }
@@ -1078,8 +1078,8 @@ function alimentarDetalheProfissional() {
         // POPULAR HTML COM AS INFORMAÇÕES OBTIDAS
         $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + fotoPro);
         $('#nomePro').html(nomePro);
-        $('#fixoPro').append('<a href="tel:+' + fixoPro+'">' + fixoPro+'</a>');
-        $('#celularPro').append('<a href="tel:+' +celularPro+'">' + celularPro+'</a>');
+        $('#fixoPro').append('<a href="tel:' + fixoPro+'">' + fixoPro+'</a>');
+        $('#celularPro').append('<a href="tel:' +celularPro+'">' + celularPro+'</a>');
         $('#enderecoPro').append(ruaPro + ", " + numeroPro + " - " + bairroPro);
         $('#sobrePro').append(descricao);
 
@@ -2769,7 +2769,7 @@ function buscarTrabalhos() {
 
             for (i = totContato; i >= 0; i--) {
                 if (msg["Data"][i]["DataLeitura"] == "") {
-                    $("#solicitacoesContatoWork").prepend("<p style='background:#DDFFFF'><b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b><a href='tel:+" + msg["Data"][i]["Telefone"] + "'>" + msg["Data"][i]["Telefone"] + "</a><br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr /></p>");
+                    $("#solicitacoesContatoWork").prepend("<p style='background:#DDFFFF'><b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b><a href='tel:" + msg["Data"][i]["Telefone"] + "'>" + msg["Data"][i]["Telefone"] + "</a><br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr /></p>");
                 } else {
                     $("#solicitacoesContatoWork").prepend("<b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b>" + msg["Data"][i]["Telefone"] + "<br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr />");
                 }

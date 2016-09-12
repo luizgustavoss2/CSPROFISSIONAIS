@@ -55,7 +55,8 @@
         <div class="row">
             <div class="col-sm-12 col-xs-12">
                 <br />
-                <button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="window.history(-10);">Sair</button>
+                <button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="window.history.back(-10);">Sair</button>
+                <button id="efetuarlogoff2" class="btn btn-primary btn-lg" onclick="window.history.go(-10);">Sair</button>
                 <!--<a href="#" onclick="exitFromApp();" data-role="button">Close App</a>-->
             </div>
         </div>
@@ -334,11 +335,11 @@
         }
 
         $(document).ready(function ($) {
-            $('#telefoneFixoPro').mask('(##) ####-####');
-            $('#telefoneCelularPro').mask('(##) #####-####');
-            $('#cadastroCepPro').mask('#####-###');
-            $('#cadastroCep').mask('#####-###');
-            $('#telefoneCelular').mask('(##) #####-####');
+            $('#telefoneFixoPro').mask('## ########');
+            $('#telefoneCelularPro').mask('## #########');
+            $('#cadastroCepPro').mask('########');
+            $('#cadastroCep').mask('########');
+            $('#telefoneCelular').mask('## #########');
         });
 
        
