@@ -2974,7 +2974,7 @@ function closeBrowser() {
 
     }
     try{
-        var ref = window.location;//.open('index.html', 'location=no');
+        var ref = window.open('Sair.html', 'location=no');
     window.addEventListener('loadstart', function (event) {
         if (event.url.match("mobile/close")) {
             ref.close();
