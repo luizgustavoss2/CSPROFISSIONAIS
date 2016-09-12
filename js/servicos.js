@@ -434,8 +434,14 @@ function procCadastro() {
     if ($("#cadastroSenha").val() == "")
         msgerroCad = msgerroCad + "* Senha é obrigatório! \r\n";
 
-    if (msgerroCad != "")
+    if (msgerroCad != "") {
         alert(msgerroCad);
+
+        return false;
+    }
+
+    $("#conteudoLogin").attr("style", "display:none");
+    $("#divAguardeCadCli").attr("style", "display:block;text-align:center; width:100%")
 
     var cadastroNome = $("#cadastroNome").val();
     var cadastroEmail = $("#cadastroEmail").val();
@@ -538,7 +544,11 @@ function procCadastro() {
 
     });
     request.fail(function () {
+
+        alert('Erro ao efetuar cadastro! \r\n Tente novamente mais tarde!');
         console.log("Deu ruim o cadastro");
+        $("#conteudoLogin").attr("style", "display:block");
+        $("#divAguardeCadCli").attr("style", "display:none;text-align:center; width:100%")
     });
 }
 
@@ -1197,7 +1207,7 @@ function carregarComentarios() {
 
 
 
-            $('#areaComentarios').append('<!-- COMENTARIO --><div class="row"><div class="col-sm-12 col-xs-12"><p class="text-right" style="margin-top:-18px;"><i>' + getNome(msg["Data"]["List"][i]["ClienteId"]) + ' disse:</i><br>' + msg["Data"]["List"][i]["Mensagem"] + '<br><b>Nota:</b> ' + nota + '</p></div></div><!-- COMENTARIO --><p>&nbsp;</p>')
+            $('#areaComentarios').append('<!-- COMENTARIO --><div class="row"><div class="col-sm-12 col-xs-12"><p class="text-right" style="margin-top:-18px;"><i>' + getNome(msg["Data"]["List"][i]["ClienteId"]) + ' disse:</i><br>' + msg["Data"]["List"][i]["Mensagem"] + '<br><b>Nota:</b> ' + (nota/2) + '</p></div></div><!-- COMENTARIO --><p>&nbsp;</p>')
             console.log("Avaliação Impressa com sucesso");
 
         }
@@ -2197,6 +2207,9 @@ function editarMeuPerfilPro() {
 // D0039 - CLIENTE SOLICITA CONTATO DO PROFISSIONAL
 function solicContato() {
 
+    $("#btnSolicitarContato").attr("style", "display:none");
+    $("#divAguardeSolContato").attr("style", "display:block;text-align:center; width:100%");
+
     var idPro = localStorage.getItem("Profissional");
     var idCli = localStorage.getItem("ClienteId");
 
@@ -2213,10 +2226,15 @@ function solicContato() {
         console.log(msg);
         console.log("Solicitação de contato realizada com sucesso!");
         alert("Solicitação de contato realizada com sucesso");
+        $("#btnSolicitarContato").attr("style", "display:block");
+        $("#divAguardeSolContato").attr("style", "display:none;text-align:center; width:100%");
 
     });
     request.fail(function () {
+        alert("Erro ao solicitar contato. \r\n Tente novamente mais tarde!");
         console.log("Não foi possível realizar a operação, tente novamente.");
+        $("#btnSolicitarContato").attr("style", "display:block");
+        $("#divAguardeSolContato").attr("style", "display:none;text-align:center; width:100%");
     });
 
 }
@@ -2476,7 +2494,7 @@ function procCadastroProPre() {
     //var img = document.getElementById('fotoPerfilPro').files[0];
     if (form != undefined) {
         $("#conteudoLoginPro").attr("style", "display:none");
-        $("#divAguardeCadPro").attr("style", "display:block;text-align:center; width:100%")
+        $("#divAguardeCadPro").attr("style", "display:block;text-align:center; width:100%");
         var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
         $.ajax({
             //url: 'http://api.csprofissionais.com.br/api/imagem/PostImagem', // Url do lado server que vai receber o arquivo
@@ -2942,5 +2960,13 @@ function procVerificaUsuarioLogado() {
         location.href = "dashboard.html";
     }
 
+}
+
+function closeBrowser(){
+    if(history.length==1){
+        window.open('mobile/close');
+    }else{
+        history.back();
+    }
 }
 

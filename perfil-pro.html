@@ -150,11 +150,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Telefone Fixo</label>
-                                        <input id="telefoneFixo" type="tel" onclick="ClickTextEditPro(465)" class="form-control input-lg" name="telefone" maxlength="15" placeholder="Telefone com DDD" />
+                                        <input id="telefoneFixo" type="tel" onclick="ClickTextEditPro(465)" class="form-control input-lg" name="telefone" maxlength="10" placeholder="Telefone com DDD" />
                                     </div>
                                     <div class="form-group">
                                         <label>*Telefone Celular</label>
-                                        <input id="telefoneCelular" type="tel" onclick="ClickTextEditPro(550)" class="form-control input-lg" name="celular" maxlength="16" placeholder="Celular com DDD" />
+                                        <input id="telefoneCelular" type="tel" onclick="ClickTextEditPro(550)" class="form-control input-lg" name="celular" maxlength="11" placeholder="Celular com DDD" />
                                     </div>
                                     <div class="form-group">
                                         <label>E-mail</label>
@@ -162,7 +162,7 @@
                                     </div>                                    
                                     <div class="form-group">
                                         <label>*CEP</label>
-                                        <input id="cepCliente" type="tel" onclick="ClickTextEditPro(720)" class="form-control input-lg itfCEPCli" maxlength="9" name="bairro" placeholder="Cep" />
+                                        <input id="cepCliente" type="tel" onclick="ClickTextEditPro(720)" class="form-control input-lg itfCEPCli" maxlength="8" name="bairro" placeholder="Cep" />
                                     </div>
                                     <div class="form-group">
                                         <label>*Endereço</label>
@@ -254,8 +254,8 @@
         }
 
         $(document).ready(function ($) {
-            $('#telefoneFixo').mask('## ########');
-            $('#telefoneCelular').mask('## #########');
+            $('#telefoneFixo').mask('##########');
+            $('#telefoneCelular').mask('###########');
             $('#cepCliente').mask('########');
           
         });
