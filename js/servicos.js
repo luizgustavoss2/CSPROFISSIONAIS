@@ -2962,11 +2962,16 @@ function procVerificaUsuarioLogado() {
 
 }
 
-function closeBrowser(){
-    if(history.length==1){
-        window.open('mobile/close');
-    }else{
-        history.back();
+function closeBrowser() {
+    try{
+        if(history.length==1){
+            window.open('mobile/close');
+        }else{
+            history.back();
+        }
+    }catch(erro)
+    {
+
     }
 }
 
