@@ -124,11 +124,11 @@
                                     </div>-->
                                     <div class="form-group">
                                         <label>*Telefone Celular</label>
-                                        <input id="telefoneCelular" type="tel" onclick="ClickTextEditCli(380)" class="form-control input-lg" name="celular" data-mask="(99) 9999-9999?9" placeholder="Celular com DDD" />
+                                        <input id="telefoneCelular" type="tel" onclick="ClickTextEditCli(380)" class="form-control input-lg" name="celular" maxlength="16" placeholder="Celular com DDD" />
                                     </div>
                                     <div class="form-group">
                                         <label>*CEP</label>
-                                        <input id="cepCliente" type="tel" onclick="ClickTextEditCli(455)" class="form-control input-lg" data-mask="99999-999" name="Cep" placeholder="Cep" />
+                                        <input id="cepCliente" type="tel" onclick="ClickTextEditCli(455)" class="form-control input-lg" maxlength="9" name="Cep" placeholder="Cep" />
                                     </div>
                                     <div class="form-group">
                                         <label>*Endereço</label>
@@ -216,6 +216,11 @@
             );
         }
 
+        $(document).ready(function ($) {
+            $('#telefoneCelular').mask('(##) ####-####');            
+            $('#cepCliente').mask('#####-###');
+
+        });
 
     </script>
 

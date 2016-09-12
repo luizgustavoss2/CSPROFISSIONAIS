@@ -55,8 +55,8 @@
         <div class="row">
             <div class="col-sm-12 col-xs-12">
                 <br />
-                <button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="exitFromApp()">Sair</button>
-                <a href="#" onclick="exitFromApp();" data-role="button">Close App</a>
+                <button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="window.history(-10);">Sair</button>
+                <!--<a href="#" onclick="exitFromApp();" data-role="button">Close App</a>-->
             </div>
         </div>
         <!--<input type="file" id="fileUpload" name="fileUpload" />
@@ -166,11 +166,11 @@
                     </div>
                     <div class="form-group">
                         <label>*Telefone Celular</label>
-                        <input type="tel" class="form-control" id="telefoneCelular"  placeholder="DDD + número" onclick="ClickTextCli(230)" required name="DDD + número" />
+                        <input type="tel" class="form-control" id="telefoneCelular" maxlength="16" placeholder="DDD + número" onclick="ClickTextCli(230)" required name="DDD + número" />
                     </div>
                     <div class="form-group">
                         <label>*CEP</label>
-                        <input type="tel" class="form-control itfCEPCli" id="cadastroCep"  placeholder="Seu código postal" onclick="ClickTextCli(305)" required name="cep" />
+                        <input type="tel" class="form-control itfCEPCli" id="cadastroCep" maxlength="9" placeholder="Seu código postal" onclick="ClickTextCli(305)" required name="cep" />
                     </div>
                     <!--<div class="form-group">
                         <label>CPF</label>
@@ -241,11 +241,11 @@
                     </div>
                     <div class="form-group">
                         <label>Telefone Fixo</label>
-                        <input type="tel" class="form-control telefoneFixoPro" id="telefoneFixoPro" onclick="ClickTextPro(305)" placeholder="DDD + número" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}" maxlength="15" required name="DDD + número" />
+                        <input type="tel" class="form-control telefoneFixoPro" id="telefoneFixoPro" onclick="ClickTextPro(305)" placeholder="DDD + número" maxlength="15" required name="DDD + número" />
                     </div>
                     <div class="form-group">
                         <label>*Telefone Celular</label>
-                        <input type="tel" class="form-control telefoneCelularPro" id="telefoneCelularPro" onclick="ClickTextPro(380)"  placeholder="DDD + número" required name="DDD + número" />
+                        <input type="tel" class="form-control telefoneCelularPro" id="telefoneCelularPro" onclick="ClickTextPro(380)" placeholder="DDD + número" maxlength="16" required name="DDD + número" />
                     </div>
                     <div class="form-group">
                         <label>E-mail</label>
@@ -254,7 +254,7 @@
 
                     <div class="form-group">
                         <label>*CEP</label>
-                        <input type="text" class="form-control itfCEP cadastroCepPro" id="cadastroCepPro" onclick="ClickTextPro(530)" placeholder="Seu código postal" required name="cep" />
+                        <input type="text" class="form-control itfCEP cadastroCepPro" id="cadastroCepPro" onclick="ClickTextPro(530)" placeholder="Seu código postal" maxlength="9" required name="cep" />
                     </div>
                     <div class="form-group">
                         <label>*Endereço</label>
@@ -334,11 +334,11 @@
         }
 
         $(document).ready(function ($) {
-            $('#telefoneFixoPro').mask('(00) 0000-0000');
-            $('#telefoneCelularPro').mask('(00) 00000-0000');
-            $('#cadastroCepPro').mask('00000-000');
-            $('#cadastroCep').mask('00000-000');            
-            $('#telefoneCelular').mask('(00) 00000-0000');
+            $('#telefoneFixoPro').mask('(##) ####-####');
+            $('#telefoneCelularPro').mask('(##) #####-####');
+            $('#cadastroCepPro').mask('#####-###');
+            $('#cadastroCep').mask('#####-###');
+            $('#telefoneCelular').mask('(##) #####-####');
         });
 
        

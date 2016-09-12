@@ -146,15 +146,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label>*CPF/CNPJ</label>
-                                        <input id="cpfCliente" type="tel" onclick="ClickTextEditPro(385)" class="form-control input-lg" name="cpf" placeholder="Número do seu CPF" />
+                                        <input id="cpfCliente" type="tel" onclick="ClickTextEditPro(385)" class="form-control input-lg" name="cpf" placeholder="Número do seu CPF" maxlength="16" />
                                     </div>
                                     <div class="form-group">
                                         <label>Telefone Fixo</label>
-                                        <input id="telefoneFixo" type="tel" onclick="ClickTextEditPro(465)" class="form-control input-lg" name="telefone" placeholder="Telefone com DDD" />
+                                        <input id="telefoneFixo" type="tel" onclick="ClickTextEditPro(465)" class="form-control input-lg" name="telefone" maxlength="15" placeholder="Telefone com DDD" />
                                     </div>
                                     <div class="form-group">
                                         <label>*Telefone Celular</label>
-                                        <input id="telefoneCelular" type="tel"  onclick="    ClickTextEditPro(550)" class="form-control input-lg" name="celular" placeholder="Celular com DDD" />
+                                        <input id="telefoneCelular" type="tel" onclick="ClickTextEditPro(550)" class="form-control input-lg" name="celular" maxlength="16" placeholder="Celular com DDD" />
                                     </div>
                                     <div class="form-group">
                                         <label>E-mail</label>
@@ -162,7 +162,7 @@
                                     </div>                                    
                                     <div class="form-group">
                                         <label>*CEP</label>
-                                        <input id="cepCliente" type="text" onclick="ClickTextEditPro(720)"  class="form-control input-lg itfCEPCli" data-mask="99999-999" name="bairro" placeholder="Cep" />
+                                        <input id="cepCliente" type="tel" onclick="ClickTextEditPro(720)" class="form-control input-lg itfCEPCli" maxlength="9" name="bairro" placeholder="Cep" />
                                     </div>
                                     <div class="form-group">
                                         <label>*Endereço</label>
@@ -253,6 +253,12 @@
             
         }
 
+        $(document).ready(function ($) {
+            $('#telefoneFixo').mask('(##) ####-####');
+            $('#telefoneCelular').mask('(##) #####-####');
+            $('#cepCliente').mask('#####-###');
+          
+        });
 
     </script>
 
