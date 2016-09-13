@@ -93,10 +93,12 @@
                                     </div>
 
 
-                                    <div class="form-group">
+                                    <div class="form-group divAtualizarSenha">
                                         <button id="atualizarSenha" class="btn btn-default btn-lg" onclick="atualizarSenhaPro()">atualizar senha de acesso</button>
                                     </div>
-
+                                    <div class="divCarregaAtualizarSenha" style="display:none;text-align:center; width:100%">
+                                        <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
+                                    </div>
 
                                 </div>
                             </div>
@@ -112,14 +114,19 @@
                             </div>
                             <div id="collapseOne2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne2">
                                 <div class="panel-body">
+                                    <div style="text-align:center;">
+                                        <img id="imgFotoPerfil" src="" style="max-height:90px; max-width:90px;border-radius: 10px;" />
+                                    </div>
                                     <div class="form-group">
                                         <label>Nova foto de perfil</label>
                                         <input type="file" name="foto" id="fotoPerfilPro2">
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group divAtualizarFotoPerfil">
                                         <button id="updateProfilePicture" class="btn btn-default">atualizar</button>
                                     </div>
-
+                                    <div class="divFotoPerfil" style="display:none;text-align:center; width:100%">
+                                        <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
+                                    </div>
 
                                 </div>
                             </div>
@@ -188,15 +195,18 @@
                                         <label>Curriculum</label>
                                         <textarea class="form-control cadastroCurriculoPro" name="Curriculum" id="cadastroCurriculoPro" onclick="ClickTextEditPro(1200)" placeholder="Curriculum" rows="8"></textarea>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group divEditarPerfil">
                                         <button id="atualizarPerfil" onclick="editarMeuPerfilPro();" class="btn btn-default btn-lg">atualizar informações</button>
+                                    </div>
+                                    <div class="divCarregaEditarPerfil" style="display:none;text-align:center; width:100%">
+                                        <img src="http://app.csprofissionais.com.br/images/loadingCad.gif" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                    <button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="EfetuaLogOff()">Efetuar Logoff</button>
+                    <button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="EfetuaLogOff()" style="width:100%">Sair do sistema</button>
                     <br />
                     <span id="areaBannerAnuncio"></span>
                     <p>&nbsp;</p>

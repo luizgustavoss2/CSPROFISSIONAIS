@@ -130,7 +130,7 @@
 
                     <div class="form-group">
                         <label>CPF/CNPJ</label>
-                        <input type="text" class="form-control" id="loginPro" placeholder="Seu e-mail cadastrado" required name="email" />
+                        <input type="tel" class="form-control" id="loginPro" placeholder="Seu e-mail cadastrado" maxlength="16" required name="email" />
                     </div>
                     <div class="form-group">
                         <label>Senha</label>
@@ -344,6 +344,20 @@
             $('#cadastroCepPro').mask('########');
             $('#cadastroCep').mask('########');
             $('#telefoneCelular').mask('###########');
+
+
+
+            var field = 'clear';
+            var url = window.location.href;
+            if (url.indexOf('?' + field + '=') != -1) {
+                window.history.clear();
+            }
+            else if (url.indexOf('&' + field + '=') != -1) {
+                window.history.clear();
+            }
+            
+
+
         });
 
        

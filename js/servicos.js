@@ -264,7 +264,7 @@ function procCadastroPro() {
             $("#conteudoLoginPro").attr("style", "display:block");
             $("#divAguardeCadPro").attr("style", "display:none;");
 
-            location.href = "dashboard-pro.html";
+            location.href = "dashboard-pro.html?new=1";
         } else {
             $("#conteudoLoginPro").attr("style", "display:block");
             $("#divAguardeCadPro").attr("style", "display:none;");
@@ -805,8 +805,11 @@ function editarMeuPerfil() {
         msgerroCad = msgerroCad + "* Cidade é obrigatório! \r\n";
 
 
-    if (msgerroCad != "")
+    if (msgerroCad != "") {
         alert(msgerroCad);
+        return false;
+    }
+
 
     var idUsuario = localStorage.getItem("ClienteId");
     var senhaUsuario = localStorage.getItem("Senha");
@@ -911,14 +914,14 @@ function procPesquisa() {
     var cepPesquisa = localStorage.getItem("cepPesquisa");
     var clienteLogado = localStorage.getItem("ClienteId");
     var radius = 6371;
-    var dist = 25;
+    var dist = 50;
 
     var estrelas = 0;
-    var zeroEstrela =''
-    var umaEstrela = '<span><i class="fa fa-star" aria-hidden="true"></i></span>';
-    var duasEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
-    var tresEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
-    var quatroEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
+    var zeroEstrela = '<span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>'
+    var umaEstrela = '<span><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+    var duasEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+    var tresEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+    var quatroEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
     var cincoEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
 
     var nomeProfissional = "";
@@ -931,99 +934,151 @@ function procPesquisa() {
     console.log("Tipo de profissional buscado: " + tipoPesquisa);
     console.log("Cep de pesquisa buscado: " + cepPesquisa);
 
-    // FAZER A BUSCA NO SISTEMA
-    var request = $.ajax({
-        method: "POST",
-        url: "http://api.csprofissionais.com.br/api/profissional/listarporlatlon",
-        data: {
-            ClienteId: clienteLogado,
-            Radius: radius,
-            Dist: dist,
-            EspecializacaoId: tipoPesquisa
-        }
+    var lat = localStorage.getItem("Latitude");
+    var long = localStorage.getItem("Longitude");
+
+    var cadastroNumero = 10;
+    var cadastroRua = "";
+    var cidade = "";
+    var estado = "";
+
+    var requestCep = $.ajax({
+        method: "GET",
+        async: true,
+        url: "http://apps.widenet.com.br/busca-cep/api/cep/" + cepPesquisa + ".json"
     })
-    request.done(function (msg) {
+    requestCep.done(function (dados) {
+        cadastroRua = dados.address;
+        //$(".itfBairroCli").val(dados.district);
+        estado = dados.state;
+        cidade = dados.city;
 
-        console.log(msg);
-        console.log("Busca realizada com sucesso! Iniciando o desenho na tela:");
+        var request = $.ajax({
+            method: "GET",
+            async: false,
+            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + cadastroNumero + "+" + cadastroRua + ",+" + cidade + ",+" + estado + "&key=AIzaSyCUGRiH2iey-c2WqqeegGF2qpxBDNLsmfQ"
+            //data: { email: login, senha: senha }
+        })
+        request.done(function (msg) {
 
-        console.log("Total de profissionais encontrados: " + totProfissionais);
+            console.log("Latitude do Google: " + msg["results"][0]["geometry"]["location"]["lat"] + " Longitude do Google: " + msg["results"][0]["geometry"]["location"]["lng"]);
+            lat = msg["results"][0]["geometry"]["location"]["lat"];
+            long = msg["results"][0]["geometry"]["location"]["lng"];
 
-        if (!msg["Data"]) {
-            $("#workInner").html('<h3>Nenhum profissional encontrado<br><small>verique os critérios de busca informados e tente novamente</small></h3>');
-        } else {
-
-            var totProfissionais = msg["Data"]["List"].length;
-            for (i = 0; i < totProfissionais; i++) {
-
-                if (msg["Data"]["List"][i]["NroEstrela"] == 0) { estrelas = umaEstrela; zeroEstrela }
-                if (msg["Data"]["List"][i]["NroEstrela"] == 1) { estrelas = umaEstrela; }
-                if (msg["Data"]["List"][i]["NroEstrela"] == 2) { estrelas = duasEstrelas; }
-                if (msg["Data"]["List"][i]["NroEstrela"] == 3) { estrelas = tresEstrelas; }
-                if (msg["Data"]["List"][i]["NroEstrela"] == 4) { estrelas = quatroEstrelas; }
-                if (msg["Data"]["List"][i]["NroEstrela"] == 5) { estrelas = cincoEstrelas; }
-
-                nomeProfissional = msg["Data"]["List"][i]["Nome"];
-                celularProfissional = msg["Data"]["List"][i]["Celular"];
-                idProfissional = msg["Data"]["List"][i]["ProfissionalId"];
-
-                var foto = msg["Data"]["List"][i]["NomeFoto"];
-
-                latPro = msg["Data"]["List"][i]["Latitude"];
-                lonPro = msg["Data"]["List"][i]["Longitude"];
+        });
+        request.fail(function () {
+            console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
+        });
 
 
-                latLng2 = new google.maps.LatLng(latPro, lonPro);
 
-                var marker = new google.maps.Marker({
-                    icon: image,
-                    position: latLng2,
-                    map: map,
-                    title: "Ver perfil do profissional"
-                });
-                google.maps.event.addListener(marker, 'click', function () {
-                    verProfissional(idProfissional);
-                });
-
-                $("#workInner").append('<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;</p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>');
-
-                
+        // FAZER A BUSCA NO SISTEMA
+        var request = $.ajax({
+            method: "POST",
+            url: "http://api.csprofissionais.com.br/api/profissional/listarporlatlon",
+            data: {
+                ClienteId: clienteLogado,
+                Radius: radius,
+                Dist: dist,
+                EspecializacaoId: tipoPesquisa,
+                Latitude: lat,
+                Longitude: long
             }
-        }
+        })
+        request.done(function (msg) {
 
+            console.log(msg);
+            console.log("Busca realizada com sucesso! Iniciando o desenho na tela:");
+
+            console.log("Total de profissionais encontrados: " + totProfissionais);
+
+            if (!msg["Data"]) {
+                $("#workInner").html('<h3>Nenhum profissional encontrado<br><small>verique os critérios de busca informados e tente novamente</small></h3>');
+            } else {
+
+                var totProfissionais = msg["Data"]["List"].length;
+                for (i = 0; i < totProfissionais; i++) {
+
+                    if (msg["Data"]["List"][i]["NroEstrela"] == 0) { estrelas = zeroEstrela; }
+                    if (msg["Data"]["List"][i]["NroEstrela"] == 1) { estrelas = umaEstrela; }
+                    if (msg["Data"]["List"][i]["NroEstrela"] == 2) { estrelas = duasEstrelas; }
+                    if (msg["Data"]["List"][i]["NroEstrela"] == 3) { estrelas = tresEstrelas; }
+                    if (msg["Data"]["List"][i]["NroEstrela"] == 4) { estrelas = quatroEstrelas; }
+                    if (msg["Data"]["List"][i]["NroEstrela"] == 5) { estrelas = cincoEstrelas; }
+
+                    nomeProfissional = msg["Data"]["List"][i]["Nome"];
+                    celularProfissional = msg["Data"]["List"][i]["Celular"];
+                    idProfissional = msg["Data"]["List"][i]["ProfissionalId"];
+
+                    var foto = msg["Data"]["List"][i]["NomeFoto"];
+
+                    latPro = msg["Data"]["List"][i]["Latitude"];
+                    lonPro = msg["Data"]["List"][i]["Longitude"];
+
+
+                    latLng2 = new google.maps.LatLng(latPro, lonPro);
+
+                    var marker = new google.maps.Marker({
+                        icon: image,
+                        position: latLng2,
+                        map: map,
+                        title: "Ver perfil do profissional"
+                    });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        verProfissional(idProfissional);
+                    });
+
+                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
+                    
+                    $("#workInner").append(detalhes);
+
+
+                }
+            }
+
+
+        });
+        request.fail(function (msg) {
+            var erro = msg;
+            console.log("Nenhum resultado encontrado na busca de profissionais.");
+            $("#workInner").html('<h3>Nenhum profissional encontrado<br><small>verique os critérios de busca informados e tente novamente</small></h3>');
+
+        });
+
+
+        // DESENHAR GOOGLE MAPS
+        console.log("Vamos iniciar o desenho do GoogleMaps");
+        document.getElementById("GoogleMapa").style.height = "140px";
+
+
+        var latLng = new google.maps.LatLng(lat, long);
+        var mapOptions = {
+            zoom: 12,
+            center: latLng,
+            panControl: true,
+            draggable: true,
+            zoomControl: true,
+            scrollwheel: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById('GoogleMapa'), mapOptions);
+
+        var image = {
+            url: 'images/icon/icon-36-ldpi.png',
+            size: new google.maps.Size(36, 36),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(60, 64)
+        };
 
     });
-    request.fail(function () {
-        console.log("Nenhum resultado encontrado na busca de profissionais.");
-        $("#workInner").html('<h3>Nenhum profissional encontrado<br><small>verique os critérios de busca informados e tente novamente</small></h3>');
-
+    requestCep.fail(function (erro) {
+        var ret = erro;
+        console.log("Ocorreu um erro ao tentar carregar a CEP");
     });
 
 
-    // DESENHAR GOOGLE MAPS
-    console.log("Vamos iniciar o desenho do GoogleMaps");
-    document.getElementById("GoogleMapa").style.height = "140px";
-
-
-    var latLng = new google.maps.LatLng(-23.566525, -46.649680);
-    var mapOptions = {
-        zoom: 12,
-        center: latLng,
-        panControl: true,
-        draggable: true,
-        zoomControl: true,
-        scrollwheel: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    var map = new google.maps.Map(document.getElementById('GoogleMapa'), mapOptions);
-
-    var image = {
-        url: 'images/icon/icon-36-ldpi.png',
-        size: new google.maps.Size(36, 36),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(60, 64)
-    };
+    
 
 
     // FINAL DESENHAR GOOGLE MAPS
@@ -1088,8 +1143,8 @@ function alimentarDetalheProfissional() {
         // POPULAR HTML COM AS INFORMAÇÕES OBTIDAS
         $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + fotoPro);
         $('#nomePro').html(nomePro);
-        $('#fixoPro').append('<a href="tel:' + fixoPro+'">' + fixoPro+'</a>');
-        $('#celularPro').append('<a href="tel:' +celularPro+'">' + celularPro+'</a>');
+        $('#fixoPro').append('<a href="tel:0' + fixoPro+'">' + fixoPro+'</a>');
+        $('#celularPro').append('<a href="tel:0' +celularPro+'">' + celularPro+'</a>');
         $('#enderecoPro').append(ruaPro + ", " + numeroPro + " - " + bairroPro);
         $('#sobrePro').append(descricao);
 
@@ -1772,6 +1827,18 @@ function trocaMensagensPro() {
 // D0034 - SOLICITAÇÃO DE DESTAQUE FEITA PELO PROFISSIONAL
 function solicDestaque() {
 
+    var field = 'new';
+    var url = window.location.href;
+    if (url.indexOf('?' + field + '=') != -1) {
+        $("#btnAnucioGratis").attr("style", "display:block");
+    }
+    else if (url.indexOf('&' + field + '=') != -1) {
+        $("#btnAnucioGratis").attr("style", "display:block");
+    }
+    else {
+        $("#btnAnucioGratis").attr("style", "display:none");
+    }
+
     var idPro = localStorage.getItem("idProfissionalLogado");
 
     var request = $.ajax({
@@ -1781,11 +1848,13 @@ function solicDestaque() {
     })
     request.done(function (msg) {
 
-        $('#valorDestaque').html(msg["Data"]["Valor"]);
+        $('#valorDestaque30').html(msg["Data"]["Valores"][0]["Valor"]);
+        $('#valorDestaque90').html(msg["Data"]["Valores"][1]["Valor"]);
         console.log("Valor da solicitação de destaque capturada com sucesso");
 
     });
-    request.fail(function () {
+    request.fail(function (msg) {
+        var erro = msg;
         console.log("Ocorreu um erro ao tentar realizar a solicitação");
 
     });
@@ -1796,9 +1865,9 @@ function confirmarDestaque() {
     var idPro = localStorage.getItem("idProfissionalLogado");
 
     var request = $.ajax({
-        method: "GET",
-        url: "http://api.csprofissionais.com.br/api/profissional/SolicitaDestaque/" + idPro
-        //data: { email: login, senha: senha }
+        method: "POST",
+        url: "http://api.csprofissionais.com.br/api/profissional/SolicitaDestaque",
+        data: { Id: idPro, Periodo: $("input:radio[name='rdDestaque']:checked").val() }
     })
     request.done(function (msg) {
 
@@ -1880,6 +1949,9 @@ function popularCamposPerfilPro() {
     var estadoSigla = localStorage.getItem("EstadoSigla");
 
     var cidadeNome = localStorage.getItem("CidadeNome");
+
+    $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' +  localStorage.getItem("NomeFotoPro"));
+    
 
     $("#senhaDeAcesso").val(senha);
     $("#nomeClienteEditar").val(nome);
@@ -1980,6 +2052,9 @@ function atualizarSenhaPro() {
         return false;
     }
 
+    $('.divAtualizarSenha').css({ display: "none" });
+    $('.divCarregaAtualizarSenha').css({ display: "block" });
+
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = $("#senhaDeAcesso").val();
 
@@ -2026,6 +2101,8 @@ function atualizarSenhaPro() {
         alert("Senha alterada com sucesso!");
         console.log(msg);
         console.log("Dados (senha) atualizados com sucesso!");
+        $('.divAtualizarSenha').css({ display: "block" });
+        $('.divCarregaAtualizarSenha').css({ display: "none" });
 
     });
     request.fail(function (msg) {
@@ -2037,6 +2114,8 @@ function atualizarSenhaPro() {
         }
         console.log(msg);
         console.log("Não foi possível realizar a operação, tente novamente.");
+        $('.divAtualizarSenha').css({ display: "block" });
+        $('.divCarregaAtualizarSenha').css({ display: "none" });
     });
 
 }
@@ -2083,7 +2162,8 @@ function editarMeuPerfilPro() {
         return false;
     }
 
-
+    $('.divEditarPerfil').css({ display: "none" });
+    $('.divCarregaEditarPerfil').css({ display: "block" });
 
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = localStorage.getItem("Senha");
@@ -2194,10 +2274,15 @@ function editarMeuPerfilPro() {
         console.log(msg);
         console.log("Dados (outras informações) atualizados com sucesso!");
 
+        $('.divEditarPerfil').css({ display: "block" });
+        $('.divCarregaEditarPerfil').css({ display: "none" });
+
     });
     request.fail(function (msg) {
         console.log(msg);
         console.log("Não foi possível realizar a operação, tente novamente.");
+        $('.divEditarPerfil').css({ display: "block" });
+        $('.divCarregaEditarPerfil').css({ display: "none" });
     });
 
 
@@ -2595,6 +2680,10 @@ $('#fotoTrabalho').change(function (event) {
 
 $('#SendfotoTrabalho').click(function () {
     $('#SendfotoTrabalho').html("enviando....");
+
+    $('.divBtnSendFoto').css({ display: "none" });
+    $('.divEnviandoFoto').css({ display: "block" });
+
     var retorno = '';
     var imagemTrabalho = '';
     var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
@@ -2618,13 +2707,16 @@ $('#SendfotoTrabalho').click(function () {
         imagemTrabalho = nomeFotoTrabalho;
         console.log(imagemTrabalho);
         $('#SendfotoTrabalho').html("enviar novo trabalho");
-
+        $('.divBtnSendFoto').css({ display: "block" });
+        $('.divEnviandoFoto').css({ display: "none" });
 
     })
     request.fail(function () {
         imagemTrabalho = nomeFotoTrabalho;
         alert("Erro ao subir imagem!");
         console.log("Deu ruim o cadastro");
+        $('.divBtnSendFoto').css({ display: "block" });
+        $('.divEnviandoFoto').css({ display: "none" });
 
     });
 
@@ -2695,6 +2787,9 @@ $('#fotoPerfilPro2').change(function (event) {
 
 $('#updateProfilePicture').click(function () {
 
+    $('.divAtualizarFotoPerfil').css({ display: "none" });
+    $('.divFotoPerfil').css({ display: "block" });
+       
     if (form != undefined) {
         var imagemPerfil = '';
 
@@ -2722,11 +2817,16 @@ $('#updateProfilePicture').click(function () {
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log(imagemPerfil);
             alert("Imagem atualizada com sucesso");
+            $('.divAtualizarFotoPerfil').css({ display: "block" });
+            $('.divFotoPerfil').css({ display: "none" });
+            $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
         })
         request.fail(function () {
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log("Deu ruim o cadastro");
+            $('.divAtualizarFotoPerfil').css({ display: "block" });
+            $('.divFotoPerfil').css({ display: "none" });
         });
 
 
@@ -2787,7 +2887,7 @@ function buscarTrabalhos() {
 
             for (i = totContato; i >= 0; i--) {
                 if (msg["Data"][i]["DataLeitura"] == "") {
-                    $("#solicitacoesContatoWork").prepend("<p style='background:#DDFFFF'><b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b><a href='tel:" + msg["Data"][i]["Telefone"] + "'>" + msg["Data"][i]["Telefone"] + "</a><br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr /></p>");
+                    $("#solicitacoesContatoWork").prepend("<p style='background:#DDFFFF'><b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b><a href='tel:0" + msg["Data"][i]["Telefone"] + "'>" + msg["Data"][i]["Telefone"] + "</a><br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr /></p>");
                 } else {
                     $("#solicitacoesContatoWork").prepend("<b>Nome do cliente: </b> " + msg["Data"][i]["ClienteNome"] + "<br><b>Telefone: </b>" + msg["Data"][i]["Telefone"] + "<br><b>E-mail: </b>" + msg["Data"][i]["Email"] + "<br><b>Data solicitação: </b>" + msg["Data"][i]["DataSolicitacao"] + "<hr />");
                 }
@@ -2887,7 +2987,8 @@ function ClickTextMensPro(val) {
 
 function EfetuaLogOff() {
     localStorage.clear();
-    location.href = "index.html";
+
+    location.href = "index.html?clear=true";
 }
 
 function exitFromApp() {
