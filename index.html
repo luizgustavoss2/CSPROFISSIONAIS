@@ -350,12 +350,13 @@
             var field = 'clear';
             var url = window.location.href;
             if (url.indexOf('?' + field + '=') != -1) {
+                //window.history.back(-100);
                 window.history.clear();
             }
             else if (url.indexOf('&' + field + '=') != -1) {
+                //window.history.back(-100);
                 window.history.clear();
-            }
-            
+            }  
 
 
         });

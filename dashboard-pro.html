@@ -98,7 +98,7 @@
                         <a data-toggle="modal" data-target="#solicitacaoContato" class="btn btn-default" onclick="buscarTrabalhos()">Solicitações de contato</a>
                     </p>
                     <p>
-                        <a data-toggle="modal" data-target="#solicitacaoDestaque" onclick="solicDestaque();" class="btn btn-default">Solicitar destaque</a>
+                        <a data-toggle="modal" data-target="#solicitacaoDestaque" id="btnSolicitacaoDestaque" onclick="solicDestaque();" class="btn btn-default">Solicitar destaque</a>
                     </p>
                     <p>
                         <a class="btn btn-default" onclick="carregarComentariosPro();" data-toggle="modal" data-target="#verComentarios">Suas avaliações</a>
@@ -155,15 +155,6 @@
 
                     <p>&nbsp;</p>
 
-
-
-
-
-
-
-
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -171,11 +162,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
     <!-- ULTIMOS TRABALHOS -->
     <div class="modal fade" id="ultimosTrabalhos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -254,7 +240,7 @@
                     <div id="btnAnucioGratis" style="display:none">
                         <p>
                             <br />
-                            <button class="btn btn-primary" data-dismiss="modal">Anúncio gratis</button>
+                            <button class="btn btn-primary" data-dismiss="modal" onclick="AnuncioGratis();">Anúncio gratis</button>
                         </p>
                     </div>
 
@@ -298,6 +284,17 @@
         autoCompleteBusca();
         bannersAnuncios();
         popularHtmlPro();
+
+        var field = 'new';
+        var url = window.location.href;
+        if (url.indexOf('?' + field + '=') != -1) {
+            $('#btnSolicitacaoDestaque').click();
+        }
+        else if (url.indexOf('&' + field + '=') != -1) {
+            $('#btnSolicitacaoDestaque').click();
+            //$('#solicitacoesDestaqueWork').show();
+        }
+
     </script>
 
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->

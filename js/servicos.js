@@ -321,8 +321,8 @@ function verificarSessao() {
 
     var sessao = localStorage.getItem("ClienteId");
     if (!sessao) {
-        alert("Por favor, faça seu login novamente");
-        location.href("index.html");
+        //alert("Por favor, faça seu login novamente");
+        location.href("index.html?clear=1");
     }
 
 }
@@ -1028,7 +1028,8 @@ function procPesquisa() {
                         verProfissional(idProfissional);
                     });
 
-                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
+                    //var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
+                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
                     
                     $("#workInner").append(detalhes);
 
@@ -1665,8 +1666,8 @@ function verificarSessaoPro() {
 
     var sessao = localStorage.getItem("idProfissionalLogado");
     if (!sessao) {
-        alert("Por favor, faça seu login novamente");
-        location.href("index.html");
+       // alert("Por favor, faça seu login novamente");
+        location.href="index.html?clear=1";
     }
 
 }
@@ -1682,7 +1683,8 @@ function popularHtmlPro() {
 
     $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
 
-
+   
+    
 }
 
 // D0030 - PEGAR TODAS AS MENSAGENS EM QUE O PROFISSIONAL INTERAGIU COM UM CLIENTE
@@ -1847,10 +1849,10 @@ function solicDestaque() {
         //data: { email: login, senha: senha }
     })
     request.done(function (msg) {
-
         $('#valorDestaque30').html(msg["Data"]["Valores"][0]["Valor"]);
         $('#valorDestaque90').html(msg["Data"]["Valores"][1]["Valor"]);
         console.log("Valor da solicitação de destaque capturada com sucesso");
+
 
     });
     request.fail(function (msg) {
@@ -1874,12 +1876,18 @@ function confirmarDestaque() {
         //$('#nomeCliente').html(msg["Data"]["Nome"]); 
         console.log("Solicitação de destaque realizada com sucesso");
         alert("Solicitação de destaque realizada com sucesso");
+        location.href = "dashboard-pro.html";
 
     });
     request.fail(function () {
         console.log("Ocorreu um erro ao tentar realizar a solicitação");
 
     });
+}
+function AnuncioGratis() {
+
+    location.href = "dashboard-pro.html";
+
 }
 
 
@@ -2988,7 +2996,8 @@ function ClickTextMensPro(val) {
 function EfetuaLogOff() {
     localStorage.clear();
 
-    location.href = "index.html?clear=true";
+    location.href ="index.html?clear=1";
+    
 }
 
 function exitFromApp() {
