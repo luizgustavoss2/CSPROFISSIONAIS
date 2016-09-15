@@ -178,18 +178,29 @@ function procCadastroPro() {
         //data: { email: login, senha: senha }
     })
     request.done(function (msg) {
+        try{
+            console.log("Latitude do Google: " + msg["results"][0]["geometry"]["location"]["lat"] + " Longitude do Google: " + msg["results"][0]["geometry"]["location"]["lng"]);
 
-        console.log("Latitude do Google: " + msg["results"][0]["geometry"]["location"]["lat"] + " Longitude do Google: " + msg["results"][0]["geometry"]["location"]["lng"]);
+            latitude = msg["results"][0]["geometry"]["location"]["lat"];
+            longitude = msg["results"][0]["geometry"]["location"]["lng"];
 
-        latitude = msg["results"][0]["geometry"]["location"]["lat"];
-        longitude = msg["results"][0]["geometry"]["location"]["lng"];
+            localStorage.setItem("Latitude", msg["results"][0]["geometry"]["location"]["lat"]);
+            localStorage.setItem("Longitude", msg["results"][0]["geometry"]["location"]["lng"]);
+        }catch(err)
+        {
 
-        localStorage.setItem("Latitude", msg["results"][0]["geometry"]["location"]["lat"]);
-        localStorage.setItem("Longitude", msg["results"][0]["geometry"]["location"]["lng"]);
+        }
 
     });
     request.fail(function () {
+        try{
+        alert(msg);
+        $('.conteudoLoginPro').css({ display: "block" });
+        $('.divAguardeCadPro').css({ display: "none" });
         console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
+        } catch (err) {
+
+        }
 
     });
     // PEGAR LATITUDE E LONGITUDE
@@ -228,8 +239,7 @@ function procCadastroPro() {
         }
     })
     request.done(function (msg) {
-
-        
+                
         if (msg.Errors[0] == undefined) {
             //if (msg["Data"]["Erro"])
             console.log(msg);
@@ -264,7 +274,7 @@ function procCadastroPro() {
             $("#conteudoLoginPro").attr("style", "display:block");
             $("#divAguardeCadPro").attr("style", "display:none;");
 
-            location.href = "dashboard-pro.html?new=1";
+            window.location.href = "dashboard-pro.html?new=1";
         } else {
             $("#conteudoLoginPro").attr("style", "display:block");
             $("#divAguardeCadPro").attr("style", "display:none;");
@@ -278,9 +288,7 @@ function procCadastroPro() {
         $("#conteudoLoginPro").attr("style", "display:block");
         $("#divAguardeCadPro").attr("style", "display:none;");
     });
-
-
-}
+ }
 
 
 $(function () {
@@ -1057,10 +1065,10 @@ function procPesquisa() {
             zoom: 12,
             center: latLng,
             panControl: true,
-            draggable: true,
+            //draggable: true,
             zoomControl: true,
-            scrollwheel: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+           // scrollwheel: true //,
+           //mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         var map = new google.maps.Map(document.getElementById('GoogleMapa'), mapOptions);
