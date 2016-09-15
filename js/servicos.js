@@ -133,6 +133,48 @@ function procLogin() {
 
 // D0024 - CADASTRO DE USUÁRIOS TIPO PROFISSIONAL
 function procCadastroPro() {
+
+    var msgerro = "";
+    if ($("#cadastroNomePro").val() == "")
+        msgerro = msgerro + "* Nome é obrigatório!  \r\n";
+
+    if ($("#tipoProfissionalLista").val() == "")
+        msgerro = msgerro + "* Especialização é obrigatório!  \r\n";
+
+    if ($("#telefoneCelularPro").val() == "")
+        msgerro = msgerro + "* Telefone Celular é obrigatório!  \r\n";
+
+    if ($("#cadastroCnpjPro").val() == "")
+        msgerro = msgerro + "* CPF/CNPJ é obrigatório! \r\n";
+
+    if ($("#cadastroCepPro").val() == "")
+        msgerro = msgerro + "* CEP é obrigatório! \r\n";
+
+    if ($("#cadastroRuaPro").val() == "")
+        msgerro = msgerro + "* Endereço é obrigatório! \r\n";
+
+    if ($("#cadastroNumeroPro").val() == "")
+        msgerro = msgerro + "* Número é obrigatório! \r\n";
+
+    if ($("#cadastroBairroPro").val() == "")
+        msgerro = msgerro + "* Bairro é obrigatório! \r\n";
+
+    if ($("#estadoPro").val() == "")
+        msgerro = msgerro + "* Estado é obrigatório! \r\n";
+
+    if ($("#cidadePro").val() == "" || $("#cidadePro").val() == null)
+        msgerro = msgerro + "* Cidade é obrigatório! \r\n";
+
+
+    if ($("#cadastroSenhaPro").val() == "")
+        msgerro = msgerro + "* Senha é obrigatório! \r\n";
+
+    if (msgerro != "") {
+        alert(msgerro);
+        return false;
+    }
+
+
     $('.conteudoLoginPro').css({ display: "none" });
     $('.divAguardeCadPro').css({ display: "block" });
 
