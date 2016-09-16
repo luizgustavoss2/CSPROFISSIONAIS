@@ -1110,7 +1110,7 @@ function procPesquisa() {
             //draggable: true,
             zoomControl: true,
            // scrollwheel: true //,
-           //mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         var map = new google.maps.Map(document.getElementById('GoogleMapa'), mapOptions);
