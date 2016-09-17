@@ -3157,5 +3157,17 @@ function onDeviceReady() {
 }
 
 function closeMeNow() {
-    navigator.app.exitApp();
+    if (typeof cordova !== 'undefined') {
+        if (navigator.app) {
+            navigator.app.exitApp();
+        }
+        else if (navigator.device) {
+            navigator.device.exitApp();
+        }
+    } else {
+        window.close();
+        $timeout(function () {
+            self.showCloseMessage = true;  //since the browser can't be closed (otherwise this line would never run), ask the user to close the window
+        });
+    }
 }
