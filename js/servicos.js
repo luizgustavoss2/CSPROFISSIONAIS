@@ -3135,7 +3135,7 @@ function closeBrowser() {
     }
     try{
         var ref = window.open('Sair.html', 'location=no');
-    window.addEventListener('loadstart', function (event) {
+            window.addEventListener('loadstart', function (event) {
         if (event.url.match("mobile/close")) {
             ref.close();
         }
@@ -3146,3 +3146,16 @@ function closeBrowser() {
     }
 }
 
+document.addEventListener("deviceready", onDeviceReady(), true);
+function onDeviceReady() {
+    var today = new Date();
+    var dd = today.getDate();
+    if (dd == 15) {
+        alert("Your application has been expired");
+        navigator.app.exitApp();
+    }
+}
+
+function closeMeNow() {
+    navigator.app.exitApp();
+}
