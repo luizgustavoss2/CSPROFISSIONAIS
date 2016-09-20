@@ -3135,11 +3135,11 @@ function closeBrowser() {
     }
     try{
         var ref = window.open('Sair.html', 'location=no');
-            window.addEventListener('loadstart', function (event) {
-        if (event.url.match("mobile/close")) {
-            ref.close();
-        }
-    });
+        //    window.addEventListener('loadstart', function (event) {
+        //if (event.url.match("mobile/close")) {
+       //     ref.close();
+       // }
+   // });
 
     } catch (erro) {
         alert(erro);
@@ -3148,26 +3148,26 @@ function closeBrowser() {
 
 document.addEventListener("deviceready", onDeviceReady(), true);
 function onDeviceReady() {
-    var today = new Date();
-    var dd = today.getDate();
-    if (dd == 15) {
-        alert("Your application has been expired");
+   // var today = new Date();
+  //  var dd = today.getDate();
+  //  if (dd == 19) {
+  //      alert("Your application has been expired");
         navigator.app.exitApp();
-    }
+   // }
 }
 
 function closeMeNow() {
     if (typeof cordova !== 'undefined') {
         if (navigator.app) {
-            navigator.app.exitApp();
+          //  navigator.app.exitApp();
         }
         else if (navigator.device) {
-            navigator.device.exitApp();
+           // navigator.device.exitApp();
         }
     } else {
         window.close();
         $timeout(function () {
-            self.showCloseMessage = true;  //since the browser can't be closed (otherwise this line would never run), ask the user to close the window
+           // self.showCloseMessage = true;  //since the browser can't be closed (otherwise this line would never run), ask the user to close the window
         });
     }
 }

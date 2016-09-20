@@ -61,7 +61,7 @@
                 <button id="efetuarlogoff2" class="btn btn-primary btn-lg" onclick="closeBrowser();">closeBrowser</button>-->
                 <!--<a href="#" onclick="exitFromApp();" data-role="button">Close App</a>-->
 
-                <!--<a href="#" onclick="closeMeNow();" data-role="button">closeMeNow</a>-->
+                <a id="exitApp" href="#" onclick="onDeviceReady();" data-role="button">closeMeNow</a>
             </div>
         </div>
         <!--<input type="file" id="fileUpload" name="fileUpload" />
@@ -360,6 +360,15 @@
                 //window.history.back(-100);
                 window.history.clear();
             }  
+
+            //document.addEventListener("deviceready", onDeviceReady, false);
+            //
+            //function onDeviceReady() {
+            //    // alert("deviceready");
+            //    document.getElementById('exitApp').addEventListener('click', function () {
+            //        navigator.app.exitApp();
+            //    });
+            //}
 
 
         });
