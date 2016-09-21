@@ -12,16 +12,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src *;
-                  style-src * 'self' 'unsafe-inline' 'unsafe-eval';
-                  script-src * 'self' 'unsafe-inline' 'unsafe-eval';">
+
 
     <!-- DESCRIÇÃO DO SITE -->
     <meta name="description" content="Coloque aqui a descrição do site" />
     <!-- PALAVRAS CHAVE -->
     <meta name="keywords" content="coloque aqui as palavras chave separadas por virgula" />
-    <!--<meta http-equiv="Content-Security-Policy" content="default-src *; script-src * 'unsafe-eval' 'unsafe-inline'; connect-src *; img-src *; style-src * 'unsafe-inline' ; media-src *">-->
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src * 'unsafe-eval' 'unsafe-inline'; connect-src *; img-src *; style-src * 'unsafe-inline' ; media-src *">
 
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="all" />
@@ -64,7 +61,7 @@
                 <!--<button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="onDeviceReady()">onDeviceReady</button>-->
 
                 <!--<button id="efetuarlogoff2" class="btn btn-primary btn-lg" onclick="closeBrowser();">closeBrowser</button>-->
-                <button id="backbutton" class="btn btn-primary btn-lg" onclick="onConfirmQuit();">closeMeNow</button>
+                <button id="backbutton" class="btn btn-primary btn-lg" onclick="exitAppPopup()">closeMeNow</button>
                 <!--<a href="#" onclick="exitFromApp();" data-role="button">Close App</a>-->
 
                 <!--<a id="exitApp" href="#" onclick="onDeviceReady();" data-role="button">closeMeNow</a>-->
