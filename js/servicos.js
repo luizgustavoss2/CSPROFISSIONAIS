@@ -176,7 +176,7 @@ function procCadastroPro() {
 
     //var validaDocumento = validaCpfCnpj($("#cadastroCnpjPro").val());
 
-    //if (validaDocumento == true) {
+    //if (validaDocumento != true) {
     //    alert("* CPF/CNPJ inválido!");
     //    $("#cadastroCnpjPro").focus();
     //    return false;
@@ -2397,8 +2397,8 @@ function editarMeuPerfilPro() {
 
         //localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
         localStorage.setItem("Nome", msg["Data"]["Nome"]);
-        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"].ReplaceAll('(', '').ReplaceAll(')', '').ReplaceAll('-', '').ReplaceAll(' ', ''));
-        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"].ReplaceAll('(', '').ReplaceAll(')', '').ReplaceAll('-', '').ReplaceAll(' ', ''));
+        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
+        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
         localStorage.setItem("Email", msg["Data"]["Email"]);
         localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
         //localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
@@ -3221,7 +3221,7 @@ function procVerificaUsuarioLogado() {
 function validaCpfCnpj(val) {
     var valid = null;
     valid = validate_cpf(val);
-    if (valid == true) {
+    if (valid != true) {
         valid = validate_cnpj(val);
     }
 }
