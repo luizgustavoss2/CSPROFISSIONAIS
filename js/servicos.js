@@ -174,6 +174,35 @@ function procCadastroPro() {
         return false;
     }
 
+    var validaDocumento = validaCpfCnpj($("#cadastroCnpjPro").val());
+
+    if (validaDocumento != true) {
+        alert("* CPF/CNPJ inválido!");
+        $("#cadastroCnpjPro").focus();
+        return false;
+    }
+
+    if ($("#cadastroEmailPro").val() != "") {
+        var valida = validacaoEmail($("#cadastroEmailPro").val());
+        if (valida != true) {
+            alert("* E-mail inválido!");
+            $("#cadastroEmailPro").focus();
+            return false;
+        }
+    }
+
+    if ($("#telefoneCelularPro").val().length < 10) {
+        alert("Telefone Celular inválido!");
+        $("#telefoneCelularPro").focus();
+        return false;
+    }
+
+    if ($("#cadastroSenhaPro").val().length < 6) {
+        alert("Senha deve ter no mínimo 6 caracters!");
+        $("#cadastroSenhaPro").focus();
+        return false;
+    }
+
 
     $('.conteudoLoginPro').css({ display: "none" });
     $('.divAguardeCadPro').css({ display: "block" });
@@ -220,7 +249,7 @@ function procCadastroPro() {
         //data: { email: login, senha: senha }
     })
     request.done(function (msg) {
-        try{
+        try {
             console.log("Latitude do Google: " + msg["results"][0]["geometry"]["location"]["lat"] + " Longitude do Google: " + msg["results"][0]["geometry"]["location"]["lng"]);
 
             latitude = msg["results"][0]["geometry"]["location"]["lat"];
@@ -228,18 +257,17 @@ function procCadastroPro() {
 
             localStorage.setItem("Latitude", msg["results"][0]["geometry"]["location"]["lat"]);
             localStorage.setItem("Longitude", msg["results"][0]["geometry"]["location"]["lng"]);
-        }catch(err)
-        {
+        } catch (err) {
 
         }
 
     });
     request.fail(function () {
-        try{
-        alert(msg);
-        $('.conteudoLoginPro').css({ display: "block" });
-        $('.divAguardeCadPro').css({ display: "none" });
-        console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
+        try {
+            alert(msg);
+            $('.conteudoLoginPro').css({ display: "block" });
+            $('.divAguardeCadPro').css({ display: "none" });
+            console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
         } catch (err) {
 
         }
@@ -250,9 +278,9 @@ function procCadastroPro() {
     console.log("Latitude atual: " + latitude + " Longitude atual: " + longitude);
 
     // SETAR NA SESSÃO O ID DA CIDADE
-   // getIdEstadoCidade(estadoPro, cidadePro);
+    // getIdEstadoCidade(estadoPro, cidadePro);
 
-   // var idCidade = localStorage.getItem("cidadeId");
+    // var idCidade = localStorage.getItem("cidadeId");
     var idCidade = 0;
     // POPULAR ARRAY DO ENDEREÇO
 
@@ -281,7 +309,7 @@ function procCadastroPro() {
         }
     })
     request.done(function (msg) {
-                
+
         if (msg.Errors[0] == undefined) {
             //if (msg["Data"]["Erro"])
             console.log(msg);
@@ -330,7 +358,7 @@ function procCadastroPro() {
         $("#conteudoLoginPro").attr("style", "display:block");
         $("#divAguardeCadPro").attr("style", "display:none;");
     });
- }
+}
 
 
 $(function () {
@@ -489,6 +517,29 @@ function procCadastro() {
 
         return false;
     }
+
+    if ($("#cadastroEmail").val() != "") {
+        var valida = validacaoEmail($("#cadastroEmail").val());
+        if (valida != true) {
+            alert("* E-mail inválido!");
+            $("#cadastroEmail").focus();
+            return false;
+        }
+    }
+
+    if ($("#telefoneCelular").val().length < 10) {
+        alert("Telefone Celular inválido!");
+        $("#telefoneCelular").focus();
+        return false;
+    }
+
+
+    if ($("#cadastroSenha").val().length < 6) {
+        alert("Senha deve ter no mínimo 6 caracters!");
+        $("#cadastroSenha").focus();
+        return false;
+    }
+
 
     $("#conteudoLogin").attr("style", "display:none");
     $("#divAguardeCadCli").attr("style", "display:block;text-align:center; width:100%")
@@ -860,6 +911,12 @@ function editarMeuPerfil() {
         return false;
     }
 
+    if ($("#telefoneCelular").val().length < 10) {
+        alert("Telefone Celular inválido!");
+        $("#telefoneCelular").focus();
+        return false;
+    }
+
 
     var idUsuario = localStorage.getItem("ClienteId");
     var senhaUsuario = localStorage.getItem("Senha");
@@ -979,7 +1036,7 @@ function procPesquisa() {
     var idProfissional = "";
 
     var latLng2 = "";
-    
+
     console.log("Execução da busca de profissionais...");
     console.log("Tipo de profissional buscado: " + tipoPesquisa);
     console.log("Cep de pesquisa buscado: " + cepPesquisa);
@@ -1074,13 +1131,14 @@ function procPesquisa() {
                         map: map,
                         title: "Ver perfil do profissional"
                     });
+
                     google.maps.event.addListener(marker, 'click', function () {
                         verProfissional(idProfissional);
                     });
 
                     //var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
                     var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
-                    
+
                     $("#workInner").append(detalhes);
 
 
@@ -1099,7 +1157,7 @@ function procPesquisa() {
 
         // DESENHAR GOOGLE MAPS
         console.log("Vamos iniciar o desenho do GoogleMaps");
-        document.getElementById("GoogleMapa").style.height = "140px";
+        document.getElementById("GoogleMapa").style.height = "180px";
 
 
         var latLng = new google.maps.LatLng(lat, long);
@@ -1109,7 +1167,7 @@ function procPesquisa() {
             panControl: true,
             //draggable: true,
             zoomControl: true,
-           // scrollwheel: true //,
+            // scrollwheel: true //,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
@@ -1122,6 +1180,19 @@ function procPesquisa() {
             anchor: new google.maps.Point(60, 64)
         };
 
+        var marker = new google.maps.Marker({
+            icon: image2,
+            position: latLng,
+            map: map,
+            title: "Onde estou"
+        });
+        var image2 = {
+            url: 'images/icon/cliente1.png',
+            size: new google.maps.Size(36, 36),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(60, 64)
+        };
+
     });
     requestCep.fail(function (erro) {
         var ret = erro;
@@ -1129,7 +1200,7 @@ function procPesquisa() {
     });
 
 
-    
+
 
 
     // FINAL DESENHAR GOOGLE MAPS
@@ -1194,8 +1265,8 @@ function alimentarDetalheProfissional() {
         // POPULAR HTML COM AS INFORMAÇÕES OBTIDAS
         $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + fotoPro);
         $('#nomePro').html(nomePro);
-        $('#fixoPro').append('<a href="tel:0' + fixoPro+'">' + fixoPro+'</a>');
-        $('#celularPro').append('<a href="tel:0' +celularPro+'">' + celularPro+'</a>');
+        $('#fixoPro').append('<a href="tel:0' + fixoPro + '">' + fixoPro + '</a>');
+        $('#celularPro').append('<a href="tel:0' + celularPro + '">' + celularPro + '</a>');
         $('#enderecoPro').append(ruaPro + ", " + numeroPro + " - " + bairroPro);
         $('#sobrePro').append(descricao);
 
@@ -1313,7 +1384,7 @@ function carregarComentarios() {
 
 
 
-            $('#areaComentarios').append('<!-- COMENTARIO --><div class="row"><div class="col-sm-12 col-xs-12"><p class="text-right" style="margin-top:-18px;"><i>' + getNome(msg["Data"]["List"][i]["ClienteId"]) + ' disse:</i><br>' + msg["Data"]["List"][i]["Mensagem"] + '<br><b>Nota:</b> ' + (nota/2) + '</p></div></div><!-- COMENTARIO --><p>&nbsp;</p>')
+            $('#areaComentarios').append('<!-- COMENTARIO --><div class="row"><div class="col-sm-12 col-xs-12"><p class="text-right" style="margin-top:-18px;"><i>' + getNome(msg["Data"]["List"][i]["ClienteId"]) + ' disse:</i><br>' + msg["Data"]["List"][i]["Mensagem"] + '<br><b>Nota:</b> ' + (nota / 2) + '</p></div></div><!-- COMENTARIO --><p>&nbsp;</p>')
             console.log("Avaliação Impressa com sucesso");
 
         }
@@ -1678,7 +1749,8 @@ function procLoginPro() {
 
             localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
             localStorage.setItem("Nome", msg["Data"]["Nome"]);
-            localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
+  
+            localStorage.setItem("TelefoneFixo",  msg["Data"]["TelefoneFixo"]);
             localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
             localStorage.setItem("Email", msg["Data"]["Email"]);
             localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
@@ -1716,8 +1788,8 @@ function verificarSessaoPro() {
 
     var sessao = localStorage.getItem("idProfissionalLogado");
     if (!sessao) {
-       // alert("Por favor, faça seu login novamente");
-        location.href="index.html?clear=1";
+        // alert("Por favor, faça seu login novamente");
+        location.href = "index.html?clear=1";
     }
 
 }
@@ -1733,8 +1805,8 @@ function popularHtmlPro() {
 
     $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
 
-   
-    
+
+
 }
 
 // D0030 - PEGAR TODAS AS MENSAGENS EM QUE O PROFISSIONAL INTERAGIU COM UM CLIENTE
@@ -1912,6 +1984,7 @@ function solicDestaque() {
     });
 
 }
+
 function confirmarDestaque() {
 
     var idPro = localStorage.getItem("idProfissionalLogado");
@@ -1934,12 +2007,12 @@ function confirmarDestaque() {
 
     });
 }
+
 function AnuncioGratis() {
 
     location.href = "dashboard-pro.html";
 
 }
-
 
 
 // D0035 - CARREGAR COMENTÁRIOS FEITOS PARA O PROFISSIONAL (PROFISSIONAL)
@@ -2008,8 +2081,8 @@ function popularCamposPerfilPro() {
 
     var cidadeNome = localStorage.getItem("CidadeNome");
 
-    $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' +  localStorage.getItem("NomeFotoPro"));
-    
+    $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
+
 
     $("#senhaDeAcesso").val(senha);
     $("#nomeClienteEditar").val(nome);
@@ -2220,6 +2293,23 @@ function editarMeuPerfilPro() {
         return false;
     }
 
+    if ($("#telefoneCelular").val().length < 10) {
+        alert("Telefone Celular inválido!");
+        $("#telefoneCelular").focus();
+        return false;
+    }
+
+    if ($("#emailCliente").val() != "") {
+        var valida = validacaoEmail($("#emailCliente").val());
+        if (valida != true) {
+            alert("* E-mail inválido!");
+            $("#emailCliente").focus();
+            return false;
+        }
+    }
+
+
+
     $('.divEditarPerfil').css({ display: "none" });
     $('.divCarregaEditarPerfil').css({ display: "block" });
 
@@ -2284,7 +2374,7 @@ function editarMeuPerfilPro() {
     var idCidade = 0;// localStorage.getItem("cidadeId");
 
     console.log("ID DO USUARIO: " + idUsuario); console.log("Vamos atualizar os dados agora...");
-    
+
     endereco = { cidadeId: idCidade, Cidade: cidadePro, Estado: estadoPro, Nome: nomeRua, numero: numero, bairro: bairro, cep: cep, latitude: latitude, longitude: longitude }
 
     var request = $.ajax({
@@ -2307,8 +2397,8 @@ function editarMeuPerfilPro() {
 
         //localStorage.setItem("idProfissionalLogado", msg["Data"]["ProfissionalId"]);
         localStorage.setItem("Nome", msg["Data"]["Nome"]);
-        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"]);
-        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"]);
+        localStorage.setItem("TelefoneFixo", msg["Data"]["TelefoneFixo"].ReplaceAll('(', '').ReplaceAll(')', '').ReplaceAll('-', '').ReplaceAll(' ', ''));
+        localStorage.setItem("TelefoneCelular", msg["Data"]["TelefoneCelular"].ReplaceAll('(', '').ReplaceAll(')', '').ReplaceAll('-', '').ReplaceAll(' ', ''));
         localStorage.setItem("Email", msg["Data"]["Email"]);
         localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
         //localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
@@ -2634,6 +2724,13 @@ function procCadastroProPre() {
         return false;
     }
 
+    if ($("#cadastroSenhaPro").val().length < 6) {
+        alert("Senha deve ter no mínimo 6 caracters!");
+        $("#cadastroSenhaPro").focus();
+        return false;
+    }
+
+
     //var img = document.getElementById('fotoPerfilPro').files[0];
     if (form != undefined) {
         $("#conteudoLoginPro").attr("style", "display:none");
@@ -2847,7 +2944,7 @@ $('#updateProfilePicture').click(function () {
 
     $('.divAtualizarFotoPerfil').css({ display: "none" });
     $('.divFotoPerfil').css({ display: "block" });
-       
+
     if (form != undefined) {
         var imagemPerfil = '';
 
@@ -3046,8 +3143,8 @@ function ClickTextMensPro(val) {
 function EfetuaLogOff() {
     localStorage.clear();
 
-    location.href ="index.html?clear=1";
-    
+    location.href = "index.html?clear=1";
+
 }
 
 function exitFromApp() {
@@ -3072,8 +3169,7 @@ function exitFromApp() {
     try {
         navigator.app.exitApp();
 
-    }catch(err)
-    {
+    } catch (err) {
 
     }
 
@@ -3122,52 +3218,184 @@ function procVerificaUsuarioLogado() {
 
 }
 
-function closeBrowser() {
-    try{
-       // if(history.length==1){
-          //  window.open('mobile/close');
-       // }else{
-            //history.back();
-       // }
-    }catch(erro)
-    {
+function validaCpfCnpj(val) {
+    var valid = null;
+    valid = validate_cpf(val);
+    if (valid != true) {
+        valid = validate_cnpj(val);
+    }
+}
+
+function validate_cnpj(val) {
+
+    if (val.match(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/) != null) {
+        var val1 = val.substring(0, 2);
+        var val2 = val.substring(3, 6);
+        var val3 = val.substring(7, 10);
+        var val4 = val.substring(11, 15);
+        var val5 = val.substring(16, 18);
+
+        var i;
+        var number;
+        var result = true;
+
+        number = (val1 + val2 + val3 + val4 + val5);
+
+        s = number;
+
+        c = s.substr(0, 12);
+        var dv = s.substr(12, 2);
+        var d1 = 0;
+
+        for (i = 0; i < 12; i++)
+            d1 += c.charAt(11 - i) * (2 + (i % 8));
+
+        if (d1 == 0)
+            result = false;
+
+        d1 = 11 - (d1 % 11);
+
+        if (d1 > 9) d1 = 0;
+
+        if (dv.charAt(0) != d1)
+            result = false;
+
+        d1 *= 2;
+        for (i = 0; i < 12; i++) {
+            d1 += c.charAt(11 - i) * (2 + ((i + 1) % 8));
+        }
+
+        d1 = 11 - (d1 % 11);
+        if (d1 > 9) d1 = 0;
+
+        if (dv.charAt(1) != d1)
+            result = false;
+
+        return result;
+    }
+    return false;
+}
+
+function validate_cpf(val) {
+
+    if (val.match(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/) != null) {
+        var val1 = val.substring(0, 3);
+        var val2 = val.substring(4, 7);
+        var val3 = val.substring(8, 11);
+        var val4 = val.substring(12, 14);
+
+        var i;
+        var number;
+        var result = true;
+
+        number = (val1 + val2 + val3 + val4);
+
+        s = number;
+        c = s.substr(0, 9);
+        var dv = s.substr(9, 2);
+        var d1 = 0;
+
+        for (i = 0; i < 9; i++) {
+            d1 += c.charAt(i) * (10 - i);
+        }
+
+        if (d1 == 0)
+            result = false;
+
+        d1 = 11 - (d1 % 11);
+        if (d1 > 9) d1 = 0;
+
+        if (dv.charAt(0) != d1)
+            result = false;
+
+        d1 *= 2;
+        for (i = 0; i < 9; i++) {
+            d1 += c.charAt(i) * (11 - i);
+        }
+
+        d1 = 11 - (d1 % 11);
+        if (d1 > 9) d1 = 0;
+
+        if (dv.charAt(1) != d1)
+            result = false;
+
+        return result;
+    }
+
+    return false;
+}
+
+function validacaoEmail(val) {
+    var retorno = true;
+    usuario = val.substring(0, val.indexOf("@"));
+    dominio = val.substring(val.indexOf("@") + 1, val.length);
+
+    if ((usuario.length >= 1) &&
+        (dominio.length >= 3) &&
+        (usuario.search("@") == -1) &&
+        (dominio.search("@") == -1) &&
+        (usuario.search(" ") == -1) &&
+        (dominio.search(" ") == -1) &&
+        (dominio.search(".") != -1) &&
+        (dominio.indexOf(".") >= 1) &&
+        (dominio.lastIndexOf(".") < dominio.length - 1)) {
 
     }
-    try{
+    else {
+        retorno = false;
+    }
+
+    return retorno;
+}
+
+
+function closeBrowser() {
+    try {
+        // if(history.length==1){
+        //  window.open('mobile/close');
+        // }else{
+        //history.back();
+        // }
+        navigator.app.exitApp();
+    } catch (erro) {
+
+    }
+    try {
         var ref = window.open('Sair.html', 'location=no');
-        //    window.addEventListener('loadstart', function (event) {
-        //if (event.url.match("mobile/close")) {
-       //     ref.close();
-       // }
-   // });
+        window.addEventListener('loadstart', function (event) {
+        if (event.url.match("mobile/close")) {
+             ref.close();
+         }
+        });
 
     } catch (erro) {
         alert(erro);
     }
 }
 
-document.addEventListener("deviceready", onDeviceReady(), true);
+//document.addEventListener("deviceready", onDeviceReady(), true);
 function onDeviceReady() {
-   // var today = new Date();
-  //  var dd = today.getDate();
-  //  if (dd == 19) {
-  //      alert("Your application has been expired");
-        navigator.app.exitApp();
-   // }
+    // var today = new Date();
+    //  var dd = today.getDate();
+    //  if (dd == 19) {
+    //      alert("Your application has been expired");
+   // navigator.app.exitApp();
+    //navigator.device.exitApp()
+    // }
 }
 
 function closeMeNow() {
     if (typeof cordova !== 'undefined') {
         if (navigator.app) {
-          //  navigator.app.exitApp();
+             navigator.app.exitApp();
         }
         else if (navigator.device) {
-           // navigator.device.exitApp();
+             navigator.device.exitApp();
         }
     } else {
         window.close();
         $timeout(function () {
-           // self.showCloseMessage = true;  //since the browser can't be closed (otherwise this line would never run), ask the user to close the window
+         //   self.showCloseMessage = true;  //since the browser can't be closed (otherwise this line would never run), ask the user to close the window
         });
     }
 }

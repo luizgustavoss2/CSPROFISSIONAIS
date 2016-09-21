@@ -33,6 +33,7 @@
 
     <!-- FONTE UBUNTU -->
     <!--<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>-->
+
     <script type="text/javascript">
 
 
@@ -56,12 +57,13 @@
             <div class="col-sm-12 col-xs-12">
                 <br />
                 <!--<a href="javascript:;" onclick="closeBrowser()">Close</a>-->
-                <!--<button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="onDeviceReady()">onDeviceReady</button>
+                <!--<button id="efetuarlogoff" class="btn btn-primary btn-lg" onclick="onDeviceReady()">onDeviceReady</button>-->
 
-                <button id="efetuarlogoff2" class="btn btn-primary btn-lg" onclick="closeBrowser();">closeBrowser</button>-->
+                <button id="efetuarlogoff2" class="btn btn-primary btn-lg" onclick="closeBrowser();">closeBrowser</button>
+                <button id="efetuarlogoff2" class="btn btn-primary btn-lg" onclick="closeMeNow();">closeMeNow</button>
                 <!--<a href="#" onclick="exitFromApp();" data-role="button">Close App</a>-->
 
-                <a id="exitApp" href="#" onclick="onDeviceReady();" data-role="button">closeMeNow</a>
+                <!--<a id="exitApp" href="#" onclick="onDeviceReady();" data-role="button">closeMeNow</a>-->
             </div>
         </div>
         <!--<input type="file" id="fileUpload" name="fileUpload" />
@@ -324,6 +326,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="js/cidades-estados-v0.2.js"></script>
+    <!--<script type="text/javascript" src="js/jquery.json.min.js"></script>-->
     <script type="text/javascript">
         window.onload = function () {
             new dgCidadesEstados(
@@ -339,6 +342,8 @@
 
             procVerificaUsuarioLogado();
             onLoad();
+
+            document.addEventListener("deviceready", onDeviceReady, true);
         }
 
         $(document).ready(function ($) {
@@ -353,12 +358,12 @@
             var field = 'clear';
             var url = window.location.href;
             if (url.indexOf('?' + field + '=') != -1) {
-                //window.history.back(-100);
-                window.history.clear();
+               // window.history.back(-100);
+               // window.history.clear();
             }
             else if (url.indexOf('&' + field + '=') != -1) {
                 //window.history.back(-100);
-                window.history.clear();
+                //window.history.clear();
             }  
 
             //document.addEventListener("deviceready", onDeviceReady, false);
@@ -391,7 +396,6 @@
     </script>
 
 
-    <script type="text/javascript" src="js/jquery.json.min.js"></script>
     <script type="text/javascript" src="js/servicos.js"></script>
 
     <script type="text/javascript">
