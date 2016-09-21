@@ -3403,13 +3403,13 @@ function closeMeNow() {
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
-    document.addEventListener("backbutton", function (e) {
-        if ($.mobile.activePage.is('#index')) {
-            e.preventDefault();
+   // document.addEventListener("backbutton", function (e) {
+        //if ($.mobile.activePage.is('#index')) {
+          //  e.preventDefault();
             navigator.app.exitApp();
-        }
-        else {
-            navigator.app.backHistory()
-        }
-    }, false);
+        //}
+        //else {
+          //  navigator.app.backHistory()
+       // }
+    //}, false);
 }
