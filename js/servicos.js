@@ -174,13 +174,13 @@ function procCadastroPro() {
         return false;
     }
 
-    var validaDocumento = validaCpfCnpj($("#cadastroCnpjPro").val());
+    //var validaDocumento = validaCpfCnpj($("#cadastroCnpjPro").val());
 
-    if (validaDocumento != true) {
-        alert("* CPF/CNPJ inválido!");
-        $("#cadastroCnpjPro").focus();
-        return false;
-    }
+    //if (validaDocumento == true) {
+    //    alert("* CPF/CNPJ inválido!");
+    //    $("#cadastroCnpjPro").focus();
+    //    return false;
+    //}
 
     if ($("#cadastroEmailPro").val() != "") {
         var valida = validacaoEmail($("#cadastroEmailPro").val());
@@ -3221,7 +3221,7 @@ function procVerificaUsuarioLogado() {
 function validaCpfCnpj(val) {
     var valid = null;
     valid = validate_cpf(val);
-    if (valid != true) {
+    if (valid == true) {
         valid = validate_cnpj(val);
     }
 }
@@ -3440,6 +3440,7 @@ document.addEventListener("backbutton", function () {
 }, false);
 
 function exitAppPopup() {
+    navigator.app.exitApp();
     navigator.notification.confirm(
           'Exit PhoneGap ' + device.cordova + ' Demo?'
         , function (button) {
