@@ -3413,3 +3413,20 @@ function onDeviceReady() {
        // }
     //}, false);
 }
+
+document.addEventListener("exitButton", function () {
+
+    navigator.notification.confirm(
+           'Do you want to quit',
+           onConfirmQuit,
+           'QUIT TITLE',
+           'OK,Cancel'
+    );
+
+}, true);
+
+function onConfirmQuit(button) {
+    if (button == "1") {
+        navigator.app.exitApp();
+    }
+}
