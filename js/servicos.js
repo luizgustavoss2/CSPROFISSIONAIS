@@ -1626,7 +1626,7 @@ function TodasMensagens() {
 
         for (i = 0; i < totInt; i++) {
 
-            $('#areaTodasMsg').prepend('<div class="row" onclick="interagirProfissional(' + msg["Data"]["List"][i]["ProfissionalId"] + ');" style="padding:20px;"><div class="col-xs-3 col-md-3" style="padding-right:0px;"><img style="max-height:75px;max-width:75px;" src="http://www.csprofissionais.com.br/upload/' + msg["Data"]["List"][i]["NomeFoto"] + '" class="img-responsive" alt="" style="width:100%;" /></div><div class="col-xs-9 col-md-9"><div><b style="color:#d32f2f;">' + msg["Data"]["List"][i]["Nome"] + '</b><div class="mic-info"><i>celular: ' + msg["Data"]["List"][i]["TelefoneCelular"] + '</i></div></div><div class="comment-text">clique para abrir a conversa</div></div></div>');
+            $('#areaTodasMsg').prepend('<div class="row" onclick="interagirProfissional(' + msg["Data"]["List"][i]["ProfissionalId"] + ');" style="padding:20px;"><div class="col-xs-3 col-md-3" style="padding-right:0px;"><img style="max-height:75px;max-width:75px;" src="http://www.csprofissionais.com.br/upload/'+ msg["Data"]["List"][i]["NomeFoto"] + '" class="img-responsive" alt="" style="width:100%;" /></div><div class="col-xs-9 col-md-9"><div><b style="color:#d32f2f;">' + msg["Data"]["List"][i]["Nome"] + '</b><div class="mic-info"><i>celular: ' + msg["Data"]["List"][i]["TelefoneCelular"] + '</i></div></div><div class="comment-text">clique para abrir a conversa</div></div></div>');
 
         }
 
@@ -3144,7 +3144,7 @@ function EfetuaLogOff() {
     localStorage.clear();
 
     location.href = "index.html?clear=1";
-
+    
 }
 
 function exitFromApp() {
