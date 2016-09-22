@@ -3142,7 +3142,7 @@ function ClickTextMensPro(val) {
 
 function EfetuaLogOff() {
     localStorage.clear();
-
+    
     location.href = "index.html?clear=1";
     
 }
