@@ -87,6 +87,9 @@ function procLogin() {
         return 1;
     }
 
+    $("#conteudoLogin2").attr("style", "display:none");
+    $("#divAguardeLogCli").attr("style", "display:block;text-align:center; width:100%");
+
     var request = $.ajax({
         method: "POST",
         url: "http://api.csprofissionais.com.br/api/cliente/Login",
@@ -96,6 +99,8 @@ function procLogin() {
 
         if (!msg["Data"]) {
             alert("Login ou Senha incorretos");
+            $("#conteudoLogin2").attr("style", "display:block");
+            $("#divAguardeLogCli").attr("style", "display:none;text-align:center; width:100%");
         } else {
 
             localStorage.setItem("ClienteId", msg["Data"]["ClienteId"]);
@@ -116,14 +121,17 @@ function procLogin() {
 
             localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
             localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
-
+            $("#conteudoLogin2").attr("style", "display:block");
+            $("#divAguardeLogCli").attr("style", "display:none;text-align:center; width:100%");
             location.href = "dashboard.html";
 
         }
 
     });
     request.fail(function (msg) {
-        alert("Não foi possível realizar o seu login, tente novamente");
+        alert("Login/Senha incorreto!");
+        $("#conteudoLogin2").attr("style", "display:block");
+        $("#divAguardeLogCli").attr("style", "display:none;text-align:center; width:100%");
         var erro = msg;
         //location.href = "index.html";
     });
@@ -542,7 +550,7 @@ function procCadastro() {
 
 
     $("#conteudoLogin").attr("style", "display:none");
-    $("#divAguardeCadCli").attr("style", "display:block;text-align:center; width:100%")
+    $("#divAguardeCadCli").attr("style", "display:block;text-align:center; width:100%");
 
     var cadastroNome = $("#cadastroNome").val();
     var cadastroEmail = $("#cadastroEmail").val();
@@ -1199,15 +1207,9 @@ function procPesquisa() {
         console.log("Ocorreu um erro ao tentar carregar a CEP");
     });
 
-
-
-
-
     // FINAL DESENHAR GOOGLE MAPS
     console.log("Desenho do GoogleMaps finalizado");
     console.log("Fim execução da listagem de profissionais encontrados");
-
-
 
 }
 
@@ -1727,6 +1729,8 @@ function autoCompletePro() {
 // D0027 - FUNÇÃO PARA LOGAR O USUÁRIO COMO PROFISSIONAL
 function procLoginPro() {
 
+    btnLogProf
+    divAguardeLogProf
     var login = $("#loginPro").val();
     var senha = $("#senhaPro").val();
 
@@ -1734,6 +1738,9 @@ function procLoginPro() {
         alert("Login e Senha são obrigatórios");
         return 1;
     }
+
+    $("#btnLogProf").attr("style", "display:none");
+    $("#divAguardeLogProf").attr("style", "display:block;text-align:center; width:100%");
 
     var request = $.ajax({
         method: "POST",
@@ -1744,6 +1751,8 @@ function procLoginPro() {
 
         if (!msg["Data"]) {
             alert("Login ou Senha incorretos");
+            $("#btnLogProf").attr("style", "display:block");
+            $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
             return false;
         } else {
 
@@ -1766,16 +1775,23 @@ function procLoginPro() {
             localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
             localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
             localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
-            localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
+            try{
+                localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
+            }catch(err){}
+           
             localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
-            location.href = "dashboard-pro.html";
+            $("#btnLogProf").attr("style", "display:block");
+            $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
+            location.href = "dashboard-pro.html";          
 
         }
 
     });
     request.fail(function (msg) {
         var retorno = msg;
-        alert("Não foi possível realizar o seu login, tente novamente");
+        alert("Login/Senha incorreto!");
+        $("#btnLogProf").attr("style", "display:block");
+        $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
         return false;
         //location.href = "index.html";
     });
@@ -3135,7 +3151,7 @@ function ClickTextEditPro(val) {
 function ClickTextMensPro(val) {
 
     $('html, body').animate({
-        scrollTop: $('.' + val).offset().top
+        scrollTop: $('.' + val).offset().top -100
     }, 1500);
     //alert($('.' + val).offset().top);
 }
