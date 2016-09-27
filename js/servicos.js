@@ -3158,8 +3158,8 @@ function ClickTextMensPro(val) {
 
 function EfetuaLogOff() {
     localStorage.clear();
-    
-    location.href = "index.html?clear=1";
+    history.go(-(history.length - 1));
+    //location.href = "index.html?clear=1";
     
 }
 
