@@ -3106,6 +3106,18 @@ function verificaVersaoAtual() {
             console.log("APLICATIVO ESTÁ ATUALIZADO");
         } else {
             console.log("DIRECIONANDO O USUÁRIO PARA A LOJA DE APLICATIVO");
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+
+            // USER ANDROID
+            if (/android/i.test(userAgent)) {
+                location.href="https://play.google.com/store?hl=pt_BR";
+            }
+            
+            // USER IOS
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                location.href="https://www.appstore.com/";
+            }
         }
 
     });
