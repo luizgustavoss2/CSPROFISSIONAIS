@@ -68,7 +68,7 @@
 var form;
 var nomeFoto;
 // SETAR A VERSÃO ATUAL DO APLICATIVO NESSA VARIAVEL
-var versaoApp = "v1.1";
+var versaoApp = "v1.2";
 
 var especializacaoData;
 
@@ -121,8 +121,8 @@ function procLogin() {
 
             localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
             localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
-            $("#conteudoLogin2").attr("style", "display:block");
-            $("#divAguardeLogCli").attr("style", "display:none;text-align:center; width:100%");
+           // $("#conteudoLogin2").attr("style", "display:block");
+           // $("#divAguardeLogCli").attr("style", "display:none;text-align:center; width:100%");
             location.href = "dashboard.html";
 
         }
@@ -212,8 +212,8 @@ function procCadastroPro() {
     }
 
 
-    $('.conteudoLoginPro').css({ display: "none" });
-    $('.divAguardeCadPro').css({ display: "block" });
+    $('#conteudoLoginPro').attr("style", "display:none");
+    $('#divAguardeCadPro').attr("style", "display:block; text-align:center; width:100%;");
 
     var cadastroNomePro = $("#cadastroNomePro").val();
     var telefoneFixoPro = $("#telefoneFixoPro").val();
@@ -273,8 +273,8 @@ function procCadastroPro() {
     request.fail(function () {
         try {
             alert(msg);
-            $('.conteudoLoginPro').css({ display: "block" });
-            $('.divAguardeCadPro').css({ display: "none" });
+            $('#conteudoLoginPro').attr("style", "display:block");
+            $('#divAguardeCadPro').attr("style", "display:none");
             console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
         } catch (err) {
 
@@ -657,7 +657,7 @@ function procCadastro() {
         alert('Erro ao efetuar cadastro! \r\n Tente novamente mais tarde!');
         console.log("Deu ruim o cadastro");
         $("#conteudoLogin").attr("style", "display:block");
-        $("#divAguardeCadCli").attr("style", "display:none;text-align:center; width:100%")
+        $("#divAguardeCadCli").attr("style", "display:none;text-align:center; width:100%");
     });
 }
 
@@ -925,6 +925,9 @@ function editarMeuPerfil() {
         return false;
     }
 
+    $("#divEditarPerfil").attr("style", "display:none");
+    $("#divAguardeCadPro").attr("style", "display:block;text-align:center; width:100%");
+    
 
     var idUsuario = localStorage.getItem("ClienteId");
     var senhaUsuario = localStorage.getItem("Senha");
@@ -991,9 +994,16 @@ function editarMeuPerfil() {
         console.log(msg);
         console.log("Dados (outras informações) atualizados com sucesso!");
 
+        $("#divEditarPerfil").attr("style", "display:block");
+        $("#divAguardeCadPro").attr("style", "display:none;text-align:center; width:100%");
+
+
     });
     request.fail(function () {
         console.log("Não foi possível realizar a operação, tente novamente.");
+        $("#divEditarPerfil").attr("style", "display:block");
+        $("#divAguardeCadPro").attr("style", "display:none;text-align:center; width:100%");
+
     });
 
 
@@ -2199,8 +2209,8 @@ function atualizarSenhaPro() {
         return false;
     }
 
-    $('.divAtualizarSenha').css({ display: "none" });
-    $('.divCarregaAtualizarSenha').css({ display: "block" });
+    $("#divAtualizarSenha").attr("style", "display:none");
+    $("#divCarregaAtualizarSenha").attr("style", "display:block;text-align:center; width:100%");
 
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = $("#senhaDeAcesso").val();
@@ -2248,8 +2258,8 @@ function atualizarSenhaPro() {
         alert("Senha alterada com sucesso!");
         console.log(msg);
         console.log("Dados (senha) atualizados com sucesso!");
-        $('.divAtualizarSenha').css({ display: "block" });
-        $('.divCarregaAtualizarSenha').css({ display: "none" });
+        $("#divAtualizarSenha").attr("style", "display:block");
+        $("#divCarregaAtualizarSenha").attr("style", "display:none;text-align:center; width:100%");
 
     });
     request.fail(function (msg) {
@@ -2261,8 +2271,8 @@ function atualizarSenhaPro() {
         }
         console.log(msg);
         console.log("Não foi possível realizar a operação, tente novamente.");
-        $('.divAtualizarSenha').css({ display: "block" });
-        $('.divCarregaAtualizarSenha').css({ display: "none" });
+        $("#divAtualizarSenha").attr("style", "display:block");
+        $("#divCarregaAtualizarSenha").attr("style", "display:none;text-align:center; width:100%");
     });
 
 }
@@ -2324,10 +2334,8 @@ function editarMeuPerfilPro() {
         }
     }
 
-
-
-    $('.divEditarPerfil').css({ display: "none" });
-    $('.divCarregaEditarPerfil').css({ display: "block" });
+    $("#divEditarPerfil").attr("style", "display:none");
+    $("#divCarregaEditarPerfil").attr("style", "display:block;text-align:center; width:100%");
 
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = localStorage.getItem("Senha");
@@ -2378,6 +2386,8 @@ function editarMeuPerfilPro() {
     });
     request.fail(function () {
         console.log("Ocorreu um erro ao tentar carregar a Lista de estados");
+        $("#divEditarPerfil").attr("style", "display:block");
+        $("#divCarregaEditarPerfil").attr("style", "display:none;text-align:center; width:100%");
 
     });
     // PEGAR LATITUDE E LONGITUDE
@@ -2438,15 +2448,15 @@ function editarMeuPerfilPro() {
         console.log(msg);
         console.log("Dados (outras informações) atualizados com sucesso!");
 
-        $('.divEditarPerfil').css({ display: "block" });
-        $('.divCarregaEditarPerfil').css({ display: "none" });
+        $("#divEditarPerfil").attr("style", "display:block");
+        $("#divCarregaEditarPerfil").attr("style", "display:none;text-align:center; width:100%");
 
     });
     request.fail(function (msg) {
         console.log(msg);
         console.log("Não foi possível realizar a operação, tente novamente.");
-        $('.divEditarPerfil').css({ display: "block" });
-        $('.divCarregaEditarPerfil').css({ display: "none" });
+        $("#divEditarPerfil").attr("style", "display:block");
+        $("#divCarregaEditarPerfil").attr("style", "display:none;text-align:center; width:100%");
     });
 
 
@@ -2852,8 +2862,8 @@ $('#fotoTrabalho').change(function (event) {
 $('#SendfotoTrabalho').click(function () {
     $('#SendfotoTrabalho').html("enviando....");
 
-    $('.divBtnSendFoto').css({ display: "none" });
-    $('.divEnviandoFoto').css({ display: "block" });
+    $("#divBtnSendFoto").attr("style", "display:none");
+    $("#divEnviandoFoto").attr("style", "display:block;text-align:center; width:100%");
 
     var retorno = '';
     var imagemTrabalho = '';
@@ -2878,16 +2888,16 @@ $('#SendfotoTrabalho').click(function () {
         imagemTrabalho = nomeFotoTrabalho;
         console.log(imagemTrabalho);
         $('#SendfotoTrabalho').html("enviar novo trabalho");
-        $('.divBtnSendFoto').css({ display: "block" });
-        $('.divEnviandoFoto').css({ display: "none" });
+        $("#divBtnSendFoto").attr("style", "display:block");
+        $("#divEnviandoFoto").attr("style", "display:none;text-align:center; width:100%");
 
     })
     request.fail(function () {
         imagemTrabalho = nomeFotoTrabalho;
         alert("Erro ao subir imagem!");
         console.log("Deu ruim o cadastro");
-        $('.divBtnSendFoto').css({ display: "block" });
-        $('.divEnviandoFoto').css({ display: "none" });
+        $("#divBtnSendFoto").attr("style", "display:block");
+        $("#divEnviandoFoto").attr("style", "display:none;text-align:center; width:100%");
 
     });
 
@@ -2958,8 +2968,8 @@ $('#fotoPerfilPro2').change(function (event) {
 
 $('#updateProfilePicture').click(function () {
 
-    $('.divAtualizarFotoPerfil').attr("style", "display:none");
-    $('.divFotoPerfil').attr("style", "display:block;text-align:center; width:100%");
+    $('#divAtualizarFotoPerfil').attr("style", "display:none");
+    $('#divFotoPerfil').attr("style", "display:block;text-align:center; width:100%");
 
   
     if (form != undefined) {
@@ -2989,8 +2999,8 @@ $('#updateProfilePicture').click(function () {
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log(imagemPerfil);
             alert("Imagem atualizada com sucesso");
-            $('.divAtualizarFotoPerfil').attr("style", "display:block");
-            $('.divFotoPerfil').attr("style", "display:none;text-align:center; width:100%");
+            $('#divAtualizarFotoPerfil').attr("style", "display:block");
+            $('#divFotoPerfil').attr("style", "display:none;text-align:center; width:100%");
 
             $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
         })
@@ -2998,8 +3008,8 @@ $('#updateProfilePicture').click(function () {
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log("Deu ruim o cadastro");
-            $('.divAtualizarFotoPerfil').attr("style", "display:block");
-            $('.divFotoPerfil').attr("style", "display:none;text-align:center; width:100%");
+            $('#divAtualizarFotoPerfil').attr("style", "display:block");
+            $('#divFotoPerfil').attr("style", "display:none;text-align:center; width:100%");
         });
 
 
@@ -3114,7 +3124,7 @@ function verificaVersaoAtual() {
             // USER ANDROID
             if (/android/i.test(userAgent)) {
                 alert('Nova Versão disponível! \r\n Favor efetuar a atualização');
-                location.href = "https://play.google.com/store/search?q=csprofissionais";
+                location.href = "https://play.google.com/store/apps/details?id=com.CSPROFISSIONAIS_2016BETA1";
                 //location.href="https://play.google.com/store?hl=pt_BR";
             }
             
