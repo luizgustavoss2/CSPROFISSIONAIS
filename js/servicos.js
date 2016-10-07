@@ -2968,6 +2968,7 @@ $('#fotoPerfilPro2').change(function (event) {
 
 $('#updateProfilePicture_old').click(function () {
 
+   
     $("#divAtualizarFotoPerfil").attr("style", "display:none");
     $("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
 
@@ -3048,7 +3049,8 @@ $('#updateProfilePicture_old').click(function () {
 
 function AtualizaFotoPerfil()
 {
-    $("#divAtualizarFotoPerfil").attr("style", "display:none");
+    $("#updateProfilePicture").attr("style", "display:none");
+    //$("#divAtualizarFotoPerfil").attr("style", "display:none");
     $("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
 
 
@@ -3079,7 +3081,8 @@ function AtualizaFotoPerfil()
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log(imagemPerfil);
             alert("Imagem atualizada com sucesso");
-            $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            $("#updateProfilePicture").attr("style", "display:block");
+           // $("#divAtualizarFotoPerfil").attr("style", "display:block");
             $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
 
             $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
@@ -3088,7 +3091,8 @@ function AtualizaFotoPerfil()
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log("Deu ruim o cadastro");
-            $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            $("#updateProfilePicture").attr("style", "display:block");
+            //$("#divAtualizarFotoPerfil").attr("style", "display:block");
             $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
         });
 
