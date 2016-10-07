@@ -3054,7 +3054,7 @@ function AtualizaFotoPerfilAll()
 
     AtualizaFotoPerfil();
 
-    RemoveIconeCarregandoFotoPerfil();
+    //RemoveIconeCarregandoFotoPerfil();
 }
 
 function ExibeIconeCarregandoFotoPerfil() {
@@ -3105,8 +3105,8 @@ function AtualizaFotoPerfil()
             imagemPerfil = msg;
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
-            console.log(imagemPerfil);
-            alert("Imagem atualizada com sucesso");
+            //console.log(imagemPerfil);
+            
            // $("#updateProfilePicture").attr("style", "display:block");
            //// $("#divAtualizarFotoPerfil").attr("style", "display:block");
            // $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
@@ -3116,7 +3116,7 @@ function AtualizaFotoPerfil()
         request.fail(function () {
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
-            console.log("Deu ruim o cadastro");
+            //console.log("Deu ruim o cadastro");
             //$("#updateProfilePicture").attr("style", "display:block");
             ////$("#divAtualizarFotoPerfil").attr("style", "display:block");
             //$("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
@@ -3124,7 +3124,7 @@ function AtualizaFotoPerfil()
 
 
         if (imagemPerfil != '') {
-            console.log("Atualizando Perfil " + imagemPerfil);
+            //console.log("Atualizando Perfil " + imagemPerfil);
             var profissionalPicture = localStorage.getItem("idProfissionalLogado");
 
             var request = $.ajax({
@@ -3136,13 +3136,20 @@ function AtualizaFotoPerfil()
                 }
             })
             request.done(function (msg) {
-
-                console.log(msg);
-                console.log("Dados (profile picture) atualizados com sucesso!");
+                alert("Imagem atualizada com sucesso!");
+                $('.updateProfilePicture').css({ display: "block" });
+                //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+                $('.divFotoPerfil').css({ display: "none" });
+                //console.log(msg);
+                //console.log("Dados (profile picture) atualizados com sucesso!");
 
             });
             request.fail(function () {
-                console.log("Não foi possível realizar a operação, tente novamente.");
+                alert("Falha ao atualizar imagem!");
+                $('.updateProfilePicture').css({ display: "block" });
+                //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+                $('.divFotoPerfil').css({ display: "none" });
+                //console.log("Não foi possível realizar a operação, tente novamente.");
             });
 
 
@@ -3150,6 +3157,9 @@ function AtualizaFotoPerfil()
     }
     else {
         alert('Selecionar a imagem!');
+        $('.updateProfilePicture').css({ display: "block" });
+        //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+        $('.divFotoPerfil').css({ display: "none" });
     }
 
 }
@@ -3294,10 +3304,20 @@ function ClickTextMensPro(val) {
 }
 
 function EfetuaLogOff() {
+
+
+    $('.efetuarlogoff').css({ display: "none" });
+    //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+    $('.divefetuarlogoff').css({ display: "block" });
+    
+
+
     localStorage.clear();
     history.go(-(history.length - 1));
     //location.href = "index.html?clear=1";
-    
+    $('.efetuarlogoff').css({ display: "block" });
+    //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+    $('.divefetuarlogoff').css({ display: "none" });
 }
 
 function exitFromApp() {
