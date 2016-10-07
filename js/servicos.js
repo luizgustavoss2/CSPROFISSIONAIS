@@ -3124,7 +3124,8 @@ function verificaVersaoAtual() {
             // USER ANDROID
             if (/android/i.test(userAgent)) {
                 alert('Nova Versão disponível! \r\n Favor efetuar a atualização');
-                location.href = "https://play.google.com/store/apps/details?id=com.CSPROFISSIONAIS_2016BETA1";
+                location.href = "https://play.google.com/store/search?q=csprofissionais";
+                //location.href ="https://play.google.com/store/apps/details?id=com.CSPROFISSIONAIS_2016BETA1";
                 //location.href="https://play.google.com/store?hl=pt_BR";
             }
             
