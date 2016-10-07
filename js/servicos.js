@@ -2966,10 +2966,10 @@ $('#fotoPerfilPro2').change(function (event) {
     //var name = event.target.files[0].content.name; // para capturar o nome do arquivo com sua extenção
 });
 
-$('#updateProfilePicture').click(function () {
+$('#updateProfilePicture_old').click(function () {
 
-    $('#divAtualizarFotoPerfil').attr("style", "display:none");
-    $('#divFotoPerfil').attr("style", "display:block;text-align:center; width:100%");
+    $("#divAtualizarFotoPerfil").attr("style", "display:none");
+    $("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
 
   
     if (form != undefined) {
@@ -2999,8 +2999,8 @@ $('#updateProfilePicture').click(function () {
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log(imagemPerfil);
             alert("Imagem atualizada com sucesso");
-            $('#divAtualizarFotoPerfil').attr("style", "display:block");
-            $('#divFotoPerfil').attr("style", "display:none;text-align:center; width:100%");
+            $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
 
             $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
         })
@@ -3008,8 +3008,8 @@ $('#updateProfilePicture').click(function () {
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log("Deu ruim o cadastro");
-            $('#divAtualizarFotoPerfil').attr("style", "display:block");
-            $('#divFotoPerfil').attr("style", "display:none;text-align:center; width:100%");
+            $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
         });
 
 
@@ -3045,6 +3045,84 @@ $('#updateProfilePicture').click(function () {
 
 });
 
+
+function AtualizaFotoPerfil()
+{
+    $("#divAtualizarFotoPerfil").attr("style", "display:none");
+    $("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
+
+
+    if (form != undefined) {
+        var imagemPerfil = '';
+
+        var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
+
+        nomeFoto = dtImg + document.getElementById('fotoPerfilPro2').files[0].name;
+
+        var request = $.ajax({
+            url: 'http://api.csprofissionais.com.br/api/imagem/PostImg/' + dtImg, // Url do lado server que vai receber o arquivo
+            data: form,
+            processData: false,
+            contentType: false,
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                //retorno = data;
+                //alert(data); // utilizar o retorno
+            }
+        });
+        //alert(retorno);
+        request.done(function (msg) {
+
+            imagemPerfil = msg;
+            imagemPerfil = nomeFoto;
+            localStorage.setItem("NomeFotoPro", nomeFoto);
+            console.log(imagemPerfil);
+            alert("Imagem atualizada com sucesso");
+            $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+
+            $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
+        })
+        request.fail(function () {
+            imagemPerfil = nomeFoto;
+            localStorage.setItem("NomeFotoPro", nomeFoto);
+            console.log("Deu ruim o cadastro");
+            $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+        });
+
+
+        if (imagemPerfil != '') {
+            console.log("Atualizando Perfil " + imagemPerfil);
+            var profissionalPicture = localStorage.getItem("idProfissionalLogado");
+
+            var request = $.ajax({
+                method: "POST",
+                url: "http://api.csprofissionais.com.br/api/profissional/AlterarImagemPerfil",
+                data: {
+                    UsuarioId: profissionalPicture,
+                    Foto: imagemPerfil
+                }
+            })
+            request.done(function (msg) {
+
+                console.log(msg);
+                console.log("Dados (profile picture) atualizados com sucesso!");
+
+            });
+            request.fail(function () {
+                console.log("Não foi possível realizar a operação, tente novamente.");
+            });
+
+
+        }
+    }
+    else {
+        alert('Selecionar a imagem!');
+    }
+
+}
 
 // D0048 - BUSCAR SOLICITAÇÕES DE CONTATO
 function buscarTrabalhos() {
