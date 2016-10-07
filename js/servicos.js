@@ -3050,7 +3050,7 @@ function AtualizaFotoPerfilAll()
 {
     ExibeIconeCarregandoFotoPerfil();
 
-    alert('carregando');
+   // alert('carregando');
 
     AtualizaFotoPerfil();
 
@@ -3059,16 +3059,16 @@ function AtualizaFotoPerfilAll()
 
 function ExibeIconeCarregandoFotoPerfil() {
 
-    $("#updateProfilePicture").attr("style", "display:none");
+    $('.updateProfilePicture').css({ display: "none" });
     //$("#divAtualizarFotoPerfil").attr("style", "display:none");
-    $("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
+    $('.divFotoPerfil').css({ display: "block" });
 }
 
 function RemoveIconeCarregandoFotoPerfil() {
 
-    $("#updateProfilePicture").attr("style", "display:block");
+    $('.updateProfilePicture').css({ display: "block" });
     //$("#divAtualizarFotoPerfil").attr("style", "display:none");
-    $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+    $('.divFotoPerfil').css({ display: "none" });
 }
 
 
