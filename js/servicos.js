@@ -3046,12 +3046,38 @@ $('#updateProfilePicture_old').click(function () {
 
 });
 
-
-function AtualizaFotoPerfil()
+function AtualizaFotoPerfilAll()
 {
+    ExibeIconeCarregandoFotoPerfil();
+
+    alert('carregando');
+
+    AtualizaFotoPerfil();
+
+    RemoveIconeCarregandoFotoPerfil();
+}
+
+function ExibeIconeCarregandoFotoPerfil() {
+
     $("#updateProfilePicture").attr("style", "display:none");
     //$("#divAtualizarFotoPerfil").attr("style", "display:none");
     $("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
+}
+
+function RemoveIconeCarregandoFotoPerfil() {
+
+    $("#updateProfilePicture").attr("style", "display:block");
+    //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+    $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+}
+
+
+
+function AtualizaFotoPerfil()
+{
+    //$("#updateProfilePicture").attr("style", "display:none");
+    ////$("#divAtualizarFotoPerfil").attr("style", "display:none");
+    //$("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
 
 
     if (form != undefined) {
@@ -3081,9 +3107,9 @@ function AtualizaFotoPerfil()
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log(imagemPerfil);
             alert("Imagem atualizada com sucesso");
-            $("#updateProfilePicture").attr("style", "display:block");
-           // $("#divAtualizarFotoPerfil").attr("style", "display:block");
-            $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+           // $("#updateProfilePicture").attr("style", "display:block");
+           //// $("#divAtualizarFotoPerfil").attr("style", "display:block");
+           // $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
 
             $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
         })
@@ -3091,9 +3117,9 @@ function AtualizaFotoPerfil()
             imagemPerfil = nomeFoto;
             localStorage.setItem("NomeFotoPro", nomeFoto);
             console.log("Deu ruim o cadastro");
-            $("#updateProfilePicture").attr("style", "display:block");
-            //$("#divAtualizarFotoPerfil").attr("style", "display:block");
-            $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+            //$("#updateProfilePicture").attr("style", "display:block");
+            ////$("#divAtualizarFotoPerfil").attr("style", "display:block");
+            //$("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
         });
 
 
