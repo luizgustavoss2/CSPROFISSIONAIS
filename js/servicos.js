@@ -3052,7 +3052,11 @@ function AtualizaFotoPerfilAll()
 
    // alert('carregando');
 
-    AtualizaFotoPerfil();
+    setTimeout(function () {
+        AtualizaFotoPerfil();
+    }, 3000);
+
+    
 
     //RemoveIconeCarregandoFotoPerfil();
 }
