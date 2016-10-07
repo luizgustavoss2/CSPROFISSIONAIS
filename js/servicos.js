@@ -68,7 +68,7 @@
 var form;
 var nomeFoto;
 // SETAR A VERSÃO ATUAL DO APLICATIVO NESSA VARIAVEL
-var versaoApp = "v1.2";
+var versaoApp = "v1.1";
 
 var especializacaoData;
 
