@@ -211,6 +211,44 @@ function procCadastroPro() {
         return false;
     }
 
+    var profs = window.currencies;
+    var existProf = false;
+    for (var i = 0; i < profs.length; i++) {
+        
+        if(profs[i] == $("#tipoProfissionalLista").val() )
+        {
+            existProf = true;
+        }
+    }
+
+    if (existProf == false)
+    {
+        alert("Profissão não Encontrada!");
+        $("#tipoProfissionalLista").focus();
+        return;
+    }
+
+    //var request = $.ajax({
+    //    method: "POST",
+    //    //url: "http://api.csprofissionais.com.br/api/profissional/ValidaProfissao",
+    //    url: "http://localhost:49723/api/profissional/ValidaProfissao",
+    //    data: {
+    //        Profissao: $("#tipoProfissionalLista").val()           
+    //    }
+    //})
+    //request.done(function (msg) {
+
+    //    if(msg["Retorno"]==false)
+    //    {
+    //        alert("Profissão não Encontrada!");
+
+    //        return;
+    //    }
+    //});
+
+    //request.fail(function () {
+    //});
+
 
     $('#conteudoLoginPro').attr("style", "display:none");
     $('#divAguardeCadPro').attr("style", "display:block; text-align:center; width:100%;");
@@ -360,11 +398,20 @@ function procCadastroPro() {
         }
 
     });
-    request.fail(function () {
-        console.log("Deu ruim o cadastro");
+    request.fail(function (msg) {
+
         alert('Erro ao efetuar o cadastro! \r\n Por favor tente mais tarde!');
         $("#conteudoLoginPro").attr("style", "display:block");
         $("#divAguardeCadPro").attr("style", "display:none;");
+        //if (msg.Errors[0] != undefined) {
+        //    alert(msg.Errors[0]);
+        //    return;
+        //}
+        //else {
+        //    // console.log("Deu ruim o cadastro");
+        //    alert('Erro ao efetuar o cadastro! \r\n Por favor tente mais tarde!');
+           
+        //}
     });
 }
 
@@ -1073,7 +1120,7 @@ function procPesquisa() {
         url: "http://apps.widenet.com.br/busca-cep/api/cep/" + cepPesquisa + ".json"
     })
     requestCep.done(function (dados) {
-        cadastroRua = dados.address;
+        cadastroRua = dados.address.split('-')[0];
         //$(".itfBairroCli").val(dados.district);
         estado = dados.state;
         cidade = dados.city;
@@ -1133,7 +1180,7 @@ function procPesquisa() {
 
                     nomeProfissional = msg["Data"]["List"][i]["Nome"];
                     celularProfissional = msg["Data"]["List"][i]["Celular"];
-                    idProfissional = msg["Data"]["List"][i]["ProfissionalId"];
+                    var idProfissionalMapa = msg["Data"]["List"][i]["ProfissionalId"];
 
                     var foto = msg["Data"]["List"][i]["NomeFoto"];
 
@@ -1141,22 +1188,35 @@ function procPesquisa() {
                     lonPro = msg["Data"]["List"][i]["Longitude"];
 
 
-                    latLng2 = new google.maps.LatLng(latPro, lonPro);
+                    var latLngPro = new google.maps.LatLng(latPro, lonPro);
+                    $.each(msg["Data"]["List"], function (index, address) {
+                        var marker = criarPonto(address, image, map);
+                        //var marker = new google.maps.Marker({
+                        //    icon: image,
+                        //    position: new google.maps.LatLng(msg["Data"]["List"][i]["Latitude"], msg["Data"]["List"][i]["Longitude"]),//latLng2,
+                        //    map: map,
+                        //    id: msg["Data"]["List"][i]["ProfissionalId"],
+                        //    title: msg["Data"]["List"][i]["Nome"],
+                        //    da: msg["Data"]["List"][i]["ProfissionalId"]
+                        //});
 
-                    var marker = new google.maps.Marker({
-                        icon: image,
-                        position: latLng2,
-                        map: map,
-                        title: "Ver perfil do profissional"
-                    });
 
-                    google.maps.event.addListener(marker, 'click', function () {
-                        verProfissional(idProfissional);
+                        google.maps.event.addListener(marker, 'click', function (e) {
+                            // localStorage.setItem("Profissional", idProfissional);
+                            // console.log("Vamos direcionar o usuário...");
+                            //location.href = "detalhes-user.html";
+                            //var id = msg["Data"]["List"][i]["ProfissionalId"];
+                            //verProfissional(marker.id);
+                            localStorage.setItem("Profissional", address.ProfissionalId);
+
+                            location.href = "detalhes-user.html";
+                        });
                     });
 
                     //var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
-                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
+                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissionalMapa + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
 
+                   // markers.push(marker);
                     $("#workInner").append(detalhes);
 
 
@@ -1223,6 +1283,18 @@ function procPesquisa() {
 
 }
 
+var criarPonto = function (prof, image, map) {
+
+    var marker = new google.maps.Marker({
+        icon: image,
+        position: new google.maps.LatLng(prof.Latitude, prof.Longitude),//latLng2,
+        map: map,
+        id: prof.ProfissionalId,
+        title: prof.Nome
+    });
+
+    return marker;
+};
 
 // D0013 - DIRECIONAR O USUARIO PARA O PERFIL DO PROFISSIONAL
 function verProfissional(idProfissional) {
@@ -2549,7 +2621,7 @@ $(".itfCEPCli").change(function () {
     })
     requestCep.done(function (dados) {
 
-        $(".itfEnderecoCli").val(dados.address);
+        $(".itfEnderecoCli").val(dados.address.split("-")[0]);
         $(".itfBairroCli").val(dados.district);
 
         $('.itfEstadoCli option').each(function () {
@@ -2621,7 +2693,7 @@ $(".itfCEP").change(function () {
     })
     requestCep.done(function (dados) {
 
-        $(".itfEndereco").val(dados.address);
+        $(".itfEndereco").val(dados.address.split('-')[0]);
         $(".itfBairro").val(dados.district);
 
         $('.itfEstado option').each(function () {
