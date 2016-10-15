@@ -211,6 +211,9 @@ function procCadastroPro() {
         return false;
     }
 
+    $('#conteudoLoginPro').attr("style", "display:none");
+    $('#divAguardeCadPro').attr("style", "display:block; text-align:center; width:100%;");
+
     var profs = window.currencies;
     var existProf = false;
     for (var i = 0; i < profs.length; i++) {
@@ -225,6 +228,8 @@ function procCadastroPro() {
     {
         alert("Profissão não Encontrada!");
         $("#tipoProfissionalLista").focus();
+        $('#conteudoLoginPro').attr("style", "display:block");
+        $('#divAguardeCadPro').attr("style", "display:none; text-align:center; width:100%;");
         return;
     }
 
@@ -1067,6 +1072,26 @@ function ativarPesquisa() {
     localStorage.setItem("TipoPesquisa", tipoProfissional);
     localStorage.setItem("cepPesquisa", cepForm);
 
+    $('#btnPesquisar').attr("style", "display:none");
+    $('#divPesquisando').attr("style", "display:block; text-align:center; width:100%;");
+    var profs = window.currencies;
+    var existProf = false;
+    for (var i = 0; i < profs.length; i++) {
+
+        if (profs[i] == tipoProfissional) {
+            existProf = true;
+        }
+    }
+
+    if (existProf == false) {
+        alert("Profissão não Encontrada!");
+        $("#tipoProfissionalLista").focus();
+        $('#btnPesquisar').attr("style", "display:block");
+        $('#divPesquisando').attr("style", "display:none; text-align:center; width:100%;");
+        return;
+    }
+
+
     // SETAR OS VALORES DA SESSÃO E DIRECIONAR O USUÁRIO PARA A PÁGINA DE PESQUISA
     console.log("Tipo de Profissional: " + tipoProfissional);
     console.log("Cep do formulário: " + cepForm);
@@ -1214,7 +1239,7 @@ function procPesquisa() {
                     });
 
                     //var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
-                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissionalMapa + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
+                    var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 10px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true" ></i><a style="font-size: 13px;" href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissionalMapa + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
 
                    // markers.push(marker);
                     $("#workInner").append(detalhes);
@@ -1342,6 +1367,7 @@ function alimentarDetalheProfissional() {
         emailPro = msg["Data"]["Email"];
         descricao = msg["Data"]["Descricao"];
         nroEstrelas = msg["Data"]["NroEstrela"];
+
         ruaPro = msg["Data"]["Endereco"]["Nome"];
         numeroPro = msg["Data"]["Endereco"]["Numero"];
         bairroPro = msg["Data"]["Endereco"]["Bairro"];
@@ -1353,6 +1379,24 @@ function alimentarDetalheProfissional() {
         $('#celularPro').append('<a href="tel:0' + celularPro + '">' + celularPro + '</a>');
         $('#enderecoPro').append(ruaPro + ", " + numeroPro + " - " + bairroPro);
         $('#sobrePro').append(descricao);
+
+        var zeroEstrela = '<span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>'
+        var umaEstrela = '<span><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+        var duasEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+        var tresEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+        var quatroEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span><span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+        var cincoEstrelas = '<span><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></span>';
+
+
+        var estrelas = zeroEstrela;
+        if (msg["Data"]["NroEstrela"] == 0) { estrelas = zeroEstrela; }
+        if (msg["Data"]["NroEstrela"] == 1) { estrelas = umaEstrela; }
+        if (msg["Data"]["NroEstrela"] == 2) { estrelas = duasEstrelas; }
+        if (msg["Data"]["NroEstrela"] == 3) { estrelas = tresEstrelas; }
+        if (msg["Data"]["NroEstrela"] == 4) { estrelas = quatroEstrelas; }
+        if (msg["Data"]["NroEstrela"] == 5) { estrelas = cincoEstrelas; }
+
+        $("#spanEstrelas").html(estrelas);
 
     });
     request.fail(function () {
@@ -1574,6 +1618,11 @@ function trocaMensagens() {
 // D0020 - ENVIAR MENSAGEM PARA PROFISSIONAL
 function enviarNovaMensagen() {
 
+
+    $("#btn-chat").attr("style", "display:none");
+    $("#divAguardeMensagem").attr("style", "display:block;text-align:left; width:30px;");
+
+
     var idPro = localStorage.getItem("Profissional");
     var idCli = localStorage.getItem("ClienteId");
     var mensagem = $('#msgField').val();
@@ -1607,9 +1656,14 @@ function enviarNovaMensagen() {
         // ATUALIZAR A PÁGINA PARA MOSTRAR AS MENSAGENS ATUALIZADAS
         location.reload();
 
+        $("#btn-chat").attr("style", "display:block");
+        $("#divAguardeMensagem").attr("style", "display:none;");
+
     });
     request.fail(function () {
         alert("Ocorreu um erro no servidor. Tente novamente mais tarde");
+        $("#btn-chat").attr("style", "display:block");
+        $("#divAguardeMensagem").attr("style", "display:none;");
         //location.href="dashboard.html";
         //$('#avaliarUsuario').modal("hide");
     });
@@ -1619,6 +1673,10 @@ function enviarNovaMensagen() {
 
 }
 function enviarNovaMensagenPro() {
+
+
+    $("#btn-chat").attr("style", "display:none");
+    $("#divAguardeMensagem").attr("style", "display:block;text-align:left; width:30px;");
 
     var idPro = localStorage.getItem("idProfissionalLogado");
     var idCli = localStorage.getItem("ClienteMensagem");
@@ -1644,6 +1702,8 @@ function enviarNovaMensagenPro() {
     })
     request.done(function (msg) {
 
+        $("#btn-chat").attr("style", "display:block");
+        $("#divAguardeMensagem").attr("style", "display:none;text-align:left; width:30px;");
         console.log(msg);
         console.log("Mensagem foi enviada com sucesso");
 
@@ -1655,6 +1715,9 @@ function enviarNovaMensagenPro() {
 
     });
     request.fail(function () {
+        $("#btn-chat").attr("style", "display:block");
+        $("#divAguardeMensagem").attr("style", "display:none;text-align:left; width:30px;");
+
         alert("Ocorreu um erro no servidor. Tente novamente mais tarde");
         //location.href="dashboard.html";
         //$('#avaliarUsuario').modal("hide");
@@ -1902,8 +1965,13 @@ function popularHtmlPro() {
     $("#cepPesquisa").val(localStorage.getItem("Cep"));
 
     $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
+    
 
+}
 
+function atualizarFotocadastro()
+{
+    $('#imgFotoPerfilnew').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
 
 }
 
@@ -3137,6 +3205,22 @@ function AtualizaFotoPerfilAll() {
 
     //RemoveIconeCarregandoFotoPerfil();
 }
+function AtualizaFotoPerfilAllNew() {
+    ExibeIconeCarregandoFotoPerfil();
+
+    // alert('carregando');
+
+    setTimeout(function () {
+        AtualizaFotoPerfilNew();
+    }, 3000);
+
+
+
+    //RemoveIconeCarregandoFotoPerfil();
+}
+
+
+
 
 function ExibeIconeCarregandoFotoPerfil() {
 
@@ -3192,6 +3276,98 @@ function AtualizaFotoPerfil() {
             // $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
 
             $('#imgFotoPerfil').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
+        })
+        request.fail(function () {
+            imagemPerfil = nomeFoto;
+            localStorage.setItem("NomeFotoPro", nomeFoto);
+            //console.log("Deu ruim o cadastro");
+            //$("#updateProfilePicture").attr("style", "display:block");
+            ////$("#divAtualizarFotoPerfil").attr("style", "display:block");
+            //$("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+        });
+
+
+        if (imagemPerfil != '') {
+            //console.log("Atualizando Perfil " + imagemPerfil);
+            var profissionalPicture = localStorage.getItem("idProfissionalLogado");
+
+            var request = $.ajax({
+                method: "POST",
+                url: "http://api.csprofissionais.com.br/api/profissional/AlterarImagemPerfil",
+                data: {
+                    UsuarioId: profissionalPicture,
+                    Foto: imagemPerfil
+                }
+            })
+            request.done(function (msg) {
+                alert("Imagem atualizada com sucesso!");
+                $('.updateProfilePicture').css({ display: "block" });
+                //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+                $('.divFotoPerfil').css({ display: "none" });
+                //console.log(msg);
+                //console.log("Dados (profile picture) atualizados com sucesso!");
+
+            });
+            request.fail(function () {
+                alert("Falha ao atualizar imagem!");
+                $('.updateProfilePicture').css({ display: "block" });
+                //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+                $('.divFotoPerfil').css({ display: "none" });
+                //console.log("Não foi possível realizar a operação, tente novamente.");
+            });
+
+
+        }
+    }
+    else {
+        alert('Selecionar a imagem!');
+        $('.updateProfilePicture').css({ display: "block" });
+        //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+        $('.divFotoPerfil').css({ display: "none" });
+    }
+
+}
+
+function AtualizaFotoPerfilNew() {
+    //$("#updateProfilePicture").attr("style", "display:none");
+    ////$("#divAtualizarFotoPerfil").attr("style", "display:none");
+    //$("#divFotoPerfil").attr("style", "display:block;text-align:center; width:100%");
+
+
+    if (form != undefined) {
+        var imagemPerfil = '';
+
+        var dtImg = new Date().toLocaleString().replace('/', '').replace('/', '').replace(':', '').replace(':', '').replace(' ', '').replace(' ', '');
+
+        nomeFoto = dtImg + document.getElementById('fotoPerfilPro2').files[0].name;
+
+        var request = $.ajax({
+            url: 'http://api.csprofissionais.com.br/api/imagem/PostImg/' + dtImg, // Url do lado server que vai receber o arquivo
+            data: form,
+            processData: false,
+            contentType: false,
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                //retorno = data;
+                //alert(data); // utilizar o retorno
+            }
+        });
+        //alert(retorno);
+        request.done(function (msg) {
+
+            imagemPerfil = msg;
+            imagemPerfil = nomeFoto;
+            localStorage.setItem("NomeFotoPro", nomeFoto);
+            //console.log(imagemPerfil);
+
+            // $("#updateProfilePicture").attr("style", "display:block");
+            //// $("#divAtualizarFotoPerfil").attr("style", "display:block");
+            // $("#divFotoPerfil").attr("style", "display:none;text-align:center; width:100%");
+
+            $('#imgFotoPerfilnew').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
+            $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
+
         })
         request.fail(function () {
             imagemPerfil = nomeFoto;
