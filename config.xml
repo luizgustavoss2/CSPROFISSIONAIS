@@ -3,7 +3,7 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "CSPROFISSIONAIS-2016"
+        id        = "CSPROFISSIONAIS_2016BETA1"
         versionCode = "45"
         version   = "45.0.0">
 
