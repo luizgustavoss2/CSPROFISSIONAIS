@@ -1,8 +1,8 @@
 <code>
   <?xml version="1.0" encoding="utf-8"?>
   <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-              package="com.alphastagestudios.danmarksflyttemand" android:versionName="45.0" android:versionCode="45" android:hardwareAccelerated="true">
-    <manifest android:versionCode="45">
+              package="com.alphastagestudios.danmarksflyttemand" android:versionName="46.0" android:versionCode="46" android:hardwareAccelerated="true">
+    <manifest android:versionCode="46">
       <supports-screens
               android:largeScreens="true"
               android:normalScreens="true"
@@ -39,7 +39,7 @@
         </activity>
       </application>
 
-      <uses-sdk android:minSdkVersion="45" android:targetSdkVersion="45"/>
+      <uses-sdk android:minSdkVersion="46" android:targetSdkVersion="46"/>
 
       <permission android:name="com.alphastagestudios.danmarksflyttemand.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
       <uses-permission android:name="com.alphastagestudios.danmarksflyttemand.permission.MAPS_RECEIVE"/>

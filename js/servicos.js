@@ -1920,6 +1920,7 @@ function procLoginPro() {
             localStorage.setItem("Latitude", msg["Data"]["Endereco"]["Latitude"])
             localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
             localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
+            localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
             try {
                 localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
             } catch (err) { }
@@ -2240,6 +2241,7 @@ function popularCamposPerfilPro() {
     var telefoneCelular = localStorage.getItem("TelefoneCelular");
     var telefoneFixo = localStorage.getItem("TelefoneFixo");
     var curriculum = localStorage.getItem("Curriculum");
+    var ativo = localStorage.getItem("Ativo");
 
     var especializacao = localStorage.getItem("Especializacao");
 
@@ -2264,6 +2266,9 @@ function popularCamposPerfilPro() {
     $("#tipoProfissionalLista").val(especializacao);
 
     $("#cadastroCurriculoPro").val(curriculum);
+    //$("#CadastroAtivo").val(ativo);
+
+    $("input[name=CadastroAtivo][value=" + ativo + "]").attr('checked', 'checked');
 
 
     new dgCidadesEstados(document.getElementById('estado'), document.getElementById('cidade'), true);
@@ -2426,7 +2431,7 @@ function editarMeuPerfilPro() {
     if ($("#nomeClienteEditar").val() == "")
         msgerro = msgerro + "* Nome é obrigatório!  \r\n";
 
-    if ($("#tipoProfissionalLista").val() == "")
+    if ($("#tipoProfissionalLista").val().trim() == "")
         msgerro = msgerro + "* Especialização é obrigatório!  \r\n";
 
     if ($("#cpfCliente").val() == "")
@@ -2477,6 +2482,25 @@ function editarMeuPerfilPro() {
     $("#divEditarPerfil").attr("style", "display:none");
     $("#divCarregaEditarPerfil").attr("style", "display:block;text-align:center; width:100%");
 
+    var profs = window.currencies;
+    var existProf = false;
+    for (var i = 0; i < profs.length; i++) {
+
+        if (profs[i] == $("#tipoProfissionalLista").val()) {
+            existProf = true;
+        }
+    }
+
+    if (existProf == false) {
+        alert("Profissão não Encontrada!");
+        $("#tipoProfissionalLista").focus();
+        $("#divEditarPerfil").attr("style", "display:block");
+        $("#divCarregaEditarPerfil").attr("style", "display:none;text-align:center; width:100%");
+        return;
+    }
+
+    
+
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = localStorage.getItem("Senha");
 
@@ -2493,6 +2517,9 @@ function editarMeuPerfilPro() {
     var telefoneFixo = $("#telefoneFixo").val();
     var cep = $("#cepCliente").val();
     var curriculum = $("#cadastroCurriculoPro").val();
+    //var Ativo = $("#CadastroAtivo").val();
+
+    var Ativo = $("[name=CadastroAtivo]:checked").val();
 
     var estadoPro = $("#estado").val();
     var cidadePro = $("#cidade").val();
@@ -2556,7 +2583,8 @@ function editarMeuPerfilPro() {
             Descricao: curriculum,
             //senha: senhaUsuario,
             endereco: endereco,
-            Especializacao: espec
+            Especializacao: espec,
+            ativo: Ativo
         }
     })
     request.done(function (msg) {
@@ -2568,6 +2596,7 @@ function editarMeuPerfilPro() {
         localStorage.setItem("Email", msg["Data"]["Email"]);
         localStorage.setItem("Cpf", msg["Data"]["DocumentoLogin"]);
         //localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
+        localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
 
         localStorage.setItem("CidadeId", msg["Data"]["Endereco"]["CidadeId"]);
         localStorage.setItem("NomeRua", msg["Data"]["Endereco"]["Nome"]);
@@ -2583,6 +2612,7 @@ function editarMeuPerfilPro() {
 
         localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
         localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
+  
 
         alert("Dados atualizados com sucesso!");
         console.log(msg);
@@ -3562,20 +3592,22 @@ function ClickTextMensPro(val) {
 function EfetuaLogOff() {
 
 
-    $('.efetuarlogoff').attr("style", "display:none");
+    $('#efetuarlogoff').attr("style", "display:none");
     //$("#divAtualizarFotoPerfil").attr("style", "display:none");
-    $('.divefetuarlogoff').attr("style", "display:block");
+    $('#divefetuarlogoff').attr("style", "display:block; width:100%; text-align:center;");
 
     setTimeout(function () {
         localStorage.clear();
         history.go(-(history.length - 1));
+
+        $('#efetuarlogoff').attr("style", "display:block");
+        //$("#divAtualizarFotoPerfil").attr("style", "display:none");
+        $('#divefetuarlogoff').attr("style", "display:none");
     }, 3000);
 
 
     //location.href = "index.html?clear=1";
-    $('.efetuarlogoff').attr("style", "display:block");
-    //$("#divAtualizarFotoPerfil").attr("style", "display:none");
-    $('.divefetuarlogoff').attr("style", "display:none");
+    
 }
 
 function exitFromApp() {
