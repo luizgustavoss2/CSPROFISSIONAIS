@@ -143,10 +143,10 @@ function procLogin() {
 function procCadastroPro() {
 
     var msgerro = "";
-    if ($("#cadastroNomePro").val() == "")
+    if ($("#cadastroNomePro").val().trim() == "")
         msgerro = msgerro + "* Nome é obrigatório!  \r\n";
 
-    if ($("#tipoProfissionalLista").val() == "")
+    if ($("#tipoProfissionalLista").val().trim() == "")
         msgerro = msgerro + "* Especialização é obrigatório!  \r\n";
 
     if ($("#telefoneCelularPro").val() == "")
@@ -538,10 +538,10 @@ function popularHtml() {
 function procCadastro() {
 
     var msgerroCad = "";
-    if ($("#cadastroNome").val() == "")
+    if ($("#cadastroNome").val().trim() == "")
         msgerroCad = msgerroCad + "* Nome é obrigatório!  \r\n";
 
-    if ($("#cadastroEmail").val() == "")
+    if ($("#cadastroEmail").val().trim() == "")
         msgerroCad = msgerroCad + "* E-mail é obrigatório!  \r\n";
 
     if ($("#telefoneCelular").val() == "")
@@ -935,10 +935,10 @@ function popularCamposPerfil() {
 function editarMeuPerfil() {
 
     var msgerroCad = "";
-    if ($("#nomeClienteEditar").val() == "")
+    if ($("#nomeClienteEditar").val().trim() == "")
         msgerroCad = msgerroCad + "* Nome é obrigatório!  \r\n";
 
-    if ($("#emailCliente").val() == "")
+    if ($("#emailCliente").val().trim() == "")
         msgerroCad = msgerroCad + "* E-mail é obrigatório!  \r\n";
 
     if ($("#telefoneCelular").val() == "")
@@ -2428,7 +2428,7 @@ function atualizarSenhaPro() {
 function editarMeuPerfilPro() {
 
     var msgerro = "";
-    if ($("#nomeClienteEditar").val() == "")
+    if ($("#nomeClienteEditar").val().trim() == "")
         msgerro = msgerro + "* Nome é obrigatório!  \r\n";
 
     if ($("#tipoProfissionalLista").val().trim() == "")
@@ -2881,7 +2881,7 @@ $("#formulario").submit(function () {
 function procCadastroProPre() {
 
     var msgerro = "";
-    if ($("#cadastroNomePro").val() == "")
+    if ($("#cadastroNomePro").val().trim() == "")
         msgerro = msgerro + "* Nome é obrigatório!  \r\n";
 
     if ($("#tipoProfissionalLista").val() == "")
