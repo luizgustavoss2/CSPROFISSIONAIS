@@ -4,8 +4,8 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "CSPROFISSIONAIS_2016BETA1"
-        versionCode = "48"
-        version   = "48.0.0">
+        versionCode = "49"
+        version   = "49.0.0">
 
   <name>CS Profissionais</name>
 
@@ -89,7 +89,7 @@
   <!-- Define app icon for each platform. -->
   <icon src="icon.png" />
   <icon src="images/icon/icon-36-ldpi.png"   gap:platform="android"    gap:qualifier="ldpi" />
-  <icon src="images/icon/icon-48-mdpi.png"   gap:platform="android"    gap:qualifier="mdpi" />
+  <icon src="images/icon/icon-49-mdpi.png"   gap:platform="android"    gap:qualifier="mdpi" />
   <icon src="images/icon/icon-72-hdpi.png"   gap:platform="android"    gap:qualifier="hdpi" />
   <icon src="images/icon/icon-96-xhdpi.png"  gap:platform="android"    gap:qualifier="xhdpi" />
   <icon src="images/icon/icon-80.png"     gap:platform="blackberry" />
@@ -99,12 +99,12 @@
   <icon src="images/icon/icon-57-2x.png"         gap:platform="ios"        width="114" height="114" />
   <icon src="images/icon/icon-72-2x.png"         gap:platform="ios"        width="144" height="144" />
   <icon src="images/icon/icon-64.png"          gap:platform="webos" />
-  <icon src="images/icon/icon-48.png"  gap:platform="winphone" />
+  <icon src="images/icon/icon-49.png"  gap:platform="winphone" />
   <icon src="images/icon/icon-173.png" gap:platform="winphone"   gap:role="background" />
 
   <!-- Define app splash screen for each platform. -->
   <gap:splash src="images/icon/screen-225.png"              gap:platform="blackberry" />
-  <gap:splash src="images/icon/screen-iphone-portrait.png"         gap:platform="ios"     width="320" height="480" />
+  <gap:splash src="images/icon/screen-iphone-portrait.png"         gap:platform="ios"     width="320" height="490" />
   <gap:splash src="images/icon/screen-iphone-portrait-2x.png"      gap:platform="ios"     width="640" height="960" />
   <gap:splash src="images/icon/screen-iphone-portrait-568h-2x.png" gap:platform="ios"     width="640" height="1136" />
   <gap:splash src="images/icon/screen-ipad-portrait.png"           gap:platform="ios"     width="768" height="1024" />
