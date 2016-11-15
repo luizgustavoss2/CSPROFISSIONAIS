@@ -448,17 +448,28 @@
 
            // function init() {
                 //alert('Init');
-                try {
-                    //alert('setting alarm');
-                    plugin.setalarm(success, failure);
-                    alert('alarm set');
-                } catch (e) { alert('error' + e.message); }
+            //    try {
+            //        //alert('setting alarm');
+            //        plugin.setalarm(success, failure);
+            //        alert('alarm set');
+            //    } catch (e) { alert('error' + e.message); }
 
-                window.broadcaster.addEventListener("didShow", function (e) {
-                    //log: didShow received! userInfo: {"data":"test"} 
-                    console.log("didShow received! userInfo: " + JSON.stringify(e));
-                });
+            //try{
+            //    window.broadcaster.addEventListener("didShow", function (e) {
+            //        //log: didShow received! userInfo: {"data":"test"} 
+            //        console.log("didShow received! userInfo: " + JSON.stringify(e));
+            //    });
+            //}catch(e)
+            //{
+
             //}
+
+            ////document.addEventListener("deviceready", function() {
+            //    // Here you can use it:
+            //    var pushNotification = window.plugins.pushNotification;
+            //    pushNotification.constructor();
+            ////}, false);
+            ////}
         });
 
 
