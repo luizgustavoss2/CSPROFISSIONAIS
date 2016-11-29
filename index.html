@@ -496,100 +496,35 @@
         verificaVersaoAtual();
         autoCompleteBusca();
     </script>
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    //*************************************************************
 
-    <div class="taab-title">Task Manager</div>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    document.addEventListener("deviceready", onDeviceReady, false);
 
-    <div class="row">
-        <div class="col s12">
-            <div class="task-creation">
-                <label for="add_task_title">Task Title</label>
-                <input placeholder="Write Your Task Here" id="add_task_title" type="text" class="validate">
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        // Empty
+    }
 
-                <input type="date" class="datepicker" id="date_add_task">
+    // alert dialog dismissed
+    function alertDismissed() {
+        // do something
+    }
 
-                <div class="row">
-                    <div class="col s4">
-                        <label for="hour_add_task">Hour</label>
-                        <input placeholder="Hours" id="hour_add_task" type="text">
-                    </div>
-                    <div class="col s4">
-                        <label for="minutes_add_task">Mintues</label>
-                        <input placeholder="Minutes" id="minutes_add_task" type="text" class="validate">
-                    </div>
-                    <div class="col s4 date-p">
-                        <select id="ampm_add_task">
-                            <option value="1" selected>AM</option>
-                            <option value="2">PM</option>
-                        </select>
+    // Show a custom alertDismissed
+    //
+    function showAlert() {
+        navigator.notification.alert(
+            'You are the winner!',  // message
+            alertDismissed,         // callback
+            'Game Over',            // title
+            'Done'                  // buttonName
+        );
+    }
 
-                    </div>
-                </div>
-                <a class="waves-effect waves-light btn blue darken-3" style="width:100%;" onclick="createTask()">Create Task</a>
-
-            </div>
-            </div>
-        </div>
-
-            <script type="text/javascript">
-                //**Line script**
-                var info = null;
-
-                document.addEventListener("deviceready", function () {
-                    if (!localStorage.getItem("rp_data")) {
-                        var rp_data = { data: [] };
-                        localStorage.setItem("rp_data", JSON.stringify(rp_data));
-                    }
-
-                    info = JSON.parse(localStorage.getItem("rp_data"));
-                }, false);
-
-                function schedule(id, title, message, schedule_time) {
-                    alert("set");
-                    cordova.plugins.notification.local.schedule({
-                        id: id,
-                        title: title,
-                        message: message,
-                        at: schedule_time
-                    });
-
-                    var array = [id, title, message, schedule_time];
-                    info.data[info.data.length] = array;
-                    localStorage.setItem("rp_data", JSON.stringify(info));
-
-                    navigator.notification.alert("Reminder added successfully")
-                }
-
-                function createTask() {
-
-
-                    var schedule_time = new Date(("10/27/2016 00:35:00").replace(/-/g, "/")).getTime();
-                    schedule_time = new Date(schedule_time);
-                    alert(schedule_time);
-
-                    var id = info.data.length;
-
-                    cordova.plugins.notification.local.hasPermission(function (granted) {
-                        alert("True/False " + granted);
-                        if (granted == true) {
-                            schedule(id, "1234", "msg", schedule_time);
-                        }
-                        else {
-                            cordova.plugins.notification.local.registerPermission(function (granted) {
-                                if (granted == true) {
-                                    schedule(id, "1234", "msg", schedule_time);
-                                }
-                                else {
-                                    navigator.notification.alert("Reminder cannot be added because app doesn't have permission");
-                                }
-                            });
-                        }
-                    });
-                }
-
-            </script>
-
+    </script>
+   
 </body>
 
 </html>
