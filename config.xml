@@ -61,7 +61,6 @@
   <!-- Plugins -->
 
   <!-- Core plugins -->
-
   <gap:plugin name="org.apache.cordova.media-capture" />
   <gap:plugin name="org.apache.cordova.console" />
   <gap:plugin name="org.apache.cordova.contacts" />
