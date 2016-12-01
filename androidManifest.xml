@@ -1,19 +1,17 @@
 <code>
   <?xml version="1.0" encoding="utf-8"?>
   <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-              package="com.alphastagestudios.danmarksflyttemand" android:versionName="51.0" android:versionCode="51" android:hardwareAccelerated="true">
-
-    <manifest android:versionCode="51">
+              package="com.alphastagestudios.danmarksflyttemand" android:versionName="50.0" android:versionCode="50" android:hardwareAccelerated="true">
+    <manifest android:versionCode="50">
       <supports-screens
               android:largeScreens="true"
               android:normalScreens="true"
               android:smallScreens="true"
               android:xlargeScreens="true"
-              android:resizeable="true"
+              android:resizeable="false"
               android:anyDensity="true"
                     />
 
-  
       <uses-permission android:name="android.permission.CAMERA" />
       <uses-permission android:name="android.permission.VIBRATE" />
       <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -27,30 +25,7 @@
       <uses-permission android:name="android.permission.GET_ACCOUNTS" />
       <uses-permission android:name="android.permission.BROADCAST_STICKY" />
 
-      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-      <uses-permission android:name="android.permission.INTERNET" />
-      <application android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name" android:supportsRtl="true">
-        <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/activity_name" android:launchMode="singleTop" android:name="MainActivity" android:theme="@android:style/Theme.DeviceDefault.NoActionBar" android:windowSoftInputMode="adjustResize">
-          <intent-filter android:label="@string/launcher_name">
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-          </intent-filter>
-        </activity>
-        <receiver android:exported="false" android:name="de.appplant.cordova.plugin.localnotification.TriggerReceiver" />
-        <receiver android:exported="false" android:name="de.appplant.cordova.plugin.localnotification.ClearReceiver" />
-        <activity android:exported="false" android:launchMode="singleInstance" android:name="de.appplant.cordova.plugin.localnotification.ClickActivity" android:theme="@android:style/Theme.NoDisplay" />
-        <receiver android:exported="false" android:name="de.appplant.cordova.plugin.notification.TriggerReceiver" />
-        <receiver android:exported="false" android:name="de.appplant.cordova.plugin.notification.ClearReceiver" />
-        <receiver android:exported="false" android:name="de.appplant.cordova.plugin.localnotification.RestoreReceiver">
-          <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-          </intent-filter>
-        </receiver>
-        <activity android:exported="false" android:launchMode="singleInstance" android:name="de.appplant.cordova.plugin.notification.ClickActivity" android:theme="@android:style/Theme.NoDisplay" />
-      </application>
-      
       <application android:icon="@drawable/icon" android:label="@string/app_name"
               android:hardwareAccelerated="true"
               android:debuggable="false">
@@ -64,11 +39,10 @@
         </activity>
       </application>
 
-      <uses-sdk android:minSdkVersion="51" android:targetSdkVersion="51"/>
+      <uses-sdk android:minSdkVersion="50" android:targetSdkVersion="50"/>
 
       <permission android:name="com.alphastagestudios.danmarksflyttemand.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
       <uses-permission android:name="com.alphastagestudios.danmarksflyttemand.permission.MAPS_RECEIVE"/>
     </manifest>
 
- 
   </code>

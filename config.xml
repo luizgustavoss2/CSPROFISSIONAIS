@@ -4,8 +4,8 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "CSPROFISSIONAIS_2016BETA1"
-        versionCode = "51"
-        version   = "51.0.0">
+        versionCode = "50"
+        version   = "50.0.0">
 
   <name>CS Profissionais</name>
 
@@ -24,8 +24,8 @@
     -->
 
 
-  <!--<preference name="permissions"                value="none"/> -->
-  <preference name="loglevel" value="DEBUG" />
+  <preference name="permissions"                value="none"/>
+
   <!-- Customize your app and platform with the preference element. -->
   <preference name="orientation"                value="default" />
   <!-- all: default means both landscape and portrait are enabled -->
@@ -61,8 +61,24 @@
   <!-- Plugins -->
 
   <!-- Core plugins -->
- 
-
+  <gap:plugin name="org.apache.cordova.battery-status" />
+  <gap:plugin name="org.apache.cordova.camera" />
+  <gap:plugin name="org.apache.cordova.media-capture" />
+  <gap:plugin name="org.apache.cordova.console" />
+  <gap:plugin name="org.apache.cordova.contacts" />
+  <gap:plugin name="org.apache.cordova.device" />
+  <gap:plugin name="org.apache.cordova.device-motion" />
+  <gap:plugin name="org.apache.cordova.device-orientation" />
+  <gap:plugin name="org.apache.cordova.dialogs" />
+  <gap:plugin name="org.apache.cordova.file" />
+  <gap:plugin name="org.apache.cordova.file-transfer" />
+  <gap:plugin name="org.apache.cordova.geolocation" />
+  <gap:plugin name="org.apache.cordova.globalization" />
+  <gap:plugin name="org.apache.cordova.inappbrowser" />
+  <gap:plugin name="org.apache.cordova.media" />
+  <gap:plugin name="org.apache.cordova.network-information" />
+  <gap:plugin name="org.apache.cordova.splashscreen" />
+  <gap:plugin name="org.apache.cordova.vibration" />
 
   <!-- Third party plugins -->
   <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
@@ -113,9 +129,8 @@
   <access origin="*"/>
 
   <access origin="*://*.api.csprofissionais.com.br/*"/>
-  
   <allow-navigation href="*://*.api.csprofissionais.com.br/*"/>
-  
+
   <access origin="*://*.diogenesjunior.com.br/*"/>
   <allow-navigation href="*://*.diogenesjunior.com.br/*"/>
 
@@ -129,7 +144,6 @@
   <allow-intent href="sms:*" />
   <allow-intent href="mailto:*" />
   <allow-intent href="geo:*" />
-  <allow-intent href="market:*" />
   <platform name="android">
     <allow-intent href="market:*" />
   </platform>
@@ -143,24 +157,4 @@
   <allow-intent href="*" />
   <access origin="*" />
 
-
-  <feature name="Whitelist">
-    <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
-    <param name="onload" value="true" />
-  </feature>
-  <feature name="Device">
-    <param name="android-package" value="org.apache.cordova.device.Device" />
-  </feature>
-  <feature name="LocalNotification">
-    <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
-  </feature>
-  <feature name="Notification">
-    <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
-  </feature>
-  
-  <feature name="Vibration">
-    <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
-  </feature>
-
-  
 </widget>
