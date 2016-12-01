@@ -3,6 +3,7 @@
   <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
               package="com.alphastagestudios.danmarksflyttemand" android:versionName="52.0" android:versionCode="52" android:hardwareAccelerated="true">
     <manifest android:versionCode="52">
+	
       <supports-screens
               android:largeScreens="true"
               android:normalScreens="true"

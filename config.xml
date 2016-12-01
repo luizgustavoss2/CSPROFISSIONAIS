@@ -61,7 +61,9 @@
   <!-- Plugins -->
 
   <!-- Core plugins -->
-  
+  <!-- <gap:plugin name="org.apache.cordova.battery-status" />
+  <gap:plugin name="org.apache.cordova.camera" />
+  <gap:plugin name="org.apache.cordova.media-capture" />
   <gap:plugin name="org.apache.cordova.console" />
   <gap:plugin name="org.apache.cordova.contacts" />
   <gap:plugin name="org.apache.cordova.device" />
@@ -76,7 +78,7 @@
   <gap:plugin name="org.apache.cordova.media" />
   <gap:plugin name="org.apache.cordova.network-information" />
   <gap:plugin name="org.apache.cordova.splashscreen" />
-  <gap:plugin name="org.apache.cordova.vibration" />
+  <gap:plugin name="org.apache.cordova.vibration" />-->
 
   <!-- Third party plugins -->
   <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
@@ -87,7 +89,7 @@
   <!-- Define app icon for each platform. -->
   <icon src="icon.png" />
   <icon src="images/icon/icon-36-ldpi.png"   gap:platform="android"    gap:qualifier="ldpi" />
-  <icon src="images/icon/icon-49-mdpi.png"   gap:platform="android"    gap:qualifier="mdpi" />
+  <icon src="images/icon/icon-48-mdpi.png"   gap:platform="android"    gap:qualifier="mdpi" />
   <icon src="images/icon/icon-72-hdpi.png"   gap:platform="android"    gap:qualifier="hdpi" />
   <icon src="images/icon/icon-96-xhdpi.png"  gap:platform="android"    gap:qualifier="xhdpi" />
   <icon src="images/icon/icon-80.png"     gap:platform="blackberry" />
@@ -97,12 +99,12 @@
   <icon src="images/icon/icon-57-2x.png"         gap:platform="ios"        width="114" height="114" />
   <icon src="images/icon/icon-72-2x.png"         gap:platform="ios"        width="144" height="144" />
   <icon src="images/icon/icon-64.png"          gap:platform="webos" />
-  <icon src="images/icon/icon-49.png"  gap:platform="winphone" />
+  <icon src="images/icon/icon-48.png"  gap:platform="winphone" />
   <icon src="images/icon/icon-173.png" gap:platform="winphone"   gap:role="background" />
 
   <!-- Define app splash screen for each platform. -->
   <gap:splash src="images/icon/screen-225.png"              gap:platform="blackberry" />
-  <gap:splash src="images/icon/screen-iphone-portrait.png"         gap:platform="ios"     width="320" height="490" />
+  <gap:splash src="images/icon/screen-iphone-portrait.png"         gap:platform="ios"     width="320" height="480" />
   <gap:splash src="images/icon/screen-iphone-portrait-2x.png"      gap:platform="ios"     width="640" height="960" />
   <gap:splash src="images/icon/screen-iphone-portrait-568h-2x.png" gap:platform="ios"     width="640" height="1136" />
   <gap:splash src="images/icon/screen-ipad-portrait.png"           gap:platform="ios"     width="768" height="1024" />
@@ -135,7 +137,6 @@
   <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin -->
   <!-- Whitelist configuration. Refer to https://cordova.apache.org/docs/en/edge/guide_appdev_whitelist_index.md.html -->
   <plugin name="cordova-plugin-whitelist" version="1" />
-  <!--<plugin name="PushNotification" value="com.pushwoosh.test.plugin.pushnotifications.PushNotifications" onload="true"/>-->
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
   <allow-intent href="tel:*" />
