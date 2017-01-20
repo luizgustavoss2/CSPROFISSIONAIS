@@ -1942,9 +1942,7 @@ function procLoginPro() {
             localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
             localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
             localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
-            localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
-
-
+            
             if (msg["Data"]["PushToken"] == '') {
 
                 try{
@@ -1990,6 +1988,9 @@ function procLoginPro() {
                     alert("Erro no metodo:" + err);
                 }
 
+            } else
+            {
+                localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
             }
 
 
