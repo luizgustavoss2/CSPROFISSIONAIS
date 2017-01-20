@@ -1952,23 +1952,9 @@ function procLoginPro() {
 
             if (msg["Data"]["PushToken"] == '') {
 
+                alert('É vazio');
                 try {
                                        
-                    pushNotification.registerDevice(
-                        function (status) {
-                            //alert('registrado ' + status.pushToken)
-                            //document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
-                            localStorage.setItem("PushToken", status.pushToken);
-                            alert(localStorage.getItem("PushToken"));
-
-                            onPushwooshInitialized(pushNotification);
-                        },
-                        function (status) {
-                            alert("failed to register: " + status);
-                            console.warn(JSON.stringify(['failed to register ', status]));
-                        }
-                    );
-
                     var request = $.ajax({
                         method: "POST",
                         url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
@@ -1978,8 +1964,8 @@ function procLoginPro() {
                         }
                     })
                     request.done(function (msg) {
-                        alert("Token: " + status.pushToken);
-                        localStorage.setItem("PushToken", status.pushToken);
+                        alert("Token: " + localStorage.getItem("PushToken"));
+                        //localStorage.setItem("PushToken", status.pushToken);
                         console.log(msg);
 
                     });
@@ -4075,6 +4061,8 @@ function exitAppPopup() {
 
 
 function initPushwoosh() {
+
+    alert('Entrou no initPushwoosh');
     var pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
 
     //set push notifications handler
@@ -4107,6 +4095,7 @@ function initPushwoosh() {
             //alert('registrado ' + status.pushToken)
             document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
             localStorage.setItem("PushToken", status.pushToken);
+            alert('Entrou no PushNotification: ' + status.pushToken);
 
             onPushwooshInitialized(pushNotification);
         },
