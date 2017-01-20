@@ -288,6 +288,11 @@ function procCadastroPro() {
     var cadastroSenhaPro = $("#cadastroSenhaPro").val();
     var especializacaoPro = $("#tipoProfissionalLista").val();
 
+    //var pushToken = '';
+
+    //pushNotification.registerDevice()
+    //status.pushToken;
+
     var latitude = "-23.5806447";
     var longitude = "-46.6187552";
 
@@ -1944,6 +1949,37 @@ function procLoginPro() {
             localStorage.setItem("Longitude", msg["Data"]["Endereco"]["Longitude"]);
             localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
             localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
+            localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
+
+            alert(msg["Data"]["PushToken"]);
+            if (msg["Data"]["PushToken"] == '')
+            {
+                try{
+                    var request = $.ajax({
+                        method: "POST",
+                        url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
+                        data: {
+                            ProfissionalId: idUsuario,
+                            PushToken: status.pushToken                       
+                        }
+                    })
+                    request.done(function (msg) {                  
+                        alert("Token: " + status.pushToken);
+                        localStorage.setItem("PushToken", status.pushToken);
+                        console.log(msg);                
+
+                    });
+                    request.fail(function (msg) {                   
+                        alert("Erro ao atualizar token!");                  
+                    });
+                }catch(err)
+                {
+                    alert("Erro no metodo atualizar token");
+                }
+
+            }
+
+
             try {
                 localStorage.setItem("Especializacao", msg["Data"]["Especializacao"][0]["Nome"]);
             } catch (err) { }
@@ -1952,6 +1988,8 @@ function procLoginPro() {
             $("#btnLogProf").attr("style", "display:block");
             $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
             location.href = "dashboard-pro.html";
+
+            AtualizaPushToken
 
         }
 
@@ -3975,7 +4013,7 @@ function onDeviceReady() {
     // document.addEventListener("backbutton", function (e) {
     //if ($.mobile.activePage.is('#index')) {
     //  e.preventDefault();
-    navigator.app.exitApp();
+    //navigator.app.exitApp();
     //}
     //else {
     //  navigator.app.backHistory()
@@ -4021,4 +4059,48 @@ function exitAppPopup() {
         , 'No,Yes'
     );
     return false;
+}
+
+
+function initPushwoosh() {
+    var pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
+
+    //set push notifications handler
+    document.addEventListener('push-notification',
+        function(event) {
+            var message = event.notification.message;
+            var userData = event.notification.userdata;
+            //alert()
+
+            document.getElementById("pushMessage").innerHTML = message + "<p>";
+            document.getElementById("pushData").innerHTML = JSON.stringify(event.notification) + "<p>";
+
+            //dump custom data to the console if it exists
+            if (typeof(userData) != "undefined") {
+                console.warn('user data: ' + JSON.stringify(userData));
+            }
+        }
+    );
+
+    //initialize Pushwoosh with projectid: "GOOGLE_PROJECT_ID", appid : "PUSHWOOSH_APP_ID". This will trigger all pending push notifications on start.
+    pushNotification.onDeviceReady({
+        projectid: "78196470103",
+        appid: "498DE-4A685",
+        serviceName: ""
+    });
+
+    //register for push notifications
+    pushNotification.registerDevice(
+        function(status) {
+            //alert('registrado ' + status.pushToken)
+            document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
+            localStorage.setItem("pushToken", status.pushToken);
+
+            onPushwooshInitialized(pushNotification);
+        },
+        function(status) {
+            alert("failed to register: " + status);
+            console.warn(JSON.stringify(['failed to register ', status]));
+        }
+    );
 }
