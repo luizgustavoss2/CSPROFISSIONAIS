@@ -1952,9 +1952,9 @@ function procLoginPro() {
 
             if (msg["Data"]["PushToken"] == '') {
 
-                alert('É vazio');
+                alert('É vazio , push:' + localStorage.getItem("PushToken"));
                 try {
-                                       
+                    alert('Chamou o atualiza token');
                     var request = $.ajax({
                         method: "POST",
                         url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
@@ -1988,7 +1988,7 @@ function procLoginPro() {
             $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
             location.href = "dashboard-pro.html";
 
-            AtualizaPushToken
+           
 
         }
 
@@ -3715,6 +3715,7 @@ function exitFromApp() {
 function onLoad() {
     try {
         document.addEventListener("deviceready", onDeviceReady, true);
+        initPushwoosh();
     }
     catch (err) {
     }
