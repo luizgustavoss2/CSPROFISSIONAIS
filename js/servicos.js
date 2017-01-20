@@ -1952,7 +1952,26 @@ function procLoginPro() {
 
             if (msg["Data"]["PushToken"] == '') {
 
-                alert('É vazio , push:' + localStorage.getItem("PushToken"));
+                try{
+                    pushNotification.registerDevice(
+                        function (status) {
+                            //alert('registrado ' + status.pushToken)
+                            //document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
+                            localStorage.setItem("PushToken", status.pushToken);
+                            alert('Entrou no PushNotification: ' + status.pushToken);
+
+                            onPushwooshInitialized(pushNotification);
+                        },
+                        function (status) {
+                            alert("failed to register: " + status);
+                            console.warn(JSON.stringify(['failed to register ', status]));
+                        }
+                    );
+                } catch (err) {
+                    alert('pushNotification.registerDevice:' + err);
+                }
+
+               
                 try {
                     alert('Chamou o atualiza token');
                     var request = $.ajax({
@@ -4094,7 +4113,7 @@ function initPushwoosh() {
     pushNotification.registerDevice(
         function (status) {
             //alert('registrado ' + status.pushToken)
-            document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
+           // document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
             localStorage.setItem("PushToken", status.pushToken);
             alert('Entrou no PushNotification: ' + status.pushToken);
 
