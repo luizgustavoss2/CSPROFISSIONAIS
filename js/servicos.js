@@ -286,11 +286,6 @@ function procCadastroPro() {
     var cadastroSenhaPro = $("#cadastroSenhaPro").val();
     var especializacaoPro = $("#tipoProfissionalLista").val();
 
-    //var pushToken = '';
-
-    //pushNotification.registerDevice()
-    //status.pushToken;
-
     var latitude = "-23.5806447";
     var longitude = "-46.6187552";
 
@@ -1953,27 +1948,27 @@ function procLoginPro() {
             if (msg["Data"]["PushToken"] == '') {
 
                 try{
-                    pushNotification.registerDevice(
-                        function (status) {
-                            //alert('registrado ' + status.pushToken)
-                            //document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
-                            localStorage.setItem("PushToken", status.pushToken);
-                            alert('Entrou no PushNotification: ' + status.pushToken);
+                    //pushNotification.registerDevice(
+                    //    function (status) {
+                    //        //alert('registrado ' + status.pushToken)
+                    //        //document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
+                    //        localStorage.setItem("PushToken", status.pushToken);
+                    //        alert('Entrou no PushNotification: ' + status.pushToken);
 
-                            onPushwooshInitialized(pushNotification);
-                        },
-                        function (status) {
-                            alert("failed to register: " + status);
-                            console.warn(JSON.stringify(['failed to register ', status]));
-                        }
-                    );
+                    //        onPushwooshInitialized(pushNotification);
+                    //    },
+                    //    function (status) {
+                    //        alert("failed to register: " + status);
+                    //        console.warn(JSON.stringify(['failed to register ', status]));
+                    //    }
+                    //);
                 } catch (err) {
                     alert('pushNotification.registerDevice:' + err);
                 }
-
+                alert('Token Atual:' + localStorage.getItem("PushToken"));
                
                 try {
-                    alert('Chamou o atualiza token');
+                    alert('Chamando o atualiza token');
                     var request = $.ajax({
                         method: "POST",
                         url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
