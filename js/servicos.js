@@ -148,7 +148,7 @@ function procCadastroPro() {
 
     if ($("#tipoProfissionalLista").val().trim() == "")
         msgerro = msgerro + "* Especialização é obrigatório!  \r\n";
-    
+
     if ($("#cadastroCnpjPro").val() == "")
         msgerro = msgerro + "* CPF/CNPJ é obrigatório! \r\n";
     else if ($("#cadastroCnpjPro").val().length < 10 || $("#cadastroCnpjPro").val().length > 15)
@@ -162,7 +162,7 @@ function procCadastroPro() {
 
     if ($("#telefoneFixoPro").val() != "" && ($("#telefoneFixoPro").val().length < 10 || $("#telefoneFixoPro").val().length > 10))
         msgerro = msgerro + "* Telefone fixo inválido!  \r\n";
-        
+
     if ($("#cadastroCepPro").val() == "")
         msgerro = msgerro + "* CEP é obrigatório! \r\n";
     else if ($("#cadastroCepPro").val().length != 8)
@@ -189,7 +189,7 @@ function procCadastroPro() {
 
     if ($("#cadastroCurriculoPro").val() == "")
         msgerro = msgerro + "* Curriculum é obrigatório! \r\n";
-   
+
 
     if (msgerro != "") {
         alert(msgerro);
@@ -231,15 +231,13 @@ function procCadastroPro() {
     var profs = window.currencies;
     var existProf = false;
     for (var i = 0; i < profs.length; i++) {
-        
-        if(profs[i] == $("#tipoProfissionalLista").val() )
-        {
+
+        if (profs[i] == $("#tipoProfissionalLista").val()) {
             existProf = true;
         }
     }
 
-    if (existProf == false)
-    {
+    if (existProf == false) {
         alert("Profissão não Encontrada!");
         $("#tipoProfissionalLista").focus();
         $('#conteudoLoginPro').attr("style", "display:block");
@@ -434,7 +432,7 @@ function procCadastroPro() {
         //else {
         //    // console.log("Deu ruim o cadastro");
         //    alert('Erro ao efetuar o cadastro! \r\n Por favor tente mais tarde!');
-           
+
         //}
     });
 }
@@ -526,14 +524,14 @@ function bannersAnuncios() {
     })
     request.done(function (msg) {
 
-       // var totBanners = msg["Data"]["List"].length;
-       // totBanners = totBanners - 1;
-       // var chaveBanner = Math.floor((Math.random() * totBanners) + 1);
+        // var totBanners = msg["Data"]["List"].length;
+        // totBanners = totBanners - 1;
+        // var chaveBanner = Math.floor((Math.random() * totBanners) + 1);
 
         //$("#areaBannerAnuncio").html("<a href='#'><img src='http://www.csprofissionais.com.br/upload/" + msg["Data"]["List"][chaveBanner]["Arquivo"] + "' /></a>")
         $("#areaBannerAnuncio").append("<br />");
         for (i = 0; i < msg["Data"]["List"].length; i++) {
-                $("#areaBannerAnuncio").append("<a href='#'><img src='http://www.csprofissionais.com.br/upload/" + msg["Data"]["List"][i]["Arquivo"] + "' /></a>")
+            $("#areaBannerAnuncio").append("<a href='#'><img src='http://www.csprofissionais.com.br/upload/" + msg["Data"]["List"][i]["Arquivo"] + "' /></a>")
 
         }
 
@@ -1269,7 +1267,7 @@ function procPesquisa() {
                     //var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 12px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true"></i><a href="tel:0' + celularProfissional + '">' + celularProfissional + '</a>&nbsp;&nbsp;<font style="font-size:12px; color:gray;"><b>Dist: ' + msg["Data"]["List"][i]["Distancia"] + '</b></font></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissional + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
                     var detalhes = '<div class="row"><table width="100%"><tr><td style="width:45px">&nbsp;<img src="http://www.csprofissionais.com.br/upload/' + foto + '" style="height: auto; max-height: 40px; max-width: 40px;min-height: 40px;min-width: 40px;width: auto; border-radius: 10px;" /></td><td><div class="col-sm-12 col-xs-12 text-left user-preview"><p style="padding-top:7px; font-size: 10px;"><b>' + nomeProfissional + '</b></p>' + estrelas + '&nbsp;<i class="fa fa-phone" aria-hidden="true" ></i><a style="font-size: 13px;" href="tel:0' + celularProfissional + '">' + celularProfissional + '</a></p><p class="btn-detalhe"><a style="cursor:pointer;" onclick="verProfissional(' + idProfissionalMapa + ')" class="btn btn-primary">DETALHES</a></p></div></td></tr></table></div>';
 
-                   // markers.push(marker);
+                    // markers.push(marker);
                     $("#workInner").append(detalhes);
 
 
@@ -1951,33 +1949,44 @@ function procLoginPro() {
             localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
             localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
 
-            
-            if (msg["Data"]["PushToken"] == '')
-            {
-                
-                try {
 
-                    alert(status.pushToken);
+            if (msg["Data"]["PushToken"] == '') {
+
+                try {
+                                       
+                    pushNotification.registerDevice(
+                        function (status) {
+                            //alert('registrado ' + status.pushToken)
+                            //document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
+                            localStorage.setItem("PushToken", status.pushToken);
+                            alert(localStorage.getItem("PushToken"));
+
+                            onPushwooshInitialized(pushNotification);
+                        },
+                        function (status) {
+                            alert("failed to register: " + status);
+                            console.warn(JSON.stringify(['failed to register ', status]));
+                        }
+                    );
 
                     var request = $.ajax({
                         method: "POST",
                         url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
                         data: {
-                            ProfissionalId: idUsuario,
-                            PushToken: status.pushToken                       
+                            ProfissionalId: msg["Data"]["ProfissionalId"],
+                            PushToken: localStorage.getItem("PushToken")
                         }
                     })
-                    request.done(function (msg) {                  
+                    request.done(function (msg) {
                         alert("Token: " + status.pushToken);
                         localStorage.setItem("PushToken", status.pushToken);
-                        console.log(msg);                
+                        console.log(msg);
 
                     });
-                    request.fail(function (msg) {                   
-                        alert("Erro ao atualizar token!");                  
+                    request.fail(function (msg) {
+                        alert("Erro ao atualizar token!");
                     });
-                }catch(err)
-                {
+                } catch (err) {
                     alert("Erro no metodo:" + err);
                 }
 
@@ -2031,12 +2040,11 @@ function popularHtmlPro() {
     $("#cepPesquisa").val(localStorage.getItem("Cep"));
 
     $('#fotoPro').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
-    
+
 
 }
 
-function atualizarFotocadastro()
-{
+function atualizarFotocadastro() {
     $('#imgFotoPerfilnew').attr('src', 'http://www.csprofissionais.com.br/upload/' + localStorage.getItem("NomeFotoPro"));
 
 }
@@ -2564,7 +2572,7 @@ function editarMeuPerfilPro() {
         return;
     }
 
-    
+
 
     var idUsuario = localStorage.getItem("idProfissionalLogado");
     var senhaUsuario = localStorage.getItem("Senha");
@@ -2677,7 +2685,7 @@ function editarMeuPerfilPro() {
 
         localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
         localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
-  
+
 
         alert("Dados atualizados com sucesso!");
         console.log(msg);
@@ -3672,7 +3680,7 @@ function EfetuaLogOff() {
 
 
     //location.href = "index.html?clear=1";
-    
+
 }
 
 function exitFromApp() {
@@ -3749,7 +3757,7 @@ function procVerificaUsuarioLogado() {
 function procEsqueciSenhaCliente() {
 
     var login = $("#loginEsqueci").val();
-   
+
 
     if (login == "") {
         alert("E-mail obrigatório!");
@@ -3763,7 +3771,7 @@ function procEsqueciSenhaCliente() {
         method: "POST",
         //url: "http://api.csprofissionais.com.br/api/EsqueciSenha/Cliente",
         url: "http://api.csprofissionais.com.br/api/EsqueciSenha/Cliente",
-        data: { email: login}
+        data: { email: login }
     })
 
     request.done(function (msg) {
@@ -3791,7 +3799,7 @@ function procEsqueciSenhaCliente() {
 function procEsqueciSenhaProfissional() {
 
     var login = $("#loginEsqueciProf").val();
-    
+
     if (login == "") {
         alert("Documento obrigatório!");
         return 1;
@@ -4071,7 +4079,7 @@ function initPushwoosh() {
 
     //set push notifications handler
     document.addEventListener('push-notification',
-        function(event) {
+        function (event) {
             var message = event.notification.message;
             var userData = event.notification.userdata;
             //alert()
@@ -4080,7 +4088,7 @@ function initPushwoosh() {
             document.getElementById("pushData").innerHTML = JSON.stringify(event.notification) + "<p>";
 
             //dump custom data to the console if it exists
-            if (typeof(userData) != "undefined") {
+            if (typeof (userData) != "undefined") {
                 console.warn('user data: ' + JSON.stringify(userData));
             }
         }
@@ -4095,14 +4103,14 @@ function initPushwoosh() {
 
     //register for push notifications
     pushNotification.registerDevice(
-        function(status) {
+        function (status) {
             //alert('registrado ' + status.pushToken)
             document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
-            localStorage.setItem("pushToken", status.pushToken);
+            localStorage.setItem("PushToken", status.pushToken);
 
             onPushwooshInitialized(pushNotification);
         },
-        function(status) {
+        function (status) {
             alert("failed to register: " + status);
             console.warn(JSON.stringify(['failed to register ', status]));
         }
