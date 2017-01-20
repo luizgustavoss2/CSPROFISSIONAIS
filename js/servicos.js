@@ -1951,10 +1951,14 @@ function procLoginPro() {
             localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
             localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
 
-            alert(msg["Data"]["PushToken"]);
+            
             if (msg["Data"]["PushToken"] == '')
             {
-                try{
+                
+                try {
+
+                    alert(status.pushToken);
+
                     var request = $.ajax({
                         method: "POST",
                         url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
@@ -1974,7 +1978,7 @@ function procLoginPro() {
                     });
                 }catch(err)
                 {
-                    alert("Erro no metodo atualizar token");
+                    alert("Erro no metodo:" + err);
                 }
 
             }
