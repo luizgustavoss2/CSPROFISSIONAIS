@@ -1945,24 +1945,6 @@ function procLoginPro() {
             
             if (msg["Data"]["PushToken"] == '') {
 
-                try{
-                    //pushNotification.registerDevice(
-                    //    function (status) {
-                    //        //alert('registrado ' + status.pushToken)
-                    //        //document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
-                    //        localStorage.setItem("PushToken", status.pushToken);
-                    //        alert('Entrou no PushNotification: ' + status.pushToken);
-
-                    //        onPushwooshInitialized(pushNotification);
-                    //    },
-                    //    function (status) {
-                    //        alert("failed to register: " + status);
-                    //        console.warn(JSON.stringify(['failed to register ', status]));
-                    //    }
-                    //);
-                } catch (err) {
-                    alert('pushNotification.registerDevice:' + err);
-                }
                 alert('Token Atual:' + localStorage.getItem("PushToken"));
                
                 try {
@@ -2001,6 +1983,59 @@ function procLoginPro() {
             localStorage.setItem("Curriculum", msg["Data"]["Descricao"]);
             $("#btnLogProf").attr("style", "display:block");
             $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
+
+
+            try{
+                define('PW_AUTH', localStorage.getItem("PushToken"));
+                define('PW_APPLICATION', '498DE-4A685'); // aqui vc vai mudar para o ID que mandei no e-mail
+                define('PW_DEBUG', true);
+ 
+                function pwCall($method, $data) {
+                    $url = 'https://cp.pushwoosh.com/json/1.3/' . $method;
+                    $request = json_encode(['request' => $data]);
+ 
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+                    curl_setopt($ch, CURLOPT_HEADER, true);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+ 
+                    $response = curl_exec($ch);
+                    $info = curl_getinfo($ch);
+                    curl_close($ch);
+ 
+                    if (defined('PW_DEBUG') && PW_DEBUG) {
+                       // print "[PW] request: $request\n";
+                        //print "[PW] response: $response\n";
+                       // print '[PW] info: ' . print_r($info, true);
+                    }
+                }
+ 
+
+                /**
+                * devices, recebe um array com a lista de tokens que será enviado, para enviar para todos remova o devices....
+                */
+                pwCall('createMessage', array(
+                    'application' => PW_APPLICATION,
+                    'auth' => PW_AUTH,
+                    'notifications' => array(
+                            array(
+                                'send_date' => '22/01/2017',
+                                'content' => 'Teste geral',
+                                'data' => array('custom' => 'json data'),
+                                                'devices' => array(localStorage.getItem("PushToken"))
+                            )
+                        ),
+		
+
+                    )
+                );
+            }catch (err){
+                alert(err);
+            }
+
             location.href = "dashboard-pro.html";
 
            
