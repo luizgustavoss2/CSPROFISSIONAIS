@@ -1945,7 +1945,7 @@ function procLoginPro() {
             
             if (msg["Data"]["PushToken"] == '') {
 
-                alert('Token Atual:' + localStorage.getItem("PushToken"));
+                //alert('Token Atual:' + localStorage.getItem("PushToken"));
                
                 try {
                     alert('Chamando o atualiza token');
@@ -1985,7 +1985,18 @@ function procLoginPro() {
             $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
 
 
-            try{
+            try {
+
+                $.post(
+                "http://88.198.50.37:8080/",
+                { texto: "testeMSg", token: localStorage.getItem("PushToken") },
+                function (data) {
+                    console.log(data);
+                }).error(function (e) {
+                    console.log(e)
+                    $("#sucess").html(e.responseText)
+                });
+
                 //define('PW_AUTH', localStorage.getItem("PushToken"));
                 //define('PW_APPLICATION', '498DE-4A685'); // aqui vc vai mudar para o ID que mandei no e-mail
                 //define('PW_DEBUG', true);
@@ -3358,9 +3369,6 @@ function AtualizaFotoPerfilAllNew() {
     //RemoveIconeCarregandoFotoPerfil();
 }
 
-
-
-
 function ExibeIconeCarregandoFotoPerfil() {
 
     $('.updateProfilePicture').css({ display: "none" });
@@ -3374,8 +3382,6 @@ function RemoveIconeCarregandoFotoPerfil() {
     //$("#divAtualizarFotoPerfil").attr("style", "display:none");
     $('.divFotoPerfil').css({ display: "none" });
 }
-
-
 
 function AtualizaFotoPerfil() {
     //$("#updateProfilePicture").attr("style", "display:none");
@@ -3689,7 +3695,6 @@ function ClickTextEditPro(val) {
     //alert($('.' + val).offset().top);
 }
 
-
 function ClickTextMensPro(val) {
 
     $('html, body').animate({
@@ -3832,7 +3837,6 @@ function procEsqueciSenhaCliente() {
 
 }
 
-
 function procEsqueciSenhaProfissional() {
 
     var login = $("#loginEsqueciProf").val();
@@ -3871,8 +3875,6 @@ function procEsqueciSenhaProfissional() {
     });
 
 }
-
-
 
 function validaCpfCnpj(val) {
     var valid = null;
@@ -4004,7 +4006,6 @@ function validacaoEmail(val) {
     return retorno;
 }
 
-
 function closeBrowser() {
     try {
         // if(history.length==1){
@@ -4055,7 +4056,6 @@ function closeMeNow() {
         });
     }
 }
-
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
@@ -4109,7 +4109,6 @@ function exitAppPopup() {
     );
     return false;
 }
-
 
 function initPushwoosh() {
 
