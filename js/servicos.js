@@ -1958,7 +1958,7 @@ function procLoginPro() {
                         }
                     })
                     request.done(function (msg) {
-                        alert("Token: " + localStorage.getItem("PushToken"));
+                        alert("Atualizou Token: " + localStorage.getItem("PushToken"));
                         //localStorage.setItem("PushToken", status.pushToken);
                         console.log(msg);
 
@@ -1987,15 +1987,35 @@ function procLoginPro() {
 
             try {
 
-                $.post(
-                "http://88.198.50.37:8080/",
-                { texto: "testeMSg", token: localStorage.getItem("PushToken") },
-                function (data) {
-                    console.log(data);
-                }).error(function (e) {
-                    console.log(e)
-                    $("#sucess").html(e.responseText)
+                //$.post(
+                //"http://88.198.50.37:8080/",
+                //{ texto: "testeMSg", token: localStorage.getItem("PushToken") },
+                //function (data) {
+                //    console.log(data);
+                //}).error(function (e) {
+                //    console.log(e)
+                //    $("#sucess").html(e.responseText)
+                //});
+
+
+                var request = $.ajax({
+                    method: "POST",
+                    url: "http://88.198.50.37:8080/",
+                    data: {
+                        texto: "testeMSg",
+                        token: localStorage.getItem("PushToken")
+                    }
+                })
+                request.done(function (msg) {
+                    alert("Enviou MSG Token: " + localStorage.getItem("PushToken"));
+                    //localStorage.setItem("PushToken", status.pushToken);
+                    console.log(msg);
+
                 });
+                request.fail(function (msg) {
+                    alert("Erro ao Enviar Mensagem token!");
+                });
+
 
                 //define('PW_AUTH', localStorage.getItem("PushToken"));
                 //define('PW_APPLICATION', '498DE-4A685'); // aqui vc vai mudar para o ID que mandei no e-mail
