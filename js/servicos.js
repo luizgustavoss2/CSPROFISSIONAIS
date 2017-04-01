@@ -128,7 +128,7 @@ function procLogin() {
                     method: "POST",
                     url: "http://api.csprofissionais.com.br/api/cliente/AtualizaPushToken",
                     data: {
-                        ProfissionalId: msg["Data"]["ClienteId"],
+                        ClienteId: msg["Data"]["ClienteId"],
                         PushToken: localStorage.getItem("PushToken")
                     }
                 })
