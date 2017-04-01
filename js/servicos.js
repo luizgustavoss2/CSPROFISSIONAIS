@@ -4253,7 +4253,7 @@ function initPushwoosh() {
             //alert('registrado ' + status.pushToken)
            // document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
             localStorage.setItem("PushToken", status.pushToken);
-            //alert('Entrou no PushNotification: ' + status.pushToken);
+            alert('Entrou no PushNotification: ' + status.pushToken);
 
             onPushwooshInitialized(pushNotification);
         },
