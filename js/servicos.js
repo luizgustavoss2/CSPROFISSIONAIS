@@ -121,6 +121,30 @@ function procLogin() {
 
             localStorage.setItem("CidadeNome", msg["Data"]["Endereco"]["CidadeNome"]);
             localStorage.setItem("EstadoSigla", msg["Data"]["Endereco"]["EstadoSigla"]);
+
+            try {
+                //alert('Chamando o atualiza token');
+                var request = $.ajax({
+                    method: "POST",
+                    url: "http://api.csprofissionais.com.br/api/cliente/AtualizaPushToken",
+                    data: {
+                        ProfissionalId: msg["Data"]["ClienteId"],
+                        PushToken: localStorage.getItem("PushToken")
+                    }
+                })
+                request.done(function (msg) {
+                   // alert("Atualizou Token: " + localStorage.getItem("PushToken"));
+                    //localStorage.setItem("PushToken", status.pushToken);
+                    console.log(msg);
+
+                });
+                request.fail(function (msg) {
+                    //alert("Erro ao atualizar token!");
+                });
+            } catch (err) {
+                //alert("Erro no metodo:" + err);
+            }
+
             // $("#conteudoLogin2").attr("style", "display:block");
             // $("#divAguardeLogCli").attr("style", "display:none;text-align:center; width:100%");
             location.href = "dashboard.html";
@@ -1389,6 +1413,8 @@ function alimentarDetalheProfissional() {
         descricao = msg["Data"]["Descricao"];
         nroEstrelas = msg["Data"]["NroEstrela"];
 
+        localStorage.setItem("PushTokenProfissional", msg["Data"]["PushToken"]);
+
         ruaPro = msg["Data"]["Endereco"]["Nome"];
         numeroPro = msg["Data"]["Endereco"]["Numero"];
         bairroPro = msg["Data"]["Endereco"]["Bairro"];
@@ -1654,7 +1680,7 @@ function enviarNovaMensagen() {
     console.log("Profissional ID: " + idPro);
     console.log("Mensagem: " + mensagem);
 
-    console.log("Enviando Menagem....");
+    console.log("Enviando Mensagem....");
 
     var request = $.ajax({
         method: "POST",
@@ -1673,6 +1699,20 @@ function enviarNovaMensagen() {
 
         // LIMPAR O CAMPO DE MENSAGEM
         $('#msgField').val("");
+
+        $.ajax({
+            url: 'http://88.198.50.37:8080/direct.php',
+            type: 'POST',
+            data: jQuery.param({ text: "Nova mensagem recebida!", token: localStorage.getItem("PushTokenProfissional") }),
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            success: function (response) {
+                console.log(JSON.parse(response))
+            },
+            error: function (e) {
+
+                console.log(e)
+            }
+        });
 
         // ATUALIZAR A PÁGINA PARA MOSTRAR AS MENSAGENS ATUALIZADAS
         location.reload();
@@ -1730,6 +1770,21 @@ function enviarNovaMensagenPro() {
 
         // LIMPAR O CAMPO DE MENSAGEM
         $('#msgField').val("");
+
+        $.ajax({
+            url: 'http://88.198.50.37:8080/direct.php',
+            type: 'POST',
+            data: jQuery.param({ text: "Nova mensagem recebida!", token: localStorage.getItem("PushTokenCliente") }),
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            success: function (response) {
+                console.log(JSON.parse(response))
+            },
+            error: function (e) {
+
+                console.log(e)
+            }
+        });
+
 
         // ATUALIZAR A PÁGINA PARA MOSTRAR AS MENSAGENS ATUALIZADAS
         location.reload();
@@ -1815,6 +1870,27 @@ function interagirProfissional(idPro) {
     console.log("Vamos direcionar o usuário para o histórico de conversas entre ele e o profissional ID: " + idPro);
 
     localStorage.setItem("Profissional", idPro);
+
+    // PEGAR DADOS DO PROFISSIONAL
+    var request = $.ajax({
+        method: "GET",
+        url: "http://api.csprofissionais.com.br/api/profissional/obter/" + idPro
+        //data: { email: login, senha: senha }
+    })
+    request.done(function (msg) {
+
+        console.log("Nome do Profissional: " + msg["Data"]["Nome"]);
+        nomePro = msg["Data"]["Nome"];
+        fotoPro = msg["Data"]["NomeFoto"];
+        celularPro = msg["Data"]["TelefoneCelular"];
+        fixoPro = msg["Data"]["TelefoneFixo"];
+        emailPro = msg["Data"]["Email"];
+        descricao = msg["Data"]["Descricao"];
+        nroEstrelas = msg["Data"]["NroEstrela"];
+
+        localStorage.setItem("PushTokenProfissional", msg["Data"]["PushToken"]);
+
+    });
 
     console.log("Direcionando...");
 
@@ -1943,37 +2019,40 @@ function procLoginPro() {
             localStorage.setItem("NomeFotoPro", msg["Data"]["NomeFoto"]);
             localStorage.setItem("Ativo", msg["Data"]["Ativo"]);
             
-            if (msg["Data"]["PushToken"] == '') {
 
-                //alert('Token Atual:' + localStorage.getItem("PushToken"));
-               
-                try {
-                    alert('Chamando o atualiza token');
-                    var request = $.ajax({
-                        method: "POST",
-                        url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
-                        data: {
-                            ProfissionalId: msg["Data"]["ProfissionalId"],
-                            PushToken: localStorage.getItem("PushToken")
-                        }
-                    })
-                    request.done(function (msg) {
-                        alert("Atualizou Token: " + localStorage.getItem("PushToken"));
-                        //localStorage.setItem("PushToken", status.pushToken);
-                        console.log(msg);
+            try {
+               // alert('Chamando o atualiza token');
+                var request = $.ajax({
+                    method: "POST",
+                    url: "http://api.csprofissionais.com.br/api/profissional/AtualizaPushToken",
+                    data: {
+                        ProfissionalId: msg["Data"]["ProfissionalId"],
+                        PushToken: localStorage.getItem("PushToken")
+                    }
+                })
+                request.done(function (msg) {
+                    //alert("Atualizou Token: " + localStorage.getItem("PushToken"));
+                    //localStorage.setItem("PushToken", status.pushToken);
+                    console.log(msg);
 
-                    });
-                    request.fail(function (msg) {
-                        alert("Erro ao atualizar token!");
-                    });
-                } catch (err) {
-                    alert("Erro no metodo:" + err);
-                }
-
-            } else
-            {
-                localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
+                });
+                request.fail(function (msg) {
+                   // alert("Erro ao atualizar token!");
+                });
+            } catch (err) {
+                //alert("Erro no metodo:" + err);
             }
+
+            //if (msg["Data"]["PushToken"] == '') {
+
+            //    //alert('Token Atual:' + localStorage.getItem("PushToken"));
+               
+                
+
+            //} else
+            //{
+            //    localStorage.setItem("PushToken", msg["Data"]["PushToken"]);
+            //}
 
 
             try {
@@ -1985,36 +2064,36 @@ function procLoginPro() {
             $("#divAguardeLogProf").attr("style", "display:none;text-align:center; width:100%");
 
 
-            try {
+            //try {
 
-                //$.post(
-                //"http://88.198.50.37:8080/",
-                //{ texto: "testeMSg", token: localStorage.getItem("PushToken") },
-                //function (data) {
-                //    console.log(data);
-                //}).error(function (e) {
-                //    console.log(e)
-                //    $("#sucess").html(e.responseText)
-                //});
+            //    //$.post(
+            //    //"http://88.198.50.37:8080/",
+            //    //{ texto: "testeMSg", token: localStorage.getItem("PushToken") },
+            //    //function (data) {
+            //    //    console.log(data);
+            //    //}).error(function (e) {
+            //    //    console.log(e)
+            //    //    $("#sucess").html(e.responseText)
+            //    //});
 
 
-                var request = $.ajax({
-                    method: "POST",
-                    url: "http://88.198.50.37:8080/",
-                    data: {
-                        texto: "testeMSg",
-                        token: localStorage.getItem("PushToken")
-                    }
-                })
-                request.done(function (msg) {
-                    alert("Enviou MSG Token: " + localStorage.getItem("PushToken"));
-                    //localStorage.setItem("PushToken", status.pushToken);
-                    console.log(msg);
+            //    var request = $.ajax({
+            //        method: "POST",
+            //        url: "http://88.198.50.37:8080/",
+            //        data: {
+            //            texto: "testeMSg",
+            //            token: localStorage.getItem("PushToken")
+            //        }
+            //    })
+            //    request.done(function (msg) {
+            //        alert("Enviou MSG Token: " + localStorage.getItem("PushToken"));
+            //        //localStorage.setItem("PushToken", status.pushToken);
+            //        console.log(msg);
 
-                });
-                request.fail(function (msg) {
-                    alert("Erro ao Enviar Mensagem token!");
-                });
+            //    });
+            //    request.fail(function (msg) {
+            //        alert("Erro ao Enviar Mensagem token!");
+            //    });
 
 
                 //define('PW_AUTH', localStorage.getItem("PushToken"));
@@ -2063,13 +2142,11 @@ function procLoginPro() {
 
                 //    )
                 //);
-            }catch (err){
-                alert(err);
-            }
+            //}catch (err){
+            //    alert(err);
+            //}
 
-            location.href = "dashboard-pro.html";
-
-           
+            location.href = "dashboard-pro.html";          
 
         }
 
@@ -2154,11 +2231,23 @@ function TodasMensagensPro() {
 
 
 // D0031 - SETAR E DIRECIONAR O USUARIO PROFISSIONAL PARA A PAGINA DO CLIENTE QUE ELE QUER VER A CONVERSA
-function interagirProfissionalPro(idPro) {
+function interagirProfissionalPro(idCli) {
 
-    console.log("Vamos direcionar o usuário para o histórico de conversas entre ele e o cliente ID: " + idPro);
+    console.log("Vamos direcionar o usuário para o histórico de conversas entre ele e o cliente ID: " + idCli);
 
-    localStorage.setItem("ClienteMensagem", idPro);
+    localStorage.setItem("ClienteMensagem", idCli);
+
+    var request = $.ajax({
+        method: "GET",
+        url: "http://api.csprofissionais.com.br/api/cliente/obter/" + idCli
+        //data: { email: login, senha: senha }
+    })
+    request.done(function (msg) {
+
+        localStorage.setItem("PushTokenCliente", msg["Data"]["PushToken"]);
+
+    });
+
 
     console.log("Direcionando...");
 
@@ -2192,7 +2281,6 @@ function getNomeCliente() {
     });
 
 }
-
 
 
 // D0033 - TROCA DE MENSAGENS ENTRE CLIENTE E PROFISSIONAL
@@ -4132,7 +4220,7 @@ function exitAppPopup() {
 
 function initPushwoosh() {
 
-    alert('Entrou no initPushwoosh');
+    //alert('Entrou no initPushwoosh');
     var pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
 
     //set push notifications handler
@@ -4165,12 +4253,12 @@ function initPushwoosh() {
             //alert('registrado ' + status.pushToken)
            // document.getElementById("pushToken").innerHTML = status.pushToken + "<p>";
             localStorage.setItem("PushToken", status.pushToken);
-            alert('Entrou no PushNotification: ' + status.pushToken);
+            //alert('Entrou no PushNotification: ' + status.pushToken);
 
             onPushwooshInitialized(pushNotification);
         },
         function (status) {
-            alert("failed to register: " + status);
+            //alert("failed to register: " + status);
             console.warn(JSON.stringify(['failed to register ', status]));
         }
     );
